@@ -8,7 +8,7 @@ API_KEY=$1
 # delete all existing aliases
 rm -rf $PATH_PREFIX/*
 rm $PATH_PREFIX/.aliases
-mkdir $PATH_PREFIX
+mkdir $PATH_PREFIX/
 
 # get the current list of scripts for this particular user
 SCRIPT_RESULT=$(curl --silent --location --request GET "$DOMAIN/alias/scripts" --header "Authorization: Api-Key $API_KEY")
