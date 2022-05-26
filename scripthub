@@ -3,7 +3,7 @@
 # define variables used by the script
 PATH_PREFIX=$HOME/.local/bin/scripthub
 COLLECTION_FOLDER=$PATH_PREFIX/collections
-MAIN_SCRIPT=scripthub.sh
+MAIN_SCRIPT=scripthub
 DOMAIN="https://scriptexchange.herokuapp.com" # "http://127.0.0.1:8000"
 LIST_COMMAND='ls'
 UPDATE_COMMAND='update'
