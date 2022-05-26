@@ -128,7 +128,7 @@ elif (( $arg_len >= 1)); then
       list_collections
     else
       name_list="${*:2}"
-      list_collection_aliases $name_list
+      list_collection_aliases "$name_list"
     fi
   else
     print_help_message "Invalid arguments."
