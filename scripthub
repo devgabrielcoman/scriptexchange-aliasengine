@@ -1,0 +1,136 @@
+#!/bin/bash
+
+# define variables used by the script
+PATH_PREFIX=$HOME/.local/bin/scripthub
+COLLECTION_FOLDER=$PATH_PREFIX/collections
+MAIN_SCRIPT=scripthub.sh
+DOMAIN="https://scriptexchange.herokuapp.com" # "http://127.0.0.1:8000"
+LIST_COMMAND='ls'
+UPDATE_COMMAND='update'
+  
+
+function print_help_message {
+  cat << EndOfMessage
+  $1
+
+  ScriptHub usage:
+    scripthub update <API_KEY>  # download all of your scripts
+    scripthub ls                # list all of your Collections
+    scripthub ls Collection     # list all of the aliases in a Collection
+EndOfMessage
+  exit
+}
+
+function update {
+  API_KEY=$1
+
+  # delete the alias file
+  rm $PATH_PREFIX/.aliases
+  # re-add the scripthub app
+  main_script_path=$PATH_PREFIX/$MAIN_SCRIPT
+  echo "alias scripthub=$main_script_path" >> $PATH_PREFIX/.aliases
+  
+  # delete all existing collections
+  rm -rf $COLLECTION_FOLDER/
+  mkdir $COLLECTION_FOLDER
+
+  # get the current list of collections for this particular user
+  collection_result=$(curl --fail --silent -X --location --request GET "$DOMAIN/alias/collections" --header "Authorization: Api-Key $API_KEY")
+  if [[ $? != 0 ]]; then 
+    print_help_message "API Key Invalid."
+  fi 
+  collection_list=$( jq -r '.content' <<< "${collection_result}" ) 
+  # for each collection object in the list
+  for row in $(echo "${collection_list}" | jq -r '.[] | @base64'); do
+    _jq() {
+      echo ${row} | base64 --decode | jq -r ${1}
+    }
+
+    # get collection ID and NAME
+    col_id=$(_jq '.id')
+    col_name=$(_jq '.name')
+    col_folder=${col_name// /_}
+
+    # write collection 
+    echo $col_name >> $COLLECTION_FOLDER/.collections
+
+    # create the collection folder
+    mkdir $COLLECTION_FOLDER/$col_folder/
+
+    # get the current list of scripts for this particular user
+    script_result=$(curl --fail --silent -X --location --request GET "$DOMAIN/alias/collections/$col_id" --header "Authorization: Api-Key $API_KEY")
+    if [[ $? != 0 ]]; then 
+      print_help_message "API Key Invalid."
+    fi 
+    script_list=$( jq -r '.content' <<< "${script_result}" ) 
+
+    # for each script object in the list
+    for row in $(echo "${script_list}" | jq -r '.[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+
+      # get ID and ALIAS
+      script_id=$(_jq '.id')
+      script_alias=$(_jq '.alias')
+      # download the content of the script
+      script_content=$(curl --fail --silent -X --location --request GET "$DOMAIN/alias/scripts/$script_id/content"  --header "Authorization: Api-Key $API_KEY" | jq -r '.content')
+      if [[ $? != 0 ]]; then 
+        print_help_message "API Key Invalid."
+      fi 
+      echo "Downloaded Script" $script_id "with Alias" $script_alias
+
+      # form the final path where we'll save the script and write it
+      full_path=$COLLECTION_FOLDER/$col_folder/$script_alias
+      echo $script_content > $full_path
+      # additionally replace unwanted characters
+      sed -i '' 's/\r /\n/g' $full_path
+      # give corresponding permissions
+      chmod 777 $full_path
+      # and fill out the main alias file
+      echo "alias $script_alias=$full_path" >> $PATH_PREFIX/.aliases
+    done
+  done
+}
+
+function list_collections {
+  if [ -d $COLLECTION_FOLDER ]; then
+    ls $COLLECTION_FOLDER
+  else 
+    print_help_message "You have no Collections."
+  fi
+}
+
+function list_collection_aliases {
+  col_folder=${1// /_}
+  if [ -d $COLLECTION_FOLDER/$col_folder/ ]; then
+    ls -1 $COLLECTION_FOLDER/$col_folder/
+  else 
+    print_help_message "Collection '$1' does not exist."
+  fi
+}
+
+arg_len=$#
+
+if (( $arg_len < 1 )); then 
+  print_help_message "Unexpected number of arguments."
+elif (( $arg_len >= 1)); then
+  second_argument=$1
+  if [[ $second_argument == $UPDATE_COMMAND ]]; then
+    if (( $arg_len >= 2 )); then 
+      api_key=$2 
+      update $api_key
+    else 
+      print_help_message "Missing API_KEY argument."
+    fi
+  elif [[ $second_argument == $LIST_COMMAND ]]; then 
+    if [[ $arg_len == 1 ]]; then
+      list_collections
+    else
+      name_list="${*:2}"
+      list_collection_aliases $name_list
+    fi
+  else
+    print_help_message "Invalid arguments."
+  fi
+fi
