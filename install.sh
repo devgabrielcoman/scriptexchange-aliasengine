@@ -16,6 +16,7 @@ main_script_path=$PATH_PREFIX/$MAIN_SCRIPT
 
 # download
 curl $MAIN_SCRIPT_URL --output $main_script_path
+chmod 777 $main_script_path
 echo "Downloaded ScriptHub app"
 
 # setup default command
