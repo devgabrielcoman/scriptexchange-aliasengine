@@ -95,7 +95,7 @@ function update {
 
 function list_collections {
   if [ -d $COLLECTION_FOLDER ]; then
-    ls $COLLECTION_FOLDER
+    cat $COLLECTION_FOLDER/.collections
   else 
     print_help_message "You have no Collections."
   fi
