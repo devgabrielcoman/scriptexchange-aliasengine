@@ -3,7 +3,7 @@
 # define variables used by the script
 PATH_PREFIX=$HOME/.local/bin/scripthub
 MAIN_SCRIPT=scripthub
-MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/raw/main/build/scripthub
+MAIN_SCRIPT_URL=https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/scripthub
 
 # delete everything in install path
 rm -rf $PATH_PREFIX/
