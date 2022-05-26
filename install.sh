@@ -8,7 +8,7 @@ MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/ra
 # delete everything in install path
 rm -rf $PATH_PREFIX/
 echo "Cleaned out source folder" $PATH_PREFIX
-mkdir $PATH_PREFIX
+mkdir -p $PATH_PREFIX
 echo "Recreated source folder" $PATH_PREFIX
 
 # copy remote script to local
