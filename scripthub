@@ -4,15 +4,22 @@
 PATH_PREFIX=$HOME/.local/bin/scripthub
 COLLECTION_FOLDER=$PATH_PREFIX/collections
 MAIN_SCRIPT=scripthub
-DOMAIN="https://scriptexchange.herokuapp.com" # "http://127.0.0.1:8000"
+# DOMAIN="https://scriptexchange.herokuapp.com" # "http://127.0.0.1:8000"
+DOMAIN="http://127.0.0.1:8000"
 LIST_COMMAND='ls'
 UPDATE_COMMAND='update'
+
+# define colors used by the script  
+#    .---------- constant part!
+#    vvvv vvvv-- the code from above
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
   
 
 function print_help_message {
+  printf "${RED}$1${NC}\n\n"
   cat << EndOfMessage
-  $1
-
   ScriptHub usage:
     scripthub update <API_KEY>  # download all of your scripts
     scripthub ls                # list all of your Collections
@@ -40,6 +47,10 @@ function update {
     print_help_message "API Key Invalid."
   fi 
   collection_list=$( jq -r '.content' <<< "${collection_result}" ) 
+  
+  # get collections json
+  echo $collection_list > $COLLECTION_FOLDER/collections.json
+
   # for each collection object in the list
   for row in $(echo "${collection_list}" | jq -r '.[] | @base64'); do
     _jq() {
@@ -51,11 +62,11 @@ function update {
     col_name=$(_jq '.name')
     col_folder=${col_name// /_}
 
-    # write collection 
-    echo $col_name >> $COLLECTION_FOLDER/.collections
-
     # create the collection folder
     mkdir $COLLECTION_FOLDER/$col_folder/
+
+    # print current collection
+    printf "Collection ${GREEN}$col_name${NC}\n"
 
     # get the current list of scripts for this particular user
     script_result=$(curl --fail --silent -X --location --request GET "$DOMAIN/alias/collections/$col_id" --header "Authorization: Api-Key $API_KEY")
@@ -78,7 +89,7 @@ function update {
       if [[ $? != 0 ]]; then 
         print_help_message "API Key Invalid."
       fi 
-      echo "Downloaded Script" $script_id "with Alias" $script_alias
+      printf "\tDownloaded script with alias ${GREEN}$script_alias${NC}\n"
 
       # form the final path where we'll save the script and write it
       full_path=$COLLECTION_FOLDER/$col_folder/$script_alias
@@ -90,12 +101,28 @@ function update {
       # and fill out the main alias file
       echo "alias $script_alias=$full_path" >> $PATH_PREFIX/.aliases
     done
+
+    # print
+    printf '\n'
   done
 }
 
 function list_collections {
   if [ -d $COLLECTION_FOLDER ]; then
-    cat $COLLECTION_FOLDER/.collections
+    collection_list=$(jq . $COLLECTION_FOLDER/collections.json)
+    # for each collection object in the list
+    for row in $(echo "${collection_list}" | jq -r '.[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+
+      # get collection NAME and ALIAS
+      col_name=$(_jq '.name')
+      col_man=$(_jq '.man')
+
+      # print collection data  
+      printf "${GREEN}$col_name${NC}\n\t$col_man\n\n" 
+    done
   else 
     print_help_message "You have no Collections."
   fi
