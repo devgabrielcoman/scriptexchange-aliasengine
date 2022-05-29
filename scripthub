@@ -48,7 +48,7 @@ function update {
   fi 
   collection_list=$( jq -r '.content' <<< "${collection_result}" ) 
   
-  # get collections json
+  # save collections json
   echo $collection_list > $COLLECTION_FOLDER/collections.json
 
   # for each collection object in the list
@@ -74,6 +74,9 @@ function update {
       print_help_message "API Key Invalid."
     fi 
     script_list=$( jq -r '.content' <<< "${script_result}" ) 
+
+    # save script json
+    echo $script_list > $COLLECTION_FOLDER/$col_folder/aliases.json
 
     # for each script object in the list
     for row in $(echo "${script_list}" | jq -r '.[] | @base64'); do
@@ -117,11 +120,14 @@ function list_collections {
       }
 
       # get collection NAME and ALIAS
-      col_name=$(_jq '.name')
-      col_man=$(_jq '.man')
+      name=$(_jq '.name')
+      man=$(_jq '.man')
+      if [[ $man == 'null' ]]; then
+        man='No description'
+      fi
 
       # print collection data  
-      printf "${GREEN}$col_name${NC}\n\t$col_man\n\n" 
+      printf "${GREEN}$name${NC}\n\t$man\n\n" 
     done
   else 
     print_help_message "You have no Collections."
@@ -129,9 +135,30 @@ function list_collections {
 }
 
 function list_collection_aliases {
+  # form the folder name 
+  col_name=$1
   col_folder=${1// /_}
   if [ -d $COLLECTION_FOLDER/$col_folder/ ]; then
-    ls -1 $COLLECTION_FOLDER/$col_folder/
+    printf "${GREEN}$col_name${NC}\n"
+    
+    script_list=$(jq . $COLLECTION_FOLDER/$col_folder/aliases.json)
+    
+    # for each script in the list
+    for row in $(echo "${script_list}" | jq -r '.[] | @base64'); do
+      _jq() {
+        echo ${row} | base64 --decode | jq -r ${1}
+      }
+
+      # get collection ALIAS and MAN
+      alias=$(_jq '.alias')
+      man=$(_jq '.man')
+      if [[ $man == 'null' ]]; then
+        man='No description'
+      fi
+
+      # print collection data  
+      printf "\t${GREEN}$alias${NC}\n\t$man\n\n" 
+    done
   else 
     print_help_message "Collection '$1' does not exist."
   fi
