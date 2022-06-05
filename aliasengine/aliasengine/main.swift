@@ -22,7 +22,7 @@ private let resultsWindow = newwin(0, 0, 0, 0)!
 private let previewWindow = newwin(0, 0, 0, 0)!
 
 private let searchTerm = SearchTerm()
-private let controller = SearchController(term: searchTerm)
+private let controller = SearchController(term: searchTerm, initialData: dummyData)
 private let resultsWindowManager = WindowManager(window: resultsWindow)
 private let previewWindowManager = WindowManager(window: previewWindow)
 
@@ -35,12 +35,15 @@ while !quit {
     let width = COLS
     let height = LINES
     
+    controller.setVLimit(limit: height - 2)
+    controller.search()
+    
     // Bottom bar
     drawBottomBar(x: 0, y: height - 1, width: width, message: "Type to search all indexed aliases, functions and scripts.")
     
     // draw results window
     resultsWindowManager.setPosition(x: 0, y: 0, width: width / 2, height: height - 2)
-    resultsWindowManager.drawSearchResults(results: controller.search(), selectedIndex: controller.current())
+    resultsWindowManager.drawSearchResults(results: controller.getResult(), selectedIndex: controller.current(), total: controller.getTotalNumberOfResults())
     
     // draw preview window
     previewWindowManager.setPosition(x: width / 2, y: 0, width:  width / 2, height: height - 2)

@@ -11,12 +11,20 @@ class SearchController {
     private var selectedItem: Int? = nil
     private let searchTerm: SearchTerm
     private var searchResult: [IndexItem] = []
+    private let data: [IndexItem]
+    private var vLimit: Int = 0
+    private var startFrom: Int = 0
     
-    init(term: SearchTerm) {
+    init(term: SearchTerm, initialData: [IndexItem]) {
         searchTerm = term
+        data = initialData
     }
     
-    func search() -> [IndexItem] {
+    func setVLimit(limit: Int32) {
+        vLimit = Int(limit) - 3 /** to account for the search result title / magic number */
+    }
+    
+    func search() {
         searchResult = getSearchResult()
         
         // when we have no selected item but we have results,
@@ -32,15 +40,22 @@ class SearchController {
         // is out of bounds, set it to 0
         if let term = selectedItem, term < 0 || term > searchResult.count {
             selectedItem = 0
+            startFrom = 0
         }
-        
-        return searchResult
+    }
+    
+    func getResult() -> [IndexItem] {
+        return boxed(searchResult)
+    }
+    
+    func getTotalNumberOfResults() -> Int {
+        return searchResult.count
     }
     
     private func getSearchResult() -> [IndexItem] {
         let term = searchTerm.toString()
-        guard !term.isEmpty else { return dummyData }
-        return dummyData.filter { item in
+        guard !term.isEmpty else { return data }
+        return data.filter { item in
             return item.name.contains(term)
         }
     }
@@ -53,7 +68,8 @@ class SearchController {
     }
     
     func current() -> Int? {
-        return selectedItem
+        guard let item = selectedItem else { return nil }
+        return item - startFrom
     }
     
     func moveDown() {
@@ -63,6 +79,7 @@ class SearchController {
             item = searchResult.count - 1
         }
         selectedItem = item
+        startFrom = max(item - vLimit, 0)
     }
     
     func moveUp() {
@@ -72,5 +89,18 @@ class SearchController {
             item = 0
         }
         selectedItem = item
+        startFrom = max(item - vLimit, 0)
+    }
+    
+    private func boxed(_ data: [IndexItem]) -> [IndexItem] {
+        var result: [IndexItem] = []
+        
+        for (i, item) in data.enumerated() {
+            if i >= startFrom && i <= startFrom + vLimit {
+                result.append(item)
+            }
+        }
+        
+        return result
     }
 }
