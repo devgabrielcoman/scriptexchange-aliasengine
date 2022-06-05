@@ -20,13 +20,11 @@ Style.setup()               // setup colors
 
 private let resultsWindow = newwin(0, 0, 0, 0)!
 private let previewWindow = newwin(0, 0, 0, 0)!
-private let searchWindow = newwin(0, 0, 0, 0)!
 
 private let searchTerm = SearchTerm()
 private let controller = SearchController(term: searchTerm)
 private let resultsWindowManager = WindowManager(window: resultsWindow)
 private let previewWindowManager = WindowManager(window: previewWindow)
-private let searchWindowManager = WindowManager(window: searchWindow)
 
 var quit = false;
 while !quit {
@@ -80,6 +78,5 @@ while !quit {
 
 delwin(resultsWindow)
 delwin(previewWindow)
-delwin(searchWindow)
 endwin()
 exit(EX_OK)
