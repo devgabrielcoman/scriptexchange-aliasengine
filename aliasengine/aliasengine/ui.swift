@@ -104,14 +104,10 @@ extension WindowManager {
         
         // draw content
         let content = result.content
-        var contentArray = content.split(separator: "\n").map { line in
+        let contentArray = content.split(separator: "\n").map { line in
             return "\(line)".limitTo(width: width)
-        }
+        }.limitTo(height: vlimit)
         
-        if contentArray.count > vlimit {
-            contentArray = Array(contentArray.prefix(upTo: Int(vlimit)))
-        }
-
         for (i, contentLine) in contentArray.enumerated() {
             mvwaddstr(window, Int32(i) + Int32(commentArray.count) + 1, 2, contentLine)
         }
