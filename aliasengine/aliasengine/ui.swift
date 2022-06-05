@@ -15,9 +15,15 @@ func drawBottomBar(x: Int32, y: Int32, width: Int32, message: String) {
 }
 
 func drawSearchBar(x: Int32, y: Int32, query: String, cursorIndex: Int32) {
-    move(y, x)
+    let searchPrefix = "> "
+    let prefixLen = Int32(searchPrefix.count)
+    Color.cyan {
+        move(y, x)
+        addstr(searchPrefix)
+    }
+    move(y, x + prefixLen)
     addstr(query)
-    move(y, cursorIndex)
+    move(y, cursorIndex + prefixLen)
 }
 
 class WindowManager {

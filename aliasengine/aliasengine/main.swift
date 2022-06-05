@@ -16,6 +16,7 @@ intrflush(stdscr, true)     // Prevent flush
 keypad(stdscr, true)        // Enable function and arrow keys
 curs_set(1)                 // Set cursor to invisible
 defer { endwin() }
+Color.setup()               // setup colors
 
 private let resultsWindow = newwin(0, 0, 0, 0)!
 private let previewWindow = newwin(0, 0, 0, 0)!
@@ -56,7 +57,7 @@ while !quit {
     wrefresh(previewWindow)
     
     // display the search bar
-    drawSearchBar(x: 0, y: height - 2, query: searchTerm.toSearchQuery(), cursorIndex: searchTerm.getIndex())
+    drawSearchBar(x: 0, y: height - 2, query: searchTerm.toString(), cursorIndex: searchTerm.getIndex())
     
     // do some actions
     let input = getch()

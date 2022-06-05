@@ -36,7 +36,7 @@ class SearchTerm {
     }
     
     func getIndex() -> Int32 {
-        return Int32(index) + 2
+        return Int32(index)
     }
     
     func moveIndexLeft() {
