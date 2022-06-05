@@ -65,5 +65,5 @@ function cl() {
 }
 """,
               path: "functions",
-              comment: "Change directories and view the contents at the same time")
+              comment: "Change directories and view the contents at the same time"),
 ]

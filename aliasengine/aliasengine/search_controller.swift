@@ -17,17 +17,32 @@ class SearchController {
     }
     
     func search() -> [IndexItem] {
-        let term = searchTerm.toString()
-        searchResult = dummyData.filter { item in
-            return item.name.contains(term)
-        }
+        searchResult = getSearchResult()
+        
+        // when we have no selected item but we have results,
+        // set the selected item to 0
         if selectedItem == nil && searchResult.count > 0 {
             selectedItem = 0
         }
+        // when we have no results, set the item to nil
         else if searchResult.count == 0 {
             selectedItem = nil
         }
+        // when we have new serch results and the item
+        // is out of bounds, set it to 0
+        if let term = selectedItem, term < 0 || term > searchResult.count {
+            selectedItem = 0
+        }
+        
         return searchResult
+    }
+    
+    private func getSearchResult() -> [IndexItem] {
+        let term = searchTerm.toString()
+        guard !term.isEmpty else { return dummyData }
+        return dummyData.filter { item in
+            return item.name.contains(term)
+        }
     }
     
     func getSelectedItem() -> IndexItem? {

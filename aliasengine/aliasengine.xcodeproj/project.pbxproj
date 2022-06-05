@@ -10,7 +10,6 @@
 		5DB272C8284B925D007FA8B8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272C7284B925D007FA8B8 /* main.swift */; };
 		5DB272D0284B956B007FA8B8 /* SwiftCursesTerm in Frameworks */ = {isa = PBXBuildFile; productRef = 5DB272CF284B956B007FA8B8 /* SwiftCursesTerm */; };
 		5DB272D2284BB61D007FA8B8 /* dummy_data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272D1284BB61D007FA8B8 /* dummy_data.swift */; };
-		5DB272D6284CC21C007FA8B8 /* utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272D5284CC21C007FA8B8 /* utils.swift */; };
 		5DB272D8284CC92D007FA8B8 /* search_term.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272D7284CC92D007FA8B8 /* search_term.swift */; };
 		5DB272DA284CC94B007FA8B8 /* search_controller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272D9284CC94B007FA8B8 /* search_controller.swift */; };
 		5DB272DC284CC9FE007FA8B8 /* ui.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272DB284CC9FE007FA8B8 /* ui.swift */; };
@@ -33,7 +32,6 @@
 		5DB272C4284B925D007FA8B8 /* aliasengine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aliasengine; sourceTree = BUILT_PRODUCTS_DIR; };
 		5DB272C7284B925D007FA8B8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		5DB272D1284BB61D007FA8B8 /* dummy_data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dummy_data.swift; sourceTree = "<group>"; };
-		5DB272D5284CC21C007FA8B8 /* utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = utils.swift; sourceTree = "<group>"; };
 		5DB272D7284CC92D007FA8B8 /* search_term.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = search_term.swift; sourceTree = "<group>"; };
 		5DB272D9284CC94B007FA8B8 /* search_controller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = search_controller.swift; sourceTree = "<group>"; };
 		5DB272DB284CC9FE007FA8B8 /* ui.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ui.swift; sourceTree = "<group>"; };
@@ -73,7 +71,6 @@
 			children = (
 				5DB272C7284B925D007FA8B8 /* main.swift */,
 				5DB272D1284BB61D007FA8B8 /* dummy_data.swift */,
-				5DB272D5284CC21C007FA8B8 /* utils.swift */,
 				5DB272D7284CC92D007FA8B8 /* search_term.swift */,
 				5DB272D9284CC94B007FA8B8 /* search_controller.swift */,
 				5DB272DB284CC9FE007FA8B8 /* ui.swift */,
@@ -147,7 +144,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5DB272DE284CD1C0007FA8B8 /* color.swift in Sources */,
-				5DB272D6284CC21C007FA8B8 /* utils.swift in Sources */,
 				5DB272DC284CC9FE007FA8B8 /* ui.swift in Sources */,
 				5DB272D8284CC92D007FA8B8 /* search_term.swift in Sources */,
 				5DB272DA284CC94B007FA8B8 /* search_controller.swift in Sources */,

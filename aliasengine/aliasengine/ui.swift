@@ -8,22 +8,24 @@
 import Foundation
 
 func drawBottomBar(x: Int32, y: Int32, width: Int32, message: String) {
-    attron(reversed)
-    mvaddstr(y, x, String(repeating: " ", count: Int(width)))
-    mvaddstr(y, x, message)
-    attroff(reversed)
+    Style().inversed {
+        mvaddstr(y, x, String(repeating: " ", count: Int(width)))
+        mvaddstr(y, x, message)
+    }
 }
 
 func drawSearchBar(x: Int32, y: Int32, query: String, cursorIndex: Int32) {
     let searchPrefix = "> "
     let prefixLen = Int32(searchPrefix.count)
-    Color.cyan {
+    Style().cyan {
         move(y, x)
         addstr(searchPrefix)
     }
-    move(y, x + prefixLen)
-    addstr(query)
-    move(y, cursorIndex + prefixLen)
+    Style().bold {
+        move(y, x + prefixLen)
+        addstr(query)
+        move(y, cursorIndex + prefixLen)
+    }
 }
 
 class WindowManager {
@@ -52,10 +54,10 @@ class WindowManager {
     }
     
     func drawTitle(title: String) {
-        wattron(window, reversed)
         let fullTitle = " \(title) "
-        mvwaddstr(window, 0, (width / 2) - Int32(fullTitle.count / 2), fullTitle)
-        wattroff(window, reversed)
+        Style(window).inversed {
+            mvwaddstr(window, 0, (width / 2) - Int32(fullTitle.count / 2), fullTitle)
+        }
     }
 }
 
@@ -70,22 +72,37 @@ extension WindowManager {
         for (i, result) in results.enumerated() {
             wmove(window, top + Int32(i) + 1, left)
             if let current = selectedIndex, i == current {
-                wattron(window, reversed)
+                Style(window).cyan {
+                    Style(window).inversed {
+                        waddstr(window, result.name)
+                    }
+                }
+                
+            } else {
+                Style(window).cyan {
+                    waddstr(window, result.name)
+                }
             }
-            waddstr(window, result.name)
-            wattroff(window, reversed)
         }
     }
     
     func drawResultPreview(selectedItem: IndexItem?) {
         guard let result = selectedItem else { return }
+        
+        // draw comments
+        let comments = "# \(result.comment ?? "No comment")"
+        Style(window).green {
+            mvwaddstr(window, 1, 2, comments)
+        }
+        
+        // draw content
         let content = result.content
         let contentArray = content.split(separator: "\n").map { sub in
             return "\(sub)"
         }
 
         for (i, contentLine) in contentArray.enumerated() {
-            mvwaddstr(window, 1 + Int32(i), 2, contentLine)
+            mvwaddstr(window, Int32(i) + 2, 2, contentLine)
         }
     }
 }
