@@ -42,14 +42,11 @@ while !quit {
     
     // draw results window
     resultsWindowManager.setPosition(x: 0, y: 0, width: width / 2, height: height - 2)
-    resultsWindowManager.drawBox()
-    resultsWindowManager.drawTitle(title: "Results")
     resultsWindowManager.drawSearchResults(results: controller.search(), selectedIndex: controller.current())
     
     // draw preview window
     previewWindowManager.setPosition(x: width / 2, y: 0, width:  width / 2, height: height - 2)
     previewWindowManager.drawBox()
-    previewWindowManager.drawTitle(title: "Preview")
     previewWindowManager.drawResultPreview(selectedItem: controller.getSelectedItem())
     
     // refresh everything

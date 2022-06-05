@@ -49,7 +49,8 @@ let dummyData: [IndexItem] = [
     IndexItem(type: .alias,
               name: "preview",
               content: "find . | fzf --preview 'bat --theme={} --color=always {}'",
-              path: ".simple_aliases", comment: "find with preview"),
+              path: ".simple_aliases",
+              comment: "find with preview"),
     IndexItem(type: .function,
               name: "cl",
               content: """
@@ -66,4 +67,9 @@ function cl() {
 """,
               path: "functions",
               comment: "Change directories and view the contents at the same time"),
+    IndexItem(type: .alias,
+              name: "empty",
+              content: "",
+              path: ".simple_aliases",
+              comment: "find with preview"),
 ]

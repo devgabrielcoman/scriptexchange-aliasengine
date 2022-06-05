@@ -33,7 +33,7 @@ class WindowManager {
     internal let window: OpaquePointer
     private var x: Int32 = 0
     private var y: Int32 = 0
-    private var width: Int32 = 0
+    internal var width: Int32 = 0
     private var height: Int32 = 0
     
     init(window: OpaquePointer) {
@@ -89,21 +89,31 @@ extension WindowManager {
     
     func drawResultPreview(selectedItem: IndexItem?) {
         guard let result = selectedItem else { return }
+        var vlimit = height - 2
         
         // draw comments
-        let comments = "# \(result.comment ?? "No comment")"
-        Style(window).green {
-            mvwaddstr(window, 1, 2, comments)
+        let comments = result.comment ?? "No comment"
+        let commentArray = comments.splitWordLines(thatFitIn: width)
+        for (i , commentLine) in commentArray.enumerated() {
+            Style(window).green {
+                mvwaddstr(window, Int32(i + 1), 2, commentLine)
+            }
         }
+        // update vlimit
+        vlimit -= Int32(commentArray.count)
         
         // draw content
         let content = result.content
-        let contentArray = content.split(separator: "\n").map { sub in
-            return "\(sub)"
+        var contentArray = content.split(separator: "\n").map { line in
+            return "\(line)".limitTo(width: width)
+        }
+        
+        if contentArray.count > vlimit {
+            contentArray = Array(contentArray.prefix(upTo: Int(vlimit)))
         }
 
         for (i, contentLine) in contentArray.enumerated() {
-            mvwaddstr(window, Int32(i) + 2, 2, contentLine)
+            mvwaddstr(window, Int32(i) + Int32(commentArray.count) + 1, 2, contentLine)
         }
     }
 }
