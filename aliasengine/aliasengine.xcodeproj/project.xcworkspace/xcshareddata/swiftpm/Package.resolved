@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser.git",
+        "state": {
+          "branch": null,
+          "revision": "f3c9084a71ef4376f2fabbdf1d3d90a49f1fabdb",
+          "version": "1.1.2"
+        }
+      },
+      {
         "package": "SwiftCursesTerm",
         "repositoryURL": "https://github.com/rderik/SwiftCursesTerm.git",
         "state": {

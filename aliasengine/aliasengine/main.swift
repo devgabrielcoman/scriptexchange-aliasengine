@@ -7,6 +7,27 @@
 
 import Foundation
 import Darwin.ncurses
+import ArgumentParser
+
+struct Arguments: ParsableArguments {
+    @Option(name: [.customShort("i"), .long], help: "A path to an alias file to ingest")
+    var ingest: String?
+}
+
+///
+/// THE INGESTION PART OF THE PROGRAM
+///
+
+let arguments = Arguments.parseOrExit()
+if let filePath = arguments.ingest {
+    let ingester = DataIngest()
+    ingester.ingest(path: filePath)
+    exit(0)
+}
+
+///
+/// THE INTERACTIVE PART OF THE PROGRAM
+///
 
 initscr()                   // Init window. Must be first
 cbreak()
@@ -21,8 +42,10 @@ Style.setup()               // setup colors
 private let resultsWindow = newwin(0, 0, 0, 0)!
 private let previewWindow = newwin(0, 0, 0, 0)!
 
+private let reader = DataReader()
+private let data = reader.load()
 private let searchTerm = SearchTerm()
-private let controller = SearchController(term: searchTerm, initialData: dummyData)
+private let controller = SearchController(term: searchTerm, initialData: data)
 private let resultsWindowManager = WindowManager(window: resultsWindow)
 private let previewWindowManager = WindowManager(window: previewWindow)
 
@@ -35,6 +58,7 @@ while !quit {
     let width = COLS
     let height = LINES
     
+    // do controller actions
     controller.setVLimit(limit: height - 2)
     controller.search()
     

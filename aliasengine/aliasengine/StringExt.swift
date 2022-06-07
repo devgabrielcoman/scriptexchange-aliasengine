@@ -49,4 +49,13 @@ extension String {
         
         return result
     }
+    
+    func deletingPrefix(_ prefix: String) -> String {
+        guard self.hasPrefix(prefix) else { return self }
+        return String(self.dropFirst(prefix.count))
+    }
+    
+    func fileName() -> String {
+        return URL(fileURLWithPath: self).lastPathComponent
+    }
 }

@@ -7,20 +7,6 @@
 
 import Foundation
 
-enum ScriptType {
-    case alias
-    case function
-    case script
-}
-
-struct IndexItem {
-    let type: ScriptType
-    let name: String
-    let content: String
-    let path: String
-    let comment: String?
-}
-
 let dummyData: [IndexItem] = [
     IndexItem(type: .alias,
               name: "lt",

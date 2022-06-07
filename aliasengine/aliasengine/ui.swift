@@ -92,7 +92,7 @@ extension WindowManager {
         var vlimit = height - 2
         
         // draw comments
-        let comments = result.comment ?? "No comment"
+        let comments = result.comment
         let commentArray = comments.splitWordLines(thatFitIn: width)
         for (i , commentLine) in commentArray.enumerated() {
             Style(window).green {
