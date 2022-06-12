@@ -1,5 +1,7 @@
-# AliasEngine Bee
+# Alias Bee
 This is a command line utility to help out with managing your aliases, functions and scripts. 
+
+![Alias Bee Screenshot](/res/screenshot.png?raw=true "Optional Title")
 
 ## Installation
 
