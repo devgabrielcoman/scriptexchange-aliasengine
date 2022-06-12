@@ -9,8 +9,8 @@ import Foundation
 import ArgumentParser
 
 struct Arguments: ParsableArguments {
-    @Option(name: [.customShort("i"), .long], help: "A path to an alias file to ingest")
-    var ingest: String?
+    @Option(name: [.customShort("r"), .long], help: "A path to an alias file to register")
+    var register: String?
     
     @Flag(name: [.customShort("s")], help: "Ingest a scriot whole")
     var script: Bool = false
@@ -20,7 +20,7 @@ struct Arguments: ParsableArguments {
 }
 
 let arguments = Arguments.parseOrExit()
-if let filePath = arguments.ingest {
+if let filePath = arguments.register {
     if arguments.script {
         let program = IndexScriptProgram(path: filePath)
         program.run()
