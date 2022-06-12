@@ -14,9 +14,9 @@
         "package": "SwiftCursesTerm",
         "repositoryURL": "https://github.com/rderik/SwiftCursesTerm.git",
         "state": {
-          "branch": null,
-          "revision": "bbad43ec64fef452445a416144af5103eb7d9d0d",
-          "version": "0.1.2"
+          "branch": "main",
+          "revision": "6fe691790daa6443257482059d52d7e7eaa84bc7",
+          "version": null
         }
       }
     ]

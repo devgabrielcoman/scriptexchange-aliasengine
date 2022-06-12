@@ -56,7 +56,7 @@ class SearchController {
         let term = searchTerm.toString()
         guard !term.isEmpty else { return data }
         return data.filter { item in
-            return item.name.contains(term)
+            return item.searchString.contains(term)
         }
     }
     

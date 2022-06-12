@@ -55,7 +55,20 @@ extension String {
         return String(self.dropFirst(prefix.count))
     }
     
-    func fileName() -> String {
+    var fileName: String {
         return URL(fileURLWithPath: self).lastPathComponent
+    }
+    
+    var deletingAllExtensions: String {
+        let components = self.split(separator: ".")
+        if components.count > 0 {
+            return String(components[0])
+        } else {
+            return self
+        }
+    }
+    
+    var isAlphanumeric: Bool {
+        return self.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) == nil && !isEmpty
     }
 }
