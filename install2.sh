@@ -3,7 +3,7 @@
 # define variables used by the script
 PATH_PREFIX=$HOME/.local/bin/scripthub
 SCRIPT_NAME=bee
-MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/aliasengine/Build/Products/Debug/aliasengine?raw=true
+MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/raw/main/aliasengine/Build/Products/Debug/aliasengine
 
 # create folder
 mkdir -p $PATH_PREFIX/
