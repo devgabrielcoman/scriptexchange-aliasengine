@@ -10,7 +10,9 @@ To install, execute this command in your terminal:
 ```
 
 This will download [this script](https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/install.sh). 
+
 In turn, this will download a binary into a new folder on your system: `$HOME/.local/bin/scripthub/`. 
+
 The source code for the binary is [here](https://github.com/devgabrielcoman/scriptexchange-aliasengine/tree/main/aliasengine).
 
 Finally, in your `.bashrc`, `.zshrc`, `.profile` file, add the following line, to create a shorthand for the script:
