@@ -2,23 +2,19 @@
 
 # define variables used by the script
 PATH_PREFIX=$HOME/.local/bin/scripthub
-MAIN_SCRIPT=scripthub
-MAIN_SCRIPT_URL=https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/scripthub
+SCRIPT_NAME=bee
+MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/raw/main/aliasengine/Build/Products/Debug/aliasengine
 
-# delete everything in install path
-rm -rf $PATH_PREFIX/
-echo "Cleaned out source folder" $PATH_PREFIX
+# create folder
 mkdir -p $PATH_PREFIX/
-echo "Recreated source folder" $PATH_PREFIX
+echo "Create source folder" $PATH_PREFIX
 
 # copy remote script to local
-main_script_path=$PATH_PREFIX/$MAIN_SCRIPT
+main_script_path=$PATH_PREFIX/$SCRIPT_NAME
 
 # download
-curl $MAIN_SCRIPT_URL --output $main_script_path
-chmod 777 $main_script_path
-echo "Downloaded ScriptHub app"
-
-# setup default command
-echo "alias scripthub=$main_script_path" >> $PATH_PREFIX/.aliases
-echo "Setup ScriptHub"
+echo "Downloading script"
+curl -fsSL $MAIN_SCRIPT_URL --output $main_script_path
+# make it executable
+chmod +x $main_script_path
+echo "Downloaded script"

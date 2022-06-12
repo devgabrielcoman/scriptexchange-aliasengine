@@ -1,2 +1,10 @@
-# ScriptHub Command Line Utility
-This is the command line utility for Scripthub and the install script that helps you set it up.
+# AliasEngine Bee
+This is a command line utility to help out with managing your aliases, functions and scripts. 
+
+To install, execute this command in your terminal:
+
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/install.sh)"
+```
+
+This will download [this script](https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/install.sh). In turn, this will download a binary into a new folder on your system: `$HOME/.local/bin/scripthub/`. The source code for the binary is [here](https://github.com/devgabrielcoman/scriptexchange-aliasengine/tree/main/aliasengine).
