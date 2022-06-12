@@ -1,0 +1,3 @@
+aliasengine/Build/Intermediates.noindex/
+aliasengine/Build/Products/Debug/*
+!aliasengine/Build/Products/Debug/aliasengine
