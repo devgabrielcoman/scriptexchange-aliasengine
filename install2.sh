@@ -13,6 +13,7 @@ echo "Create source folder" $PATH_PREFIX
 main_script_path=$PATH_PREFIX/$SCRIPT_NAME
 
 # download
+echo "Downloading script"
 curl $MAIN_SCRIPT_URL --output $main_script_path
 # make it executable
 chmod +x $main_script_path
