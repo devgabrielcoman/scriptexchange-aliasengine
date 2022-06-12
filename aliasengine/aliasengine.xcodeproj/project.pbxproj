@@ -66,7 +66,6 @@
 		1B6609F1284F7B430030F1EF /* libncurses.5.4.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libncurses.5.4.tbd; path = usr/lib/libncurses.5.4.tbd; sourceTree = SDKROOT; };
 		1B6609F8284F7BC60030F1EF /* DataWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataWriter.swift; sourceTree = "<group>"; };
 		1B6609FA284F7E0E0030F1EF /* DataHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataHandler.swift; sourceTree = "<group>"; };
-		1B660A00284FC4950030F1EF /* aliasengine_tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = aliasengine_tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B660A22284FC6740030F1EF /* aliasengine-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "aliasengine-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1B660A24284FC6740030F1EF /* FunctionIngesterTest_Type1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionIngesterTest_Type1.swift; sourceTree = "<group>"; };
 		1B660A342850C3E20030F1EF /* FunctionIngesterTest_Type2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionIngesterTest_Type2.swift; sourceTree = "<group>"; };
@@ -97,13 +96,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		1B6609FD284FC4950030F1EF /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1B660A1F284FC6740030F1EF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -248,7 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				5DB272C4284B925D007FA8B8 /* aliasengine */,
-				1B660A00284FC4950030F1EF /* aliasengine_tests.xctest */,
 				1B660A22284FC6740030F1EF /* aliasengine-tests.xctest */,
 			);
 			name = Products;
@@ -268,23 +259,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		1B6609FF284FC4950030F1EF /* aliasengine_tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1B660A04284FC4950030F1EF /* Build configuration list for PBXNativeTarget "aliasengine_tests" */;
-			buildPhases = (
-				1B6609FC284FC4950030F1EF /* Sources */,
-				1B6609FD284FC4950030F1EF /* Frameworks */,
-				1B6609FE284FC4950030F1EF /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = aliasengine_tests;
-			productName = aliasengine_tests;
-			productReference = 1B660A00284FC4950030F1EF /* aliasengine_tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		1B660A21284FC6740030F1EF /* aliasengine-tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B660A26284FC6740030F1EF /* Build configuration list for PBXNativeTarget "aliasengine-tests" */;
@@ -333,9 +307,6 @@
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
-					1B6609FF284FC4950030F1EF = {
-						CreatedOnToolsVersion = 13.4.1;
-					};
 					1B660A21284FC6740030F1EF = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -362,20 +333,12 @@
 			projectRoot = "";
 			targets = (
 				5DB272C3284B925D007FA8B8 /* aliasengine */,
-				1B6609FF284FC4950030F1EF /* aliasengine_tests */,
 				1B660A21284FC6740030F1EF /* aliasengine-tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		1B6609FE284FC4950030F1EF /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1B660A20284FC6740030F1EF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -386,13 +349,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1B6609FC284FC4950030F1EF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		1B660A1E284FC6740030F1EF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -448,41 +404,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1B660A05284FC4950030F1EF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.aliasengine.aliasengine-tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 15.4;
-			};
-			name = Debug;
-		};
-		1B660A06284FC4950030F1EF /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.aliasengine.aliasengine-tests";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = appletvos;
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 15.4;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		1B660A27284FC6740030F1EF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -649,15 +570,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1B660A04284FC4950030F1EF /* Build configuration list for PBXNativeTarget "aliasengine_tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1B660A05284FC4950030F1EF /* Debug */,
-				1B660A06284FC4950030F1EF /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1B660A26284FC6740030F1EF /* Build configuration list for PBXNativeTarget "aliasengine-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
