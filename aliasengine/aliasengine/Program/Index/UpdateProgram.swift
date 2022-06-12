@@ -46,7 +46,7 @@ class UpdateProgram: Program {
     
     private func reloadScriptFiles(source: SourceFile) -> [IndexItem] {
         guard let content = try? String(contentsOfFile: source.path) else {
-            print("Could not open file \(source.path, color: .red)co")
+            print("Could not open file \(source.path, color: .red)")
             return []
         }
         

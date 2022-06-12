@@ -47,6 +47,7 @@
 		5DB272E0284CFBD2007FA8B8 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272DF284CFBD2007FA8B8 /* StringExt.swift */; };
 		5DB272E2284D0E59007FA8B8 /* ArrayExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272E1284D0E59007FA8B8 /* ArrayExt.swift */; };
 		5DB272E9284D3583007FA8B8 /* DataReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DB272E8284D3583007FA8B8 /* DataReader.swift */; };
+		5DC767CE2856451F006CB7FE /* FunctionIngesterTest_EdgeCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC767CD2856451F006CB7FE /* FunctionIngesterTest_EdgeCases.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -93,6 +94,7 @@
 		5DB272DF284CFBD2007FA8B8 /* StringExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
 		5DB272E1284D0E59007FA8B8 /* ArrayExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExt.swift; sourceTree = "<group>"; };
 		5DB272E8284D3583007FA8B8 /* DataReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataReader.swift; sourceTree = "<group>"; };
+		5DC767CD2856451F006CB7FE /* FunctionIngesterTest_EdgeCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunctionIngesterTest_EdgeCases.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 			children = (
 				1B660A24284FC6740030F1EF /* FunctionIngesterTest_Type1.swift */,
 				1B660A342850C3E20030F1EF /* FunctionIngesterTest_Type2.swift */,
+				5DC767CD2856451F006CB7FE /* FunctionIngesterTest_EdgeCases.swift */,
 			);
 			path = "aliasengine-tests";
 			sourceTree = "<group>";
@@ -354,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1BA24ABC285377870036A4EF /* ASCIIColor.swift in Sources */,
+				5DC767CE2856451F006CB7FE /* FunctionIngesterTest_EdgeCases.swift in Sources */,
 				1BA24ABA285377660036A4EF /* IndexItem.swift in Sources */,
 				1BA24ABD285377910036A4EF /* FileIngester.swift in Sources */,
 				1BA24AB92853775E0036A4EF /* FunctionIngester.swift in Sources */,

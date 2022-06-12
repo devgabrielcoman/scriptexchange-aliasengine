@@ -43,7 +43,7 @@ class IndexScriptProgram: Program {
         
         // update the new file
         guard let content = try? String(contentsOfFile: path) else {
-            print("Could not open file \(path)")
+            print("Could not open file \(path, color: .red)")
             exit(0)
         }
         

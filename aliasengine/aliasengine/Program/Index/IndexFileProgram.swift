@@ -28,7 +28,7 @@ class IndexFileProgram: Program {
         let existingItems = reader.readItems()
         
         guard let file = try? String(contentsOfFile: path) else {
-            print("Could not open file \(path)")
+            print("Could not open file \(path, color: .red)")
             return
         }
         let aliasIngester = AliasIngester(filePath: path)

@@ -29,7 +29,7 @@ if let filePath = arguments.ingest {
         program.run()
     }
 }
-else if let _ = arguments.update {
+else if let update = arguments.update, update == "update" {
     let program = UpdateProgram()
     program.run()
 }
