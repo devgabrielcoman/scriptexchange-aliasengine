@@ -17,7 +17,7 @@ class SearchController {
     
     init(term: SearchTerm, initialData: [IndexItem]) {
         searchTerm = term
-        data = initialData
+        data = SearchController.sorted(initialData)
     }
     
     func setVLimit(limit: Int32) {
@@ -45,7 +45,7 @@ class SearchController {
     }
     
     func getResult() -> [IndexItem] {
-        return sorted(boxed(searchResult))
+        return boxed(searchResult)
     }
     
     func getTotalNumberOfSearchResults() -> Int {
@@ -96,7 +96,7 @@ class SearchController {
         startFrom = max(item - vLimit, 0)
     }
     
-    private func sorted(_ data: [IndexItem]) -> [IndexItem] {
+    private static func sorted(_ data: [IndexItem]) -> [IndexItem] {
         return data.sorted { l, r in
             if l.path == r.path {
                 return l.name < r.name
