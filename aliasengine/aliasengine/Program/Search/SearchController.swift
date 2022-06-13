@@ -45,7 +45,7 @@ class SearchController {
     }
     
     func getResult() -> [IndexItem] {
-        return boxed(searchResult)
+        return sorted(boxed(searchResult))
     }
     
     func getTotalNumberOfResults() -> Int {
@@ -90,6 +90,15 @@ class SearchController {
         }
         selectedItem = item
         startFrom = max(item - vLimit, 0)
+    }
+    
+    private func sorted(_ data: [IndexItem]) -> [IndexItem] {
+        return data.sorted { l, r in
+            if l.path == r.path {
+                return l.name < r.name
+            }
+            return l.path < r.path
+        }
     }
     
     private func boxed(_ data: [IndexItem]) -> [IndexItem] {
