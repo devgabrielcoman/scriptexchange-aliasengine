@@ -48,8 +48,12 @@ class SearchController {
         return sorted(boxed(searchResult))
     }
     
-    func getTotalNumberOfResults() -> Int {
+    func getTotalNumberOfSearchResults() -> Int {
         return searchResult.count
+    }
+    
+    func getAllItemCount() -> Int {
+        return data.count
     }
     
     private func getSearchResult() -> [IndexItem] {

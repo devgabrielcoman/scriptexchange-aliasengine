@@ -52,7 +52,7 @@ class SearchProgram: Program {
 
             // draw results window
             resultsWindowManager.setPosition(x: 0, y: 0, width: width / 2, height: height - 2)
-            resultsWindowManager.drawSearchResults(results: controller.getResult(), selectedIndex: controller.current(), total: controller.getTotalNumberOfResults())
+            resultsWindowManager.drawSearchResults(results: controller.getResult(), selectedIndex: controller.current(), total: controller.getTotalNumberOfSearchResults(), full: controller.getAllItemCount())
 
             // draw preview window
             previewWindowManager.setPosition(x: width / 2, y: 0, width:  width / 2, height: height - 2)

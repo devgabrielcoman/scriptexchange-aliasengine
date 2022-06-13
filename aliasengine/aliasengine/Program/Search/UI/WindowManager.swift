@@ -41,12 +41,16 @@ class WindowManager {
 }
 
 extension WindowManager {
-    func drawSearchResults(results: [IndexItem], selectedIndex: Int?, total: Int) {
+    func drawSearchResults(results: [IndexItem], selectedIndex: Int?, total: Int, full: Int) {
         let left: Int32 = 1
         let top: Int32 = 1
         
         wmove(window, top, left)
-        waddstr(window, "Found \(total) results")
+        waddstr(window, "Showing ")
+        Style(window).bold {
+            waddstr(window, "\(total)/\(full)")
+        }
+        waddstr(window, " results")
         
         for (i, result) in results.enumerated() {
             wmove(window, top + Int32(i) + 1, left)
