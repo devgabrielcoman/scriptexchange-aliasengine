@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# run the main bee script 
-$HOME/.local/bin/scripthub/aliasengine
+# run the main bee script - passing any arguments
+$HOME/.local/bin/scripthub/aliasengine "$@"
 
 lastCommandFile=$HOME/.local/bin/scripthub/lastcommand
 # if a last command file exists
