@@ -38,4 +38,12 @@ class DataWriter: DataHandler {
             return
         }
     }
+    
+    func write(command: String) {
+        let fullUrl = getLastCommandUrl()
+        guard let _ = try? command.write(to: fullUrl, atomically: true, encoding: .utf8) else {
+            print("\("Could not write last command", color: .red)")
+            return
+        }
+    }
 }

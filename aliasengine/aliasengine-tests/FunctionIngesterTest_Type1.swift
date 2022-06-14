@@ -103,7 +103,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "test",
-                      content: "function test { echo \"ABC\" }\n\ntest",
+                      content: "function test { echo \"ABC\" }",
                       path: ".my_file",
                       comments: [])
         ]
@@ -116,7 +116,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "test",
-                      content: "function test { echo \"ABC\" }\n\ntest",
+                      content: "function test { echo \"ABC\" }",
                       path: ".my_file",
                       comments: [])
         ]
@@ -133,7 +133,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "test",
-                      content: "function test {\n    echo \"ABC\"\n}\n\ntest",
+                      content: "function test {\n    echo \"ABC\"\n}",
                       path: ".my_file",
                       comments: [])
         ]
@@ -153,7 +153,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello_world",
-                      content: "function hello_world {\n    echo \"Hello\"\n    {\n        echo \"World\"\n    }\n}\n\nhello_world",
+                      content: "function hello_world {\n    echo \"Hello\"\n    {\n        echo \"World\"\n    }\n}",
                       path: ".my_file",
                       comments: [])
         ]
@@ -173,7 +173,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello {\n    echo \"Hello\"\n    function world {\n        echo \"World\"\n    }\n}\n\nhello",
+                      content: "function hello {\n    echo \"Hello\"\n    function world {\n        echo \"World\"\n    }\n}",
                       path: ".my_file",
                       comments: [])
         ]
@@ -195,7 +195,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello { echo \"Hello\" }\n\nhello",
+                      content: "function hello { echo \"Hello\" }",
                       path: ".my_file",
                       comments: [])
         ]
@@ -221,7 +221,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello {\n    echo \"Hello\"\n    function world {\n        echo \"World\"\n    }\n}\n\nhello",
+                      content: "function hello {\n    echo \"Hello\"\n    function world {\n        echo \"World\"\n    }\n}",
                       path: ".my_file",
                       comments: [])
         ]
@@ -237,12 +237,12 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello { echo \"HELLO\" }\n\nhello",
+                      content: "function hello { echo \"HELLO\" }",
                       path: ".my_file",
                       comments: []),
             IndexItem(type: .function,
                       name: "world",
-                      content: "function world { echo \"WORLD\" }\n\nworld",
+                      content: "function world { echo \"WORLD\" }",
                       path: ".my_file",
                       comments: [])
         ]
@@ -264,12 +264,12 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello {\n    echo \"HELLO\"\n}\n\nhello",
+                      content: "function hello {\n    echo \"HELLO\"\n}",
                       path: ".my_file",
                       comments: []),
             IndexItem(type: .function,
                       name: "world",
-                      content: "function world {\n    echo \"WORLD\"\n    echo \"!\"\n}\n\nworld",
+                      content: "function world {\n    echo \"WORLD\"\n    echo \"!\"\n}",
                       path: ".my_file",
                       comments: [])
         ]
@@ -294,12 +294,12 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello {\n    echo \"HELLO\"\n    function helper {\n    }\n}\n\nhello",
+                      content: "function hello {\n    echo \"HELLO\"\n    function helper {\n    }\n}",
                       path: ".my_file",
                       comments: []),
             IndexItem(type: .function,
                       name: "world",
-                      content: "function world {\n    echo \"WORLD\"\n    function helper {\n    }\n}\n\nworld",
+                      content: "function world {\n    echo \"WORLD\"\n    function helper {\n    }\n}",
                       path: ".my_file",
                       comments: [])
         ]
@@ -325,7 +325,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect: [IndexItem] = [
             IndexItem(type: .function,
                       name: "world",
-                      content: "function world {\n    echo \"WORLD\"\n}\n\nworld",
+                      content: "function world {\n    echo \"WORLD\"\n}",
                       path: ".my_file",
                       comments: []),
         ]
@@ -344,7 +344,7 @@ class FunctionIngesterTest_Type1: XCTestCase {
         let expect = [
             IndexItem(type: .function,
                       name: "hello",
-                      content: "function hello {\n    echo \"HELLO\"\n}\n\nhello",
+                      content: "function hello {\n    echo \"HELLO\"\n}",
                       path: ".my_file",
                       comments: ["this is my", "comment"])]
         XCTAssertEqual(result, expect)

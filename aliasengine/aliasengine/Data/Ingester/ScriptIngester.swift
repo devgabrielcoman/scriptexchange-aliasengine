@@ -10,15 +10,22 @@ import Foundation
 public class ScriptIngester: FileIngester {
     
     private let alias: String
+    private let diskPath: String
     private let fileName: String = ".scripts"
     
-    init(withAlias alias: String) {
+    init(withAlias alias: String, andDiskPath path: String) {
         self.alias = alias
+        self.diskPath = path
     }
     
     public override func process(fileContents contents: String) -> [IndexItem] {
         return [
-            IndexItem(type: .script, name: alias, content: contents, path: fileName, comments: [])
+            IndexItem(type: .script,
+                      name: alias,
+                      content: contents,
+                      path: fileName,
+                      comments: [],
+                      pathOnDisk: diskPath)
         ]
     }
 }

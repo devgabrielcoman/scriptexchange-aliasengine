@@ -19,12 +19,18 @@ public struct IndexItem: Codable, Equatable {
     let content: String
     let path: String
     let comments: [String]
+    let pathOnDisk: String
     
     var searchString: String {
         return "\(path)/\(name)"
     }
     
     func copy(withComments comments: [String]) -> IndexItem {
-        return IndexItem(type: type, name: name, content: content, path: path, comments: comments)
+        return IndexItem(type: type,
+                         name: name,
+                         content: content,
+                         path: path,
+                         comments: comments,
+                         pathOnDisk: pathOnDisk)
     }
 }

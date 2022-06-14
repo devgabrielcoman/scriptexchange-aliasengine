@@ -86,9 +86,12 @@ class SearchProgram: Program {
             case 13: // enter
                 if let item = controller.getSelectedItem() {
                     switch item.type {
-                    case .alias, .script:
+                    case .alias:
                         exitCommand = item.content
+                    case .script:
+                        exitCommand = item.pathOnDisk
                     case .function:
+//                        exitCommand = item.content
                         exitCommand = "\(item.content)\n\(item.name)"
                     }
                 }
@@ -101,9 +104,11 @@ class SearchProgram: Program {
         delwin(resultsWindow)
         delwin(previewWindow)
         endwin()
-
+        
         if let command = exitCommand {
-            exec("/bin/sh", "-c", "eval \"\(command)\"")
+            let writer = DataWriter()
+            writer.write(command: command)
+//            exec("/bin/bash", "-c", "eval \"\(command)\"")
         }
 
         exit(EX_OK)

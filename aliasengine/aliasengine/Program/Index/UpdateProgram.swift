@@ -50,7 +50,7 @@ class UpdateProgram: Program {
             return []
         }
         
-        let ingester = ScriptIngester(withAlias: source.name)
+        let ingester = ScriptIngester(withAlias: source.name, andDiskPath: source.path)
         
         print("Ingested file \(source.name) at \(source.path)")
         

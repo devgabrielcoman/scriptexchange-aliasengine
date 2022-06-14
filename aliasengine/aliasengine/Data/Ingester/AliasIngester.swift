@@ -56,6 +56,7 @@ public class AliasIngester: FileIngester {
                          name: String(aliasName),
                          content: aliasCommand,
                          path: fileName,
-                         comments: [])
+                         comments: [],
+                         pathOnDisk: fileName)
     }
 }

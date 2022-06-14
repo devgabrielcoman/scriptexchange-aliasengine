@@ -48,7 +48,7 @@ class IndexScriptProgram: Program {
         }
         
         let existingItems = reader.readItems()
-        let ingester = ScriptIngester(withAlias: alias)
+        let ingester = ScriptIngester(withAlias: alias, andDiskPath: self.path)
         let scriptItems = ingester.process(fileContents: content)
         let items = (existingItems + scriptItems).unique { $0.name }
         

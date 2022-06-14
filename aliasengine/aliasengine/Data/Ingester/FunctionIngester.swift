@@ -17,8 +17,10 @@ public class FunctionIngester: FileIngester {
     private let CLOSE_PARA = Character(")")
     private let SEPARATOR = Character(" ")
     private let fileName: String
+    private let diskPath: String
     
     init(filePath path: String) {
+        diskPath = path
         fileName = path.fileName
     }
     
@@ -127,7 +129,8 @@ public class FunctionIngester: FileIngester {
                       name: name,
                       content: allContent,
                       path: fileName,
-                      comments: []),
+                      comments: [],
+                      pathOnDisk: diskPath),
             progress
         )
     }
@@ -193,7 +196,8 @@ public class FunctionIngester: FileIngester {
                       name: name,
                       content: "\(FUNCTION_KEYWORD_ONE) \(allContent)",
                       path: fileName,
-                      comments: []),
+                      comments: [],
+                      pathOnDisk: diskPath),
             progress
         )
     }

@@ -72,7 +72,7 @@ class FunctionIngesterTest_Type2: XCTestCase {
         let content = "test() { echo \"ABC\" }"
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "test", content: "test() { echo \"ABC\" }\n\ntest", path: ".my_file", comments: [])
+            IndexItem(type: .function, name: "test", content: "test() { echo \"ABC\" }", path: ".my_file", comments: [])
         ]
         XCTAssertEqual(result, expected)
     }
@@ -81,7 +81,7 @@ class FunctionIngesterTest_Type2: XCTestCase {
         let content = "   test() { echo \"ABC\" }"
         let result = ingester.process(fileContents: content)
         let expect: [IndexItem] = [
-            IndexItem(type: .function, name: "test", content: "test() { echo \"ABC\" }\n\ntest", path: ".my_file", comments: [])
+            IndexItem(type: .function, name: "test", content: "test() { echo \"ABC\" }", path: ".my_file", comments: [])
         ]
         XCTAssertEqual(result, expect)
     }
@@ -90,7 +90,7 @@ class FunctionIngesterTest_Type2: XCTestCase {
         let content = "test () { echo \"ABC\" }"
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "test", content: "test () { echo \"ABC\" }\n\ntest", path: ".my_file", comments: [])
+            IndexItem(type: .function, name: "test", content: "test () { echo \"ABC\" }", path: ".my_file", comments: [])
         ]
         XCTAssertEqual(result, expected)
     }
@@ -103,7 +103,7 @@ class FunctionIngesterTest_Type2: XCTestCase {
         """
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "test", content: "test() {\n        echo \"ABC\"\n    }\n\ntest", path: ".my_file", comments: [])
+            IndexItem(type: .function, name: "test", content: "test() {\n        echo \"ABC\"\n    }", path: ".my_file", comments: [])
         ]
         XCTAssertEqual(result, expected)
     }
@@ -115,8 +115,8 @@ class FunctionIngesterTest_Type2: XCTestCase {
         """
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "hello", content: "hello() { echo \"HELLO\" }\n\nhello", path: ".my_file", comments: []),
-            IndexItem(type: .function, name: "world", content: "world() { echo \"WORLD\" }\n\nworld", path: ".my_file", comments: [])
+            IndexItem(type: .function, name: "hello", content: "hello() { echo \"HELLO\" }", path: ".my_file", comments: []),
+            IndexItem(type: .function, name: "world", content: "world() { echo \"WORLD\" }", path: ".my_file", comments: [])
         ]
         XCTAssertEqual(result, expected)
     }
@@ -131,7 +131,7 @@ class FunctionIngesterTest_Type2: XCTestCase {
         """
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "hello", content: "hello() {\n    echo \"HELLO\"\n    world () {\n    }\n}\n\nhello", path: ".my_file", comments: []),
+            IndexItem(type: .function, name: "hello", content: "hello() {\n    echo \"HELLO\"\n    world () {\n    }\n}", path: ".my_file", comments: []),
         ]
         XCTAssertEqual(result, expected)
     }
@@ -156,8 +156,8 @@ class FunctionIngesterTest_Type2: XCTestCase {
         """
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "hello", content: "hello() {\n    echo \"HELLO\"\n    function foo {\n        echo \"FOO\"\n    }\n}\n\nhello", path: ".my_file", comments: []),
-            IndexItem(type: .function, name: "world", content: "world() {\n    echo \"WORLD\"\n}\n\nworld", path: ".my_file", comments: [])
+            IndexItem(type: .function, name: "hello", content: "hello() {\n    echo \"HELLO\"\n    function foo {\n        echo \"FOO\"\n    }\n}", path: ".my_file", comments: []),
+            IndexItem(type: .function, name: "world", content: "world() {\n    echo \"WORLD\"\n}", path: ".my_file", comments: [])
         ]
         XCTAssertEqual(result, expected)
     }
@@ -172,7 +172,7 @@ class FunctionIngesterTest_Type2: XCTestCase {
         """
         let result = ingester.process(fileContents: content)
         let expected: [IndexItem] = [
-            IndexItem(type: .function, name: "hello", content: "hello() {\n    echo \"World\"\n}\n\nhello", path: ".my_file", comments: ["this is my first", "comment"])
+            IndexItem(type: .function, name: "hello", content: "hello() {\n    echo \"World\"\n}", path: ".my_file", comments: ["this is my first", "comment"])
         ]
         XCTAssertEqual(result, expected)
     }

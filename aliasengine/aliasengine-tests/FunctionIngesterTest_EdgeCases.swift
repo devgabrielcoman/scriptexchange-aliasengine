@@ -38,7 +38,7 @@ class FunctionIngesterTest_EdgeCases: XCTestCase {
         let expected: [IndexItem] = [
             IndexItem(type: .function,
                       name: "cl",
-                      content: "cl() {\n    DIR=\"$*\";\n        # if no DIR given, go home\n        if [ $# -lt 1 ]; then\n                DIR=$HOME;\n    fi;\n    builtin cd \"${DIR}\" &&     # use your preferred ls command\n        ls -F --color=auto\n}\n\ncl",
+                      content: "cl() {\n    DIR=\"$*\";\n        # if no DIR given, go home\n        if [ $# -lt 1 ]; then\n                DIR=$HOME;\n    fi;\n    builtin cd \"${DIR}\" &&     # use your preferred ls command\n        ls -F --color=auto\n}",
                       path: ".my_file",
                       comments: ["Change directories and view the contents at the same time"])
         ]

@@ -24,4 +24,8 @@ extension DataHandler {
     func getSourcesUrl() -> URL {
         return URL(fileURLWithPath: ".local/bin/scripthub/sources.json", relativeTo: getHomeUrl())
     }
+    
+    func getLastCommandUrl() -> URL {
+        return URL(fileURLWithPath: ".local/bin/scripthub/lastcommand", relativeTo: getHomeUrl())
+    }
 }
