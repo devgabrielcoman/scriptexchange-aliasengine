@@ -125,7 +125,7 @@ public class FunctionIngester: FileIngester {
         return (
             IndexItem(type: .function,
                       name: name,
-                      content: "\(allContent)\n\n\(name)",
+                      content: allContent,
                       path: fileName,
                       comments: []),
             progress
@@ -191,7 +191,7 @@ public class FunctionIngester: FileIngester {
         return (
             IndexItem(type: .function,
                       name: name,
-                      content: "\(FUNCTION_KEYWORD_ONE) \(allContent)\n\n\(name)",
+                      content: "\(FUNCTION_KEYWORD_ONE) \(allContent)",
                       path: fileName,
                       comments: []),
             progress

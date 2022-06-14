@@ -85,7 +85,12 @@ class SearchProgram: Program {
                 searchTerm.add(code: input)
             case 13: // enter
                 if let item = controller.getSelectedItem() {
-                    exitCommand = item.content
+                    switch item.type {
+                    case .alias, .script:
+                        exitCommand = item.content
+                    case .function:
+                        exitCommand = "\(item.content)\n\(item.name)"
+                    }
                 }
                 quit = true
             default:
