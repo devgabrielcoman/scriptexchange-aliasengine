@@ -91,8 +91,7 @@ class SearchProgram: Program {
                     case .script:
                         exitCommand = item.pathOnDisk
                     case .function:
-//                        exitCommand = item.content
-                        exitCommand = "\(item.content)\n\(item.name)"
+                        exitCommand = [item.content, item.name].joined(separator: "\n")
                     }
                 }
                 quit = true
@@ -108,7 +107,6 @@ class SearchProgram: Program {
         if let command = exitCommand {
             let writer = DataWriter()
             writer.write(command: command)
-//            exec("/bin/bash", "-c", "eval \"\(command)\"")
         }
 
         exit(EX_OK)
