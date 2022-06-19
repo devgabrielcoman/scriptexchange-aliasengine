@@ -7,7 +7,7 @@
 # Alias Bee
 This is a command line utility to help out with managing your aliases, functions and scripts. 
 
-![Alias Bee Screenshot](/res/screenshot.gif?raw=true "Optional Title")
+<img src="/res/screenshot.gif?raw=true" alt="Alias Bee Screenshot" width="100%"/>
 
 ## Installation
 
