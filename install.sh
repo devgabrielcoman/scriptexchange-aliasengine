@@ -5,7 +5,13 @@ PATH_PREFIX=$HOME/.local/bin/scripthub
 
 SCRIPT_NAME=aliasengine
 WRAPPER_NAME=bee
-MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/raw/main/aliasengine/Build/Products/Debug/aliasengine
+
+# get current OS name and arch 
+os=$(uname)
+arch=$(uname -m)
+# form correct download url 
+resource_name="bbee-"$os"-"$arch
+MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/build/$resource_name?raw=true
 WRAPPER_SCRIPT_URL=https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/beewrapper.sh
 
 # create folder
