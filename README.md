@@ -72,7 +72,7 @@ Sometimes you may want to add or remove items from the files you registered.
 Once you do that, a simple 
 
 ```
-bee update
+bee -u
 ```
 
 will make sure Alias Bee is up to date.
