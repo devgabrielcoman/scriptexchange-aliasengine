@@ -97,6 +97,9 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 		aliasCommand = strings.Trim(aliasCommand, START_CHAR_DBL_QUOTE)
 	}
 
+	// replace all occurances where we have a variable with one an escaped one
+	aliasCommand = strings.ReplaceAll(aliasCommand, "$", "\\$")
+
 	// get comments
 	var comments = c.getComments(startIndex, allLines)
 
