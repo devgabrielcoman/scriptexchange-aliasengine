@@ -12,7 +12,7 @@ WRAPPER_SCRIPT_URL=https://raw.githubusercontent.com/devgabrielcoman/scriptexcha
 mkdir -p $PATH_PREFIX/
 echo "Create source folder" $PATH_PREFIX
 
-# copy remote script to local
+# paths to put things in
 main_script_path=$PATH_PREFIX/$SCRIPT_NAME
 wrapper_script_path=$PATH_PREFIX/$WRAPPER_NAME
 
