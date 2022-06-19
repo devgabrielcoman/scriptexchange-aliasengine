@@ -5,6 +5,7 @@
   - [Keep up to date](#keep-up-to-date)
   - [Syntax highlighting](#syntax-highlighting)
   - [Available platforms](#available-platforms)
+  - [Build from source](#build-from-source)
  
 # Alias Bee
 This is a command line utility to help out with managing your aliases, functions and scripts. 
@@ -88,3 +89,20 @@ Alias Bee doesn't do syntax highlighting by default. However, if you install [Ba
 Alias Bee currently supports:
 * Darwin, x86_64, arm64
 * Linux, x86_64, arm64
+
+## Build from source
+
+If you'd linke to build from source, these are the steps to follow:
+
+You must have the [Go Programming Language](https://go.dev/) installed.
+
+Additionally, you can also install [Bat](https://github.com/sharkdp/bat).
+
+Download or clone this repo. 
+
+Inside the `aliasengine` folder, run `go build .` to build the project.
+
+This will create an executable called `bee`, for your platform.
+
+Create the `$HOME/.local/bin/scripthub/`. Alias Bee expects it to exist.
+

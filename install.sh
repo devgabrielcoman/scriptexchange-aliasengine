@@ -3,7 +3,7 @@
 # define variables used by the script
 PATH_PREFIX=$HOME/.local/bin/scripthub
 
-SCRIPT_NAME=aliasengine
+SCRIPT_NAME=bbee
 WRAPPER_NAME=bee
 
 # get current OS name and arch 

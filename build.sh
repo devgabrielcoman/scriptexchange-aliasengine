@@ -12,7 +12,7 @@ rm -rf dist
 mkdir dist
 
 # go to source folder
-cd aliasengine
+cd bee
 
 for platform in "${platforms[@]}"
 do

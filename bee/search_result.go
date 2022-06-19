@@ -1,7 +1,7 @@
 package main
 
 import (
-	"example/bee/style"
+	"example/bbee/style"
 	"strings"
 )
 

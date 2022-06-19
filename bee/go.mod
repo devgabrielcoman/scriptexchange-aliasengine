@@ -1,4 +1,4 @@
-module example/bee
+module example/bbee
 
 go 1.18
 
