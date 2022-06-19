@@ -11,7 +11,7 @@ os=$(uname | tr '[:upper:]' '[:lower:]')
 arch=$(uname -m )
 # form correct download url 
 resource_name="bbee-"$os"-"$arch
-MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/build/$resource_name?raw=true
+MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/dist/$resource_name?raw=true
 WRAPPER_SCRIPT_URL=https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/beewrapper.sh
 
 # create folder
