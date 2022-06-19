@@ -92,7 +92,7 @@ Alias Bee currently supports:
 
 ## Build from source
 
-If you'd linke to build from source, these are the steps to follow:
+If you'd linke to build locally, these are the steps to follow:
 
 You must have the [Go Programming Language](https://go.dev/) installed.
 
@@ -100,9 +100,6 @@ Additionally, you can also install [Bat](https://github.com/sharkdp/bat).
 
 Download or clone this repo. 
 
-Inside the `aliasengine` folder, run `go build .` to build the project.
+Run `./local_install.sh`.
 
-This will create an executable called `bee`, for your platform.
-
-Create the `$HOME/.local/bin/scripthub/`. Alias Bee expects it to exist.
-
+This should be useful if you run on an unsuported arch.
