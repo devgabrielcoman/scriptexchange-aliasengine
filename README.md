@@ -1,3 +1,9 @@
+- [Alias Bee](#alias-bee)
+  - [Installation](#installation)
+  - [Setup](#setup)
+  - [Usage](#usage)
+  - [Keep up to date](#keep-up-to-date)
+ 
 # Alias Bee
 This is a command line utility to help out with managing your aliases, functions and scripts. 
 
