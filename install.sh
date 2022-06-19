@@ -7,8 +7,8 @@ SCRIPT_NAME=aliasengine
 WRAPPER_NAME=bee
 
 # get current OS name and arch 
-os=$(uname)
-arch=$(uname -m)
+os=$(uname | tr '[:upper:]' '[:lower:]')
+arch=$(uname -m )
 # form correct download url 
 resource_name="bbee-"$os"-"$arch
 MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/blob/main/build/$resource_name?raw=true

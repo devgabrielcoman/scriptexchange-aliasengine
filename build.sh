@@ -8,8 +8,8 @@ package_name=bbee
 platforms=("darwin/arm64" "darwin/amd64" "linux/arm64" "linux/amd64")
 
 # clear previous build
-rm -rf build
-mkdir build/
+rm -rf dist
+mkdir dist
 
 # go to source folder
 cd aliasengine
@@ -29,7 +29,7 @@ do
   fi
 
 	output_name=$package_name'-'$GOOS'-'$arch
-	env GOOS=$GOOS GOARCH=$GOARCH go build -o ../build/$output_name $package
+	env GOOS=$GOOS GOARCH=$GOARCH go build -o ../dist/$output_name $package
 	if [ $? -ne 0 ]; then
    		echo 'An error has occurred! Aborting the script execution...'
 		exit 1
