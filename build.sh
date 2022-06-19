@@ -8,7 +8,8 @@ package_name=bbee
 platforms=("darwin/arm64" "darwin/amd64" "linux/arm64" "linux/amd64")
 
 # clear previous build
-rm -rf build/
+rm -rf build
+mkdir build/
 
 # go to source folder
 cd aliasengine
@@ -20,20 +21,14 @@ do
 	GOARCH=${platform_split[1]}
   echo $GOOS $GOARCH
 
-  # final name cleanup
-  if [ $GOOS = "darwin" ]; then
-    os="Darwin"
-  elif [ $GOOS = "linux" ]; then 
-    os="Linux"
-  fi
-	
+  # correct acrch name
   if [ $GOARCH = "amd64" ]; then 
     arch="x86_64"
   elif [ $GOARCH = "arm64" ]; then 
     arch="arm64"
   fi
 
-	output_name=$package_name'-'$os'-'$arch
+	output_name=$package_name'-'$GOOS'-'$arch
 	env GOOS=$GOOS GOARCH=$GOARCH go build -o ../build/$output_name $package
 	if [ $? -ne 0 ]; then
    		echo 'An error has occurred! Aborting the script execution...'
