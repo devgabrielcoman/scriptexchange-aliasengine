@@ -9,6 +9,8 @@ This is a command line utility to help out with managing your aliases, functions
 
 <img src="/res/screenshot.gif?raw=true" alt="Alias Bee Screenshot" width="100%"/>
 
+![Alias Bee Screenshot](/res/screenshot.png?raw=true "Optional Title")
+
 ## Installation
 
 To install, execute this command in your terminal:
