@@ -3,6 +3,8 @@
   - [Setup](#setup)
   - [Usage](#usage)
   - [Keep up to date](#keep-up-to-date)
+  - [Syntax highlighting](#syntax-highlighting)
+  - [Available platforms](#available-platforms)
  
 # Alias Bee
 This is a command line utility to help out with managing your aliases, functions and scripts. 
@@ -76,3 +78,13 @@ bee -u
 ```
 
 will make sure Alias Bee is up to date.
+
+## Syntax highlighting
+
+Alias Bee doesn't do syntax highlighting by default. However, if you install [Bat](https://github.com/sharkdp/bat), Alias Bee will know how to automatically use it. The screenshots on this page were generated with this combination.
+
+## Available platforms 
+
+Alias Bee currently supports:
+* Darwin, x86_64, arm64
+* Linux, x86_64, arm64
