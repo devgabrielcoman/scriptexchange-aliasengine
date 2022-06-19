@@ -42,6 +42,9 @@ func NewSearchResult(item IndexItem) SearchResult {
 		full = []string{item.Content}
 	}
 	var previewContent = strings.Join(full, "")
+	// replace all occurances where we have a variable with one an escaped one
+	// this is needed
+	previewContent = strings.ReplaceAll(previewContent, "$", "\\$")
 
 	var command string = ""
 	switch item.Type {
