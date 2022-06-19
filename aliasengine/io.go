@@ -81,7 +81,7 @@ func WriteItems(items []IndexItem) {
 }
 
 func WriteSources(sources []SourceFile) {
-	path := getDataUrl()
+	path := getSourcesUrl()
 	json, err := json.Marshal(sources)
 	check(err)
 	ferr := os.WriteFile(path, json, 0644)
