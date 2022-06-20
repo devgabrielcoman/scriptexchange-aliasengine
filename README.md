@@ -87,7 +87,9 @@ Alias Bee doesn't do syntax highlighting by default. However, if you install [Ba
 
 ## Comments
 
-Alias Bee can read comments associated with aliases and functions if you write them
+Alias Bee can read comments associated with aliases and functions and display them in
+the righ hand side code preview section.
+All you need to do is add comments just above their definition. 
 
 ```
 # this is an alias 
