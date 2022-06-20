@@ -4,6 +4,7 @@
   - [Usage](#usage)
   - [Keep up to date](#keep-up-to-date)
   - [Syntax highlighting](#syntax-highlighting)
+  - [Comments](#comments)
   - [Available platforms](#available-platforms)
   - [Build from source](#build-from-source)
  
@@ -83,6 +84,20 @@ will make sure Alias Bee is up to date.
 ## Syntax highlighting
 
 Alias Bee doesn't do syntax highlighting by default. However, if you install [Bat](https://github.com/sharkdp/bat), Alias Bee will know how to automatically use it. The screenshots on this page were generated with this combination.
+
+## Comments
+
+Alias Bee can read comments associated with aliases and functions if you write them
+
+```
+# this is an alias 
+alias ll='ls -all'
+
+# this is a function
+hello() {
+  echo "Hello World"
+}
+```
 
 ## Available platforms 
 
