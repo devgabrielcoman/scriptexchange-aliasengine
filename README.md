@@ -26,7 +26,7 @@ This will download [this script](https://github.com/devgabrielcoman/scriptexchan
 
 In turn, this will download a binary into a new folder on your system: `$HOME/.local/bin/scripthub/`. 
 
-The source code for the binary is [here](https://github.com/devgabrielcoman/scriptexchange-aliasengine/tree/main/aliasengine).
+The binary depends on your platform. You can find all options [here](https://github.com/devgabrielcoman/scriptexchange-aliasengine/tree/main/dist).
 
 Finally, in your `.bashrc`, `.zshrc`, `.profile` file, add the following line, to create a shorthand for the script:
 
@@ -92,7 +92,7 @@ Alias Bee currently supports:
 
 ## Build from source
 
-If you'd linke to build locally, these are the steps to follow:
+If you'd like to build locally, these are the steps to follow:
 
 You must have the [Go Programming Language](https://go.dev/) installed.
 
