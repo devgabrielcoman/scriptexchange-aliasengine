@@ -70,7 +70,7 @@ func (r RegisterFileProgram) registerScript() {
 
 	// update sources
 	var sources []SourceFile = ReadSources()
-	var source = SourceFile{Path: r.path, Name: fileName, Type: SourceType(Script)}
+	var source = SourceFile{Path: r.path, Name: fileName, Type: SourceType(File)}
 	sources = append(sources, source)
 	sources = uniqueSources(sources)
 
