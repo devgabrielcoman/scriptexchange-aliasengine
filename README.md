@@ -6,6 +6,7 @@
   - [Syntax highlighting](#syntax-highlighting)
   - [Comments](#comments)
   - [Available platforms](#available-platforms)
+  - [Caveats](#caveats)
   - [Build from source](#build-from-source)
  
 # Alias Bee
@@ -106,6 +107,26 @@ hello() {
 Alias Bee currently supports:
 * Darwin, x86_64, arm64
 * Linux, x86_64, arm64
+
+## Caveats
+
+When it comes to ingesting aliases from your  `.bashrc`, `.zshrc` or `.profile` files, Alias Bee can be pretty lenient. For example, the following are supported (even though they're not all valid):
+
+```
+alias my-alias = 'll -all'  # slighlty invalid
+alias my-alias='ll -all'    # valid
+```
+
+However, functions need to be defined properly:
+
+```
+function test { echo "Hello" }    # improperly defined one-liner
+function test() { echo "Hello"; } # improper style - either use the "function" keyword or "()" style
+
+
+function test { echo "Hello"; }   # properly defined one-liner
+test() { echo "Hello"; }          # another way to properly define functions 
+```
 
 ## Build from source
 

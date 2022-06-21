@@ -22,6 +22,7 @@ const (
 	CLOSE_PARA           string = ")"
 	SEPARATOR            string = ""
 	NEWLINE              string = "\n"
+	TAB                  string = "\t"
 )
 
 // The ConfigIngester contains methods to ingest
@@ -44,7 +45,7 @@ func (c ConfigIngester) process(content string) []IndexItem {
 		var trimmedLine = strings.Trim(line, WHITESPACE)
 
 		// found a pontential alias line
-		if strings.HasPrefix(trimmedLine, ALIAS_PREFIX) {
+		if strings.Contains(trimmedLine, ALIAS_PREFIX) {
 			var item, progress = c.processAlias(line, i, lines)
 			if item != nil {
 				result = append(result, *item)
@@ -53,7 +54,7 @@ func (c ConfigIngester) process(content string) []IndexItem {
 		}
 
 		// found potential function in first style
-		if strings.HasPrefix(trimmedLine, FUNCTION_KEYWORD_ONE) {
+		if strings.Contains(trimmedLine, FUNCTION_KEYWORD_ONE) {
 			var item, progress = c.processFunctionInStyleOne(line, i, lines)
 			if item != nil {
 				result = append(result, *item)
@@ -75,7 +76,8 @@ func (c ConfigIngester) process(content string) []IndexItem {
 }
 
 func (c ConfigIngester) processAlias(line string, startIndex int, allLines []string) (*IndexItem, int) {
-	var aliasWithoutPrefix = strings.TrimPrefix(line, ALIAS_PREFIX)
+	var trimmedLine = c.trimLine(line)
+	var aliasWithoutPrefix = strings.TrimPrefix(trimmedLine, ALIAS_PREFIX)
 	var aliasComponents = strings.Split(aliasWithoutPrefix, ALIAS_SEPARATOR)
 
 	// somehow not a valid alias
@@ -84,10 +86,10 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 	}
 
 	// get alias name
-	var aliasName = aliasComponents[0]
+	var aliasName = c.trimLine(aliasComponents[0])
 
 	// get & parse the alias command
-	var aliasCommand = strings.Join(aliasComponents[1:], "")
+	var aliasCommand = c.trimLine(strings.Join(aliasComponents[1:], ""))
 
 	if strings.HasPrefix(aliasCommand, START_CHAR_QUOTE) {
 		aliasCommand = strings.Trim(aliasCommand, START_CHAR_QUOTE)
@@ -115,7 +117,8 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 
 func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, allLines []string) (*IndexItem, int) {
 	// prepare the line by replacing the keyboard and any start and end whitespaces
-	var preparedLine = strings.Trim(strings.ReplaceAll(line, FUNCTION_KEYWORD_ONE, SEPARATOR), WHITESPACE)
+	var trimmedLine = c.trimLine(line)
+	var preparedLine = strings.Trim(strings.ReplaceAll(trimmedLine, FUNCTION_KEYWORD_ONE, SEPARATOR), WHITESPACE)
 
 	var functionName = ""
 	var hasSeenFirstBracket = false
@@ -135,7 +138,8 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 		if nextChar == OPEN_BRACKET {
 			// get the function name correctly
 			if !hasSeenFirstBracket {
-				var contentSoFar = strings.Join(characterArray[0:i-1], SEPARATOR)
+				var prevLimit = max(i-1, 0)
+				var contentSoFar = strings.Join(characterArray[0:prevLimit], SEPARATOR)
 				var potentialFunctionName = strings.Split(contentSoFar, WHITESPACE)
 				if len(potentialFunctionName) == 1 {
 					functionName = potentialFunctionName[0]
@@ -192,7 +196,8 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 
 func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, allLines []string) (*IndexItem, int) {
 	// prepare the line
-	var preparedLine = strings.Trim(line, WHITESPACE)
+	var trimmedLine = c.trimLine(line)
+	var preparedLine = strings.Trim(trimmedLine, WHITESPACE)
 
 	var functioName = ""
 	var hasSeenFirstPara = false
@@ -250,7 +255,7 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 
 	var name = strings.Trim(functioName, WHITESPACE)
 
-	if paranthesesNumber < 2 || openBrackets != 0 || !hasSeenFirstBracket || len(strings.Split(name, WHITESPACE)) != 1 {
+	if name == "" || paranthesesNumber < 2 || openBrackets != 0 || !hasSeenFirstBracket || len(strings.Split(name, WHITESPACE)) != 1 {
 		return nil, 0
 	}
 
@@ -277,7 +282,7 @@ func (c ConfigIngester) getComments(startIndex int, lines []string) []string {
 	var comments = []string{}
 
 	for index >= 0 && index < len(lines) {
-		var previousLine = lines[index]
+		var previousLine = c.trimLine(lines[index])
 		if strings.HasPrefix(strings.Trim(previousLine, WHITESPACE), COMMENT_PREFIX) {
 			var processed = strings.Trim(previousLine, WHITESPACE)
 			comments = append(comments, processed)
@@ -288,6 +293,10 @@ func (c ConfigIngester) getComments(startIndex int, lines []string) []string {
 	}
 
 	return lo.Reverse(comments)
+}
+
+func (c ConfigIngester) trimLine(line string) string {
+	return strings.TrimSpace(strings.ReplaceAll(line, TAB, ""))
 }
 
 func (c ConfigIngester) getFileName() string {
