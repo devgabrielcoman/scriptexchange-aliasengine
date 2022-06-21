@@ -7,6 +7,7 @@ const (
 	Alias    ScriptType = 0
 	Function ScriptType = 1
 	Script   ScriptType = 2
+	Export   ScriptType = 3
 )
 
 // IndexItems represent references to aliases, functions, scripts

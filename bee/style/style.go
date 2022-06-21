@@ -8,6 +8,8 @@ const (
 	AliasNameColor       ColorCode = "[#8cdbff]"
 	FunctionKeywordColor ColorCode = "[#fbdfb5]"
 	FunctionNameColor    ColorCode = "[#8bdaff]"
+	ExportKeywordColor   ColorCode = "[#ff5e5f]"
+	ExportNameColor      ColorCode = "[#d8ea9f]"
 	ScriptNameColor      ColorCode = "[#e9fdac]"
 	ColorWhite           ColorCode = "[#ededed]"
 )

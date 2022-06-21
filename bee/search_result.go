@@ -32,6 +32,8 @@ func NewSearchResult(item IndexItem) SearchResult {
 		mainText = "   " + style.Color("function", style.FunctionKeywordColor) + " " + style.Color(item.Name, style.FunctionNameColor)
 	case ScriptType(Script):
 		mainText = "   " + style.Color("./"+item.Name, style.ScriptNameColor)
+	case ScriptType(Export):
+		mainText = "   " + style.Color("export", style.ExportKeywordColor) + " " + style.Color(item.Name, style.ExportNameColor)
 	}
 	var previewTitle = item.Path + "/" + item.Name
 	var comment = strings.Join(item.Comments[:], "\n")
@@ -54,6 +56,8 @@ func NewSearchResult(item IndexItem) SearchResult {
 		command = item.Content + "\n" + item.Name
 	case ScriptType(Script):
 		command = item.PathOnDisk
+	case ScriptType(Export):
+		command = item.Content
 	}
 
 	return SearchResult{

@@ -10,6 +10,8 @@ import (
 const (
 	ALIAS_PREFIX         string = "alias "
 	ALIAS_SEPARATOR      string = "="
+	EXPORT_PREFIX        string = "export "
+	EXPORT_SEPARATOR     string = "="
 	START_CHAR_QUOTE     string = "'"
 	START_CHAR_DBL_QUOTE string = "\""
 	COMMENT_PREFIX       string = "#"
@@ -50,6 +52,15 @@ func (c ConfigIngester) process(content string) []IndexItem {
 			if item != nil {
 				result = append(result, *item)
 				i += progress
+			}
+		}
+
+		// found a potential export
+		if strings.HasPrefix(trimmedLine, EXPORT_PREFIX) {
+			var item, process = c.processExport(line, i, lines)
+			if item != nil {
+				result = append(result, *item)
+				i += process
 			}
 		}
 
@@ -109,7 +120,47 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 		Path:       c.getFileName(),
 		Comments:   comments,
 		PathOnDisk: c.filePath,
-		Type:       Alias,
+		Type:       ScriptType(Alias),
+	}
+
+	return &indexItem, 0
+}
+
+func (c ConfigIngester) processExport(line string, startIndex int, allLines []string) (*IndexItem, int) {
+	var trimmedLine = c.trimLine(line)
+	var exportWithoutPrefix = strings.TrimPrefix(trimmedLine, EXPORT_PREFIX)
+	var exportComponents = strings.Split(exportWithoutPrefix, EXPORT_SEPARATOR)
+
+	// somehow not a valid alias
+	if len(exportComponents) != 2 {
+		return nil, 0
+	}
+
+	// get alias name
+	var exportName = c.trimLine(exportComponents[0])
+
+	// get & parse the alias command
+	var exportCommand = c.trimLine(strings.Join(exportComponents[1:], ""))
+
+	if strings.HasPrefix(exportName, START_CHAR_QUOTE) {
+		exportName = strings.Trim(exportName, START_CHAR_QUOTE)
+	}
+
+	if strings.HasPrefix(exportName, START_CHAR_DBL_QUOTE) {
+		exportName = strings.Trim(exportName, START_CHAR_DBL_QUOTE)
+	}
+
+	// get comments
+	var comments = c.getComments(startIndex, allLines)
+
+	// create item
+	var indexItem = IndexItem{
+		Name:       exportName,
+		Content:    exportCommand,
+		Path:       c.getFileName(),
+		Comments:   comments,
+		PathOnDisk: c.filePath,
+		Type:       ScriptType(Export),
 	}
 
 	return &indexItem, 0
