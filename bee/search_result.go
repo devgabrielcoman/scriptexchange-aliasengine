@@ -24,49 +24,85 @@ type SearchResult struct {
 }
 
 func NewSearchResult(item IndexItem) SearchResult {
-	var mainText string
 	switch item.Type {
 	case ScriptType(Alias):
-		mainText = "   " + style.Color("alias", style.AliasKeywordColor) + " " + style.Color(item.Name, style.AliasNameColor)
+		return NewAliasSearchResult(item)
 	case ScriptType(Function):
-		mainText = "   " + style.Color("function", style.FunctionKeywordColor) + " " + style.Color(item.Name, style.FunctionNameColor)
+		return NewFunctionSearchResult(item)
 	case ScriptType(Script):
-		mainText = "   " + style.Color("./"+item.Name, style.ScriptNameColor)
+		return NewScriptSearchResult(item)
 	case ScriptType(Export):
-		mainText = "   " + style.Color("export", style.ExportKeywordColor) + " " + style.Color(item.Name, style.ExportNameColor)
+		return NewExportSearchResult(item)
+	default:
+		return NewEmptySearchResult()
 	}
+}
+
+func NewAliasSearchResult(item IndexItem) SearchResult {
+	var mainText = "   " + style.Color("alias", style.AliasKeywordColor) + " " + style.Color(item.Name, style.AliasNameColor)
+	var secondaryText = ""
 	var previewTitle = item.Path + "/" + item.Name
-	var comment = strings.Join(item.Comments[:], "\n")
-	var full []string
-	if len(item.Comments) > 0 {
-		full = []string{comment, "\n", item.Content}
-	} else {
-		full = []string{item.Content}
-	}
-	var previewContent = strings.Join(full, "")
-	// replace all occurances where we have a variable with one an escaped one
-	// this is needed
-	previewContent = strings.ReplaceAll(previewContent, "$", "\\$")
-
-	var command string = ""
-	switch item.Type {
-	case ScriptType(Alias):
-		command = item.Content
-	case ScriptType(Function):
-		command = item.Content + "\n" + item.Name
-	case ScriptType(Script):
-		command = item.PathOnDisk
-	case ScriptType(Export):
-		command = item.Content
-	}
-
+	var previewContent = createPreviewContent(item)
+	var command = item.Content
+	var resultType = SearchResultType(Item)
 	return SearchResult{
 		mainText:       mainText,
-		secondaryText:  "",
+		secondaryText:  secondaryText,
 		previewTitle:   previewTitle,
 		previewContent: previewContent,
 		command:        command,
-		resultType:     Item,
+		resultType:     resultType,
+	}
+}
+
+func NewFunctionSearchResult(item IndexItem) SearchResult {
+	var mainText = "   " + style.Color("function", style.FunctionKeywordColor) + " " + style.Color(item.Name, style.FunctionNameColor)
+	var secondaryText = ""
+	var previewTitle = item.Path + "/" + item.Name
+	var previewContent = createPreviewContent(item)
+	var command = item.Content + "\n" + item.Name
+	var resultType = SearchResultType(Item)
+	return SearchResult{
+		mainText:       mainText,
+		secondaryText:  secondaryText,
+		previewTitle:   previewTitle,
+		previewContent: previewContent,
+		command:        command,
+		resultType:     resultType,
+	}
+}
+
+func NewScriptSearchResult(item IndexItem) SearchResult {
+	var mainText = "   " + style.Color("./"+item.Name, style.ScriptNameColor)
+	var secondaryText = ""
+	var previewTitle = item.Path + "/" + item.Name
+	var previewContent = createPreviewContent(item)
+	var command = item.PathOnDisk
+	var resultType = SearchResultType(Item)
+	return SearchResult{
+		mainText:       mainText,
+		secondaryText:  secondaryText,
+		previewTitle:   previewTitle,
+		previewContent: previewContent,
+		command:        command,
+		resultType:     resultType,
+	}
+}
+
+func NewExportSearchResult(item IndexItem) SearchResult {
+	var mainText = "   " + style.Color("export", style.ExportKeywordColor) + " " + style.Color(item.Name, style.ExportNameColor)
+	var secondaryText = ""
+	var previewTitle = item.Path + "/" + item.Name
+	var previewContent = createPreviewContent(item)
+	var command = item.PathOnDisk
+	var resultType = SearchResultType(Item)
+	return SearchResult{
+		mainText:       mainText,
+		secondaryText:  secondaryText,
+		previewTitle:   previewTitle,
+		previewContent: previewContent,
+		command:        command,
+		resultType:     resultType,
 	}
 }
 
@@ -91,4 +127,19 @@ func NewSearchCategory(name string) SearchResult {
 		command:        "",
 		resultType:     Category,
 	}
+}
+
+func createPreviewContent(item IndexItem) string {
+	var comment = strings.Join(item.Comments[:], "\n")
+	var full []string
+	if len(item.Comments) > 0 {
+		full = []string{comment, "\n", item.Content}
+	} else {
+		full = []string{item.Content}
+	}
+	var previewContent = strings.Join(full, "")
+	// replace all occurances where we have a variable with one an escaped one
+	// this is needed
+	previewContent = strings.ReplaceAll(previewContent, "$", "\\$")
+	return previewContent
 }
