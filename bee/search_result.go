@@ -141,5 +141,6 @@ func createPreviewContent(item IndexItem) string {
 	// replace all occurances where we have a variable with one an escaped one
 	// this is needed
 	previewContent = strings.ReplaceAll(previewContent, "$", "\\$")
+	previewContent = strings.ReplaceAll(previewContent, "\"", "\\\"")
 	return previewContent
 }

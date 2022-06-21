@@ -142,12 +142,12 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 	// get & parse the alias command
 	var exportCommand = c.trimLine(strings.Join(exportComponents[1:], ""))
 
-	if strings.HasPrefix(exportName, START_CHAR_QUOTE) {
-		exportName = strings.Trim(exportName, START_CHAR_QUOTE)
+	if strings.HasPrefix(exportCommand, START_CHAR_QUOTE) {
+		exportCommand = strings.Trim(exportCommand, START_CHAR_QUOTE)
 	}
 
-	if strings.HasPrefix(exportName, START_CHAR_DBL_QUOTE) {
-		exportName = strings.Trim(exportName, START_CHAR_DBL_QUOTE)
+	if strings.HasPrefix(exportCommand, START_CHAR_DBL_QUOTE) {
+		exportCommand = strings.Trim(exportCommand, START_CHAR_DBL_QUOTE)
 	}
 
 	// get comments
