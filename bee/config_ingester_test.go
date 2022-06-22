@@ -8,7 +8,7 @@ import (
 
 var ingester = ConfigIngester{filePath: "test.sh"}
 
-func TestConfigIngester(t *testing.T) {
+func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return an empty slice given an empty input", func(t *testing.T) {
 		var content = ""
 		var result = ingester.process(content)
@@ -66,6 +66,15 @@ func TestConfigIngester(t *testing.T) {
 				Type:       ScriptType(Alias),
 			},
 		}
+		assert.Equal(t, expected, result)
+	})
+
+	t.Run("it should not return a slice with alises if it actually starts with a comment", func(t *testing.T) {
+		var content = `# this is my
+		# write down like: alias test='ls -all'
+		`
+		var result = ingester.process(content)
+		var expected = []IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
@@ -574,5 +583,133 @@ func TestConfigIngester(t *testing.T) {
 			},
 		}
 		assert.Equal(t, expected, result)
+	})
+}
+
+func TestConfigIngester_isPotentialAlias(t *testing.T) {
+	t.Run("it should return false if alias keyword is not present", func(t *testing.T) {
+		var content = ""
+		var result = ingester.isPotentialAlias(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return false if alias is present but behind a comment", func(t *testing.T) {
+		var content = "# like this: alias my-alias='ll -all'"
+		var result = ingester.isPotentialAlias(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return false if alias is incorrect", func(t *testing.T) {
+		var content = "alias='ll -all'"
+		var result = ingester.isPotentialAlias(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return true if alias is present at the start of line", func(t *testing.T) {
+		var content = "alias my-alias='ll -all'"
+		var result = ingester.isPotentialAlias(content)
+		assert.True(t, result)
+	})
+
+	t.Run("it should return true if alias is present after a tab", func(t *testing.T) {
+		var content = "	alias my-alias='ll -all'"
+		var result = ingester.isPotentialAlias(content)
+		assert.True(t, result)
+	})
+}
+
+func TestConfigIngester_isPotentialExport(t *testing.T) {
+	t.Run("it should return false if export keyword is not present", func(t *testing.T) {
+		var content = ""
+		var result = ingester.isPotentialExport(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return false if export is present but behind a comment", func(t *testing.T) {
+		var content = "# like this: export VAR=123"
+		var result = ingester.isPotentialExport(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return false if export is incorrect", func(t *testing.T) {
+		var content = "export=123"
+		var result = ingester.isPotentialExport(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return true if export is present at the start of line", func(t *testing.T) {
+		var content = "export VAR=123"
+		var result = ingester.isPotentialExport(content)
+		assert.True(t, result)
+	})
+
+	t.Run("it should return true if export is present after a tab", func(t *testing.T) {
+		var content = "	export VAR=123"
+		var result = ingester.isPotentialExport(content)
+		assert.True(t, result)
+	})
+}
+
+func TestConfigIngester_isPotentialFunctionStyleOne(t *testing.T) {
+	t.Run("it should return false if function keyword is not present", func(t *testing.T) {
+		var content = ""
+		var result = ingester.isPotentialFunctionStyleOne(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return false if function is present but behind a comment", func(t *testing.T) {
+		var content = "# like this: function test { echo; }"
+		var result = ingester.isPotentialFunctionStyleOne(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return true even if function is incorrect", func(t *testing.T) {
+		var content = "function { echo; }"
+		var result = ingester.isPotentialFunctionStyleOne(content)
+		assert.True(t, result)
+	})
+
+	t.Run("it should return true if function is present at the start of line", func(t *testing.T) {
+		var content = "function test { echo; }"
+		var result = ingester.isPotentialFunctionStyleOne(content)
+		assert.True(t, result)
+	})
+
+	t.Run("it should return true if function is present after a tab", func(t *testing.T) {
+		var content = "		function test { echo; }"
+		var result = ingester.isPotentialFunctionStyleOne(content)
+		assert.True(t, result)
+	})
+}
+
+func TestConfigIngester_isPotentialFunctionStyleTwo(t *testing.T) {
+	t.Run("it should return false if function keyword is not present", func(t *testing.T) {
+		var content = ""
+		var result = ingester.isPotentialFunctionStyleTwo(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return false if function is present but behind a comment", func(t *testing.T) {
+		var content = "# like this: test() { echo; }"
+		var result = ingester.isPotentialFunctionStyleTwo(content)
+		assert.False(t, result)
+	})
+
+	t.Run("it should return true even if function is incorrect", func(t *testing.T) {
+		var content = "test()() { echo; }"
+		var result = ingester.isPotentialFunctionStyleTwo(content)
+		assert.True(t, result)
+	})
+
+	t.Run("it should return true if function is present at the start of line", func(t *testing.T) {
+		var content = "test() { echo; }"
+		var result = ingester.isPotentialFunctionStyleTwo(content)
+		assert.True(t, result)
+	})
+
+	t.Run("it should return true if function is present after a tab", func(t *testing.T) {
+		var content = "		test() { echo; }"
+		var result = ingester.isPotentialFunctionStyleTwo(content)
+		assert.True(t, result)
 	})
 }

@@ -47,7 +47,7 @@ func (c ConfigIngester) process(content string) []IndexItem {
 		var trimmedLine = strings.Trim(line, WHITESPACE)
 
 		// found a pontential alias line
-		if strings.Contains(trimmedLine, ALIAS_PREFIX) {
+		if c.isPotentialAlias(trimmedLine) {
 			var item, progress = c.processAlias(line, i, lines)
 			if item != nil {
 				result = append(result, *item)
@@ -56,7 +56,7 @@ func (c ConfigIngester) process(content string) []IndexItem {
 		}
 
 		// found a potential export
-		if strings.HasPrefix(trimmedLine, EXPORT_PREFIX) {
+		if c.isPotentialExport(trimmedLine) {
 			var item, process = c.processExport(line, i, lines)
 			if item != nil {
 				result = append(result, *item)
@@ -65,7 +65,7 @@ func (c ConfigIngester) process(content string) []IndexItem {
 		}
 
 		// found potential function in first style
-		if strings.Contains(trimmedLine, FUNCTION_KEYWORD_ONE) {
+		if c.isPotentialFunctionStyleOne(trimmedLine) {
 			var item, progress = c.processFunctionInStyleOne(line, i, lines)
 			if item != nil {
 				result = append(result, *item)
@@ -74,7 +74,7 @@ func (c ConfigIngester) process(content string) []IndexItem {
 		}
 
 		// found potential function in second style
-		if strings.Contains(trimmedLine, FUNCTION_KEYWORD_TWO) {
+		if c.isPotentialFunctionStyleTwo(trimmedLine) {
 			var item, progress = c.processFunctionInStyleTwo(line, i, lines)
 			if item != nil {
 				result = append(result, *item)
@@ -84,6 +84,22 @@ func (c ConfigIngester) process(content string) []IndexItem {
 	}
 
 	return result
+}
+
+func (c ConfigIngester) isPotentialAlias(line string) bool {
+	return strings.Contains(line, ALIAS_PREFIX) && !strings.Contains(line, COMMENT_PREFIX)
+}
+
+func (c ConfigIngester) isPotentialExport(line string) bool {
+	return strings.Contains(line, EXPORT_PREFIX) && !strings.Contains(line, COMMENT_PREFIX)
+}
+
+func (c ConfigIngester) isPotentialFunctionStyleOne(line string) bool {
+	return strings.Contains(line, FUNCTION_KEYWORD_ONE) && !strings.Contains(line, COMMENT_PREFIX)
+}
+
+func (c ConfigIngester) isPotentialFunctionStyleTwo(line string) bool {
+	return strings.Contains(line, FUNCTION_KEYWORD_TWO) && !strings.Contains(line, COMMENT_PREFIX)
 }
 
 func (c ConfigIngester) processAlias(line string, startIndex int, allLines []string) (*IndexItem, int) {
