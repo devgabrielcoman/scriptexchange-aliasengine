@@ -9,12 +9,16 @@ import (
 
 type SearchProgram struct {
 	controller SearchController
+	cache      SearchCache
 }
 
 func NewSearchProgram() SearchProgram {
 	var data []IndexItem = ReadItems()
-	constroller := NewSearchController(data)
-	return SearchProgram{controller: *constroller}
+	controller := NewSearchController(data)
+
+	var sources []SourceFile = ReadSources()
+	cache := NewSearchCache(sources)
+	return SearchProgram{controller: *controller, cache: *cache}
 }
 
 func (p SearchProgram) run() {
@@ -84,16 +88,17 @@ func (p SearchProgram) run() {
 }
 
 func (p SearchProgram) redrawDetails(textView *cview.TextView) {
+	// get the content
 	var item = p.controller.getCurrentItem()
+	var content = p.cache.getPreviewForSearchResult(item)
 
 	// command to display with the "bat" utility, if present on the system
-	content := item.previewContent
 	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=numbers --line-range=:500 --paging=never --theme=1337"
 	out, _, err := Shellout(command)
 
 	// if error, revert to setting the text
 	if err != nil {
-		textView.SetText(item.previewContent)
+		textView.SetText(content)
 	} else {
 		textView.Clear()
 		w := cview.ANSIWriter(textView)

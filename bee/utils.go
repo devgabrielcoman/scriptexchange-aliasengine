@@ -5,6 +5,11 @@ import (
 	"strings"
 )
 
+// String Pair
+type Pair struct {
+	a, b string
+}
+
 // Max returns the larger of x or y.
 func max(x, y int) int {
 	if x < y {
@@ -25,18 +30,6 @@ func check(e error) {
 	if e != nil {
 		panic(e)
 	}
-}
-
-func unique(slice []string) []string {
-	keys := make(map[string]bool)
-	list := []string{}
-	for _, entry := range slice {
-		if _, value := keys[entry]; !value {
-			keys[entry] = true
-			list = append(list, entry)
-		}
-	}
-	return list
 }
 
 func uniqueItems(slice []IndexItem) []IndexItem {
@@ -63,14 +56,18 @@ func uniqueSources(slice []SourceFile) []SourceFile {
 	return list
 }
 
-func uniquePaths(data []IndexItem) []string {
-	var result = []string{}
+func uniquePaths(data []IndexItem) []Pair {
+	keys := make(map[string]bool)
+	list := []Pair{}
 
-	for _, item := range data {
-		result = append(result, item.Path)
+	for _, entry := range data {
+		if _, value := keys[entry.Path]; !value {
+			keys[entry.Path] = true
+			list = append(list, Pair{entry.Path, entry.PathOnDisk})
+		}
 	}
 
-	return unique(result)
+	return list
 }
 
 func filterByPath(data []IndexItem, path string) []IndexItem {

@@ -20,6 +20,7 @@ type SearchResult struct {
 	previewTitle   string
 	previewContent string
 	command        string
+	pathOnDisk     string
 	resultType     SearchResultType
 }
 
@@ -44,6 +45,7 @@ func NewAliasSearchResult(item IndexItem) SearchResult {
 	var previewTitle = item.Path + "/" + item.Name
 	var previewContent = createPreviewContent(item)
 	var command = item.Content
+	var pathOnDisk = item.PathOnDisk
 	var resultType = SearchResultType(Item)
 	return SearchResult{
 		mainText:       mainText,
@@ -51,6 +53,7 @@ func NewAliasSearchResult(item IndexItem) SearchResult {
 		previewTitle:   previewTitle,
 		previewContent: previewContent,
 		command:        command,
+		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
 	}
 }
@@ -61,6 +64,7 @@ func NewFunctionSearchResult(item IndexItem) SearchResult {
 	var previewTitle = item.Path + "/" + item.Name
 	var previewContent = createPreviewContent(item)
 	var command = item.Content + "\n" + item.Name
+	var pathOnDisk = item.PathOnDisk
 	var resultType = SearchResultType(Item)
 	return SearchResult{
 		mainText:       mainText,
@@ -68,6 +72,7 @@ func NewFunctionSearchResult(item IndexItem) SearchResult {
 		previewTitle:   previewTitle,
 		previewContent: previewContent,
 		command:        command,
+		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
 	}
 }
@@ -78,6 +83,7 @@ func NewScriptSearchResult(item IndexItem) SearchResult {
 	var previewTitle = item.Path + "/" + item.Name
 	var previewContent = createPreviewContent(item)
 	var command = item.PathOnDisk
+	var pathOnDisk = item.PathOnDisk
 	var resultType = SearchResultType(Item)
 	return SearchResult{
 		mainText:       mainText,
@@ -85,6 +91,7 @@ func NewScriptSearchResult(item IndexItem) SearchResult {
 		previewTitle:   previewTitle,
 		previewContent: previewContent,
 		command:        command,
+		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
 	}
 }
@@ -95,6 +102,7 @@ func NewExportSearchResult(item IndexItem) SearchResult {
 	var previewTitle = item.Path + "/" + item.Name
 	var previewContent = createPreviewContent(item)
 	var command = item.PathOnDisk
+	var pathOnDisk = item.PathOnDisk
 	var resultType = SearchResultType(Item)
 	return SearchResult{
 		mainText:       mainText,
@@ -102,6 +110,7 @@ func NewExportSearchResult(item IndexItem) SearchResult {
 		previewTitle:   previewTitle,
 		previewContent: previewContent,
 		command:        command,
+		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
 	}
 }
@@ -113,11 +122,12 @@ func NewEmptySearchResult() SearchResult {
 		previewTitle:   "",
 		previewContent: "",
 		command:        "",
+		pathOnDisk:     "",
 		resultType:     Empty,
 	}
 }
 
-func NewSearchCategory(name string) SearchResult {
+func NewSearchCategory(name string, pathOnDisk string) SearchResult {
 	var mainText = style.Color(name, style.ColorDimGray)
 	return SearchResult{
 		mainText:       mainText,
@@ -125,6 +135,7 @@ func NewSearchCategory(name string) SearchResult {
 		previewTitle:   "",
 		previewContent: "",
 		command:        "",
+		pathOnDisk:     pathOnDisk,
 		resultType:     Category,
 	}
 }
