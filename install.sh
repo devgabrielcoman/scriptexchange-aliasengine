@@ -15,7 +15,7 @@ MAIN_SCRIPT_URL=https://github.com/devgabrielcoman/scriptexchange-aliasengine/bl
 WRAPPER_SCRIPT_URL=https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/beewrapper.sh
 
 # create folder
-mkdir -p $PATH_PREFIX/
+mkdir -p $PATH_PREFIX
 echo "Create source folder" $PATH_PREFIX
 
 # paths to put things in
