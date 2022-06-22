@@ -92,7 +92,7 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 	var aliasComponents = strings.Split(aliasWithoutPrefix, ALIAS_SEPARATOR)
 
 	// somehow not a valid alias
-	if len(aliasComponents) != 2 {
+	if len(aliasComponents) < 2 {
 		return nil, 0
 	}
 

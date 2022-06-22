@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 )
 
@@ -13,7 +12,6 @@ type SearchCache struct {
 func NewSearchCache(sources []SourceFile) *SearchCache {
 	cache := new(SearchCache)
 	cache.cache = fillCache(sources)
-	fmt.Printf("Creating CACHE %d", len(cache.cache))
 	return cache
 }
 
