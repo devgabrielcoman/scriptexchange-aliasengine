@@ -46,7 +46,7 @@ func (p SearchProgram) run() {
 	searchField.SetFieldBackgroundColor(tcell.ColorBlack)
 	searchField.SetFieldBackgroundColorFocused(tcell.ColorBlack)
 	searchField.SetFieldTextColor(tcell.ColorDarkBlue)
-	searchField.SetPlaceholder("Search for aliases, functions, scripts, etc")
+	searchField.SetPlaceholder("Search for aliases, functions, scripts, etc. Press ESC to clear.")
 	searchField.SetDoneFunc(func(key tcell.Key) {
 		if key == tcell.KeyUp {
 			p.controller.moveUp()
@@ -57,6 +57,9 @@ func (p SearchProgram) run() {
 		if key == tcell.KeyEnter {
 			p.stop()
 			app.Stop()
+		}
+		if key == tcell.KeyEscape {
+			searchField.SetText("")
 		}
 		p.redrawDetails(details)
 		p.redrawList(list)
