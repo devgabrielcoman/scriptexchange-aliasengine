@@ -5,6 +5,7 @@
   - [Keep up to date](#keep-up-to-date)
   - [Syntax highlighting](#syntax-highlighting)
   - [Comments](#comments)
+  - [History](#history)
   - [Available platforms](#available-platforms)
   - [Caveats](#caveats)
   - [Build from source](#build-from-source)
@@ -14,7 +15,7 @@ This is a command line utility to help out with managing your aliases, functions
 
 <img src="/res/screenshot.gif?raw=true" alt="Alias Bee Screenshot" width="100%"/>
 
-![Alias Bee Screenshot](/res/screenshot.png?raw=true "Optional Title")
+![Alias Bee Screenshot](/res/screenshot.png?raw=true "Alias Bee Presentation")
 
 ## Installation
 
@@ -101,6 +102,21 @@ hello() {
   echo "Hello World"
 }
 ```
+
+## History
+
+You can see your `bash history`, stored in your `~/.bash_history` file, by typing
+
+```
+bee -h
+```
+
+You should then see something like this
+
+![Alias Bee History](/res/history.png?raw=true "Alias Bee History")
+
+History for `zsh` will follow shortly.
+
 
 ## Available platforms 
 
