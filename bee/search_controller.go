@@ -1,8 +1,6 @@
 package main
 
 import (
-	"strings"
-
 	"github.com/samber/lo"
 )
 
@@ -27,8 +25,8 @@ func NewSearchController(elems []IndexItem) *SearchController {
 
 func (c *SearchController) search(term string) {
 	var filtered = lo.Filter(c.elems, func(item IndexItem, i int) bool {
-		var key = item.Path + "/" + item.Name
-		return strings.Contains(strings.ToLower(key), strings.ToLower(term))
+		var key = SearchKey{item: item}
+		return key.Contains(term)
 	})
 	c.results = c.formResults(filtered)
 	c.resetCurrentIndex()
@@ -51,33 +49,15 @@ func (c *SearchController) formResults(items []IndexItem) []SearchResult {
 }
 
 func (c *SearchController) moveDown() {
-	// var nextItem = c.getNextItem()
-	// var increment int
-	// if nextItem.resultType == SearchResultType(Category) {
-	// 	increment = 2
-	// } else {
-	// 	increment = 1
-	// }
 	c.currentIndex = min(c.currentIndex+1, len(c.results)-1)
 }
 
 func (c *SearchController) moveUp() {
-	// var nextItem = c.getPrevItem()
-	// var increment int
-	// if nextItem.resultType == SearchResultType(Category) {
-	// 	increment = 2
-	// } else {
-	// 	increment = 1
-	// }
-	c.currentIndex = max(c.currentIndex-1, 0) // we "max" with 1 because the 1st element could be a "category" type
+	c.currentIndex = max(c.currentIndex-1, 0)
 }
 
 func (c *SearchController) resetCurrentIndex() {
-	if len(c.results) > 1 {
-		c.currentIndex = 0 // start from 1st index, so not on the 0th element, which is a "category" type
-	} else {
-		c.currentIndex = 0
-	}
+	c.currentIndex = 0
 }
 
 func (c SearchController) getCurrentItem() SearchResult {
@@ -87,24 +67,6 @@ func (c SearchController) getCurrentItem() SearchResult {
 		return NewEmptySearchResult()
 	}
 }
-
-// func (c SearchController) getNextItem() SearchResult {
-// 	var nextIndex = min(c.currentIndex+1, len(c.results)-1)
-// 	if nextIndex >= 0 && nextIndex < len(c.results) {
-// 		return c.results[nextIndex]
-// 	} else {
-// 		return NewEmptySearchResult()
-// 	}
-// }
-
-// func (c SearchController) getPrevItem() SearchResult {
-// 	var prevIndex = max(c.currentIndex-1, 0)
-// 	if prevIndex >= 0 && prevIndex < len(c.results) {
-// 		return c.results[prevIndex]
-// 	} else {
-// 		return NewEmptySearchResult()
-// 	}
-// }
 
 func (c SearchController) getNumberOfSearchResults() int {
 	filtered := lo.Filter(c.results, func(result SearchResult, i int) bool {
