@@ -14,20 +14,26 @@ func getHomeUrl() string {
 
 func getDataUrl() string {
 	var home = getHomeUrl()
-	var dataPath = ".local/bin/scripthub/data.json"
-	return fmt.Sprintf("%s/%s", home, dataPath)
+	var path = ".local/bin/scripthub/data.json"
+	return fmt.Sprintf("%s/%s", home, path)
 }
 
 func getSourcesUrl() string {
 	var home = getHomeUrl()
-	var dataPath = ".local/bin/scripthub/sources.json"
-	return fmt.Sprintf("%s/%s", home, dataPath)
+	var path = ".local/bin/scripthub/sources.json"
+	return fmt.Sprintf("%s/%s", home, path)
 }
 
 func getLastCommandUrl() string {
 	var home = getHomeUrl()
-	var dataPath = ".local/bin/scripthub/lastcommand"
-	return fmt.Sprintf("%s/%s", home, dataPath)
+	var path = ".local/bin/scripthub/lastcommand"
+	return fmt.Sprintf("%s/%s", home, path)
+}
+
+func getHistoryUrl() string {
+	var home = getHomeUrl()
+	var path = ".bash_history"
+	return fmt.Sprintf("%s/%s", home, path)
 }
 
 func ReadItems() []IndexItem {
@@ -63,6 +69,11 @@ func ReadFile(path string) (string, error) {
 	}
 
 	return string(dat), nil
+}
+
+func ReadHistory() (string, error) {
+	var path = getHistoryUrl()
+	return ReadFile(path)
 }
 
 func WriteLastCommand(command string) {

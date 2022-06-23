@@ -34,6 +34,8 @@ func NewSearchResult(item IndexItem) SearchResult {
 		return NewScriptSearchResult(item)
 	case ScriptType(Export):
 		return NewExportSearchResult(item)
+	case ScriptType(History):
+		return NewHistorySearchResult(item)
 	default:
 		return NewEmptySearchResult()
 	}
@@ -115,6 +117,19 @@ func NewExportSearchResult(item IndexItem) SearchResult {
 	}
 }
 
+func NewHistorySearchResult(item IndexItem) SearchResult {
+	var mainText = "   " + style.Color(item.Name, style.AliasNameColor) + " " + style.Color(item.Content, style.ScriptNameColor)
+	return SearchResult{
+		mainText:       mainText,
+		secondaryText:  "",
+		previewTitle:   item.Path,
+		previewContent: "",
+		command:        item.Name,
+		pathOnDisk:     item.Path,
+		resultType:     SearchResultType(Item),
+	}
+}
+
 func NewEmptySearchResult() SearchResult {
 	return SearchResult{
 		mainText:       "",
@@ -193,6 +208,10 @@ func (k SearchKey) formSearchQueries() []string {
 		return []string{
 			item.Path + "/./" + item.Name,
 			item.Path + "/" + item.Name,
+		}
+	case ScriptType(History):
+		return []string{
+			item.Name,
 		}
 	default:
 		return []string{}

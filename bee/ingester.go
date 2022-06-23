@@ -388,3 +388,37 @@ func (s ScriptIngester) process(content string) []IndexItem {
 		},
 	}
 }
+
+// The HistoryIngester ingests a .bash_history type file
+type HistoryIngester struct {
+	path string
+}
+
+func (h HistoryIngester) process(content string) []IndexItem {
+	// separate the contents by line
+	var lines []string = strings.Split(content, NEWLINE)
+
+	var result = []IndexItem{}
+
+	for _, line := range lines {
+		splitCommand := strings.Split(line, WHITESPACE)
+		if len(splitCommand) < 1 {
+			continue
+		}
+
+		name := splitCommand[0]
+		content := strings.Join(splitCommand[1:], SEPARATOR)
+
+		var item = IndexItem{
+			Name:       name,
+			Content:    content,
+			Path:       h.path,
+			Comments:   []string{},
+			PathOnDisk: h.path,
+			Type:       ScriptType(History),
+		}
+		result = append(result, item)
+	}
+
+	return result
+}

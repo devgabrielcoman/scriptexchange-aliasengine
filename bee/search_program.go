@@ -8,17 +8,9 @@ import (
 )
 
 type SearchProgram struct {
-	controller SearchController
-	cache      SearchCache
-}
-
-func NewSearchProgram() SearchProgram {
-	var data []IndexItem = ReadItems()
-	controller := NewSearchController(data)
-
-	var sources []SourceFile = ReadSources()
-	cache := NewSearchCache(sources)
-	return SearchProgram{controller: *controller, cache: *cache}
+	controller  SearchController
+	cache       SearchCache
+	showPreview bool
 }
 
 func (p SearchProgram) run() {
@@ -77,8 +69,9 @@ func (p SearchProgram) run() {
 
 	display := cview.NewFlex()
 	display.AddItem(list, 0, 1, true)
-	display.AddItem(details, 0, 1, false)
-
+	if p.showPreview {
+		display.AddItem(details, 0, 1, false)
+	}
 	layout.AddItem(display, 0, 1, false)
 	layout.AddItem(searchField, 1, 0, true)
 
