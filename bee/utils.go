@@ -2,7 +2,9 @@ package main
 
 import (
 	"path/filepath"
+	"strconv"
 	"strings"
+	"time"
 )
 
 // String Pair
@@ -88,4 +90,20 @@ func fileName(path string) string {
 
 func fileNameWithoutExtTrimSuffix(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
+}
+
+func dateFormat(d int) string {
+	intTime := int64(d)
+	t := time.Unix(intTime, 0)
+	layout := "2006-01-02 15:04:05"
+	return t.Format(layout)
+}
+
+func lenientAtoi(stringDate string) int {
+	num, err := strconv.Atoi(stringDate)
+	if err == nil {
+		return num
+	} else {
+		return 0
+	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"sort"
 	"strings"
 
 	"github.com/samber/lo"
@@ -399,27 +400,27 @@ type BashHistoryIngester struct {
 func (h BashHistoryIngester) process(content string) []IndexItem {
 	// separate the contents by line
 	var lines []string = strings.Split(content, NEWLINE)
+	keys := make(map[string]IndexItem)
+
+	for _, line := range lines {
+		command := line
+		_, ok := keys[command]
+		if !ok {
+			keys[command] = IndexItem{
+				Name:       command,
+				Content:    command,
+				Comments:   []string{},
+				Path:       h.path,
+				PathOnDisk: h.path,
+				Type:       ScriptType(History),
+			}
+		}
+	}
 
 	var result = []IndexItem{}
 
-	for _, line := range lines {
-		splitCommand := strings.Split(line, WHITESPACE)
-		if len(splitCommand) < 1 {
-			continue
-		}
-
-		name := splitCommand[0]
-		content := strings.Join(splitCommand[1:], SEPARATOR)
-
-		var item = IndexItem{
-			Name:       name,
-			Content:    content,
-			Path:       h.path,
-			Comments:   []string{},
-			PathOnDisk: h.path,
-			Type:       ScriptType(History),
-		}
-		result = append(result, item)
+	for _, value := range keys {
+		result = append(result, value)
 	}
 
 	return result
@@ -433,36 +434,62 @@ type ZSHHistoryIngester struct {
 func (z ZSHHistoryIngester) process(content string) []IndexItem {
 	// separate the contents by line
 	lines := strings.Split(content, NEWLINE)
-	var result = []IndexItem{}
+	keys := make(map[string]IndexItem)
 
 	for _, line := range lines {
-		splitCommand := strings.Split(line, ZSH_HISTORY_SEP)
-		if len(splitCommand) < 2 {
+		lineItems := strings.Split(line, ZSH_HISTORY_SEP)
+
+		// not a valid line in the format date;command
+		if len(lineItems) < 2 {
 			continue
 		}
 
-		zshCommand := strings.Join(splitCommand[1:], SEPARATOR)
+		date := z.parseZSHDateItem(lineItems[0])
+		command := strings.Join(lineItems[1:], SEPARATOR)
 
-		// this is a multiline command, will deal with it later
-		if strings.HasSuffix(zshCommand, ZSH_HISTORY_SUFFIX) {
-			continue
+		current, ok := keys[command]
+		if !ok {
+			keys[command] = IndexItem{
+				Name:       date,
+				Content:    command,
+				Comments:   []string{},
+				Path:       z.path,
+				PathOnDisk: z.path,
+				Type:       ScriptType(History),
+			}
+		} else {
+			existingDateVal := lenientAtoi(current.Name)
+			newDateVal := lenientAtoi(date)
+			if newDateVal > existingDateVal {
+				keys[command] = IndexItem{
+					Name:       date,
+					Content:    command,
+					Comments:   []string{},
+					Path:       z.path,
+					PathOnDisk: z.path,
+					Type:       ScriptType(History),
+				}
+			}
 		}
-
-		zshArray := strings.Split(zshCommand, WHITESPACE)
-
-		name := zshArray[0]
-		content := strings.Join(zshArray[1:], SEPARATOR)
-
-		var item = IndexItem{
-			Name:       name,
-			Content:    content,
-			Path:       z.path,
-			Comments:   []string{},
-			PathOnDisk: z.path,
-			Type:       ScriptType(History),
-		}
-		result = append(result, item)
 	}
 
+	var result = []IndexItem{}
+
+	for _, value := range keys {
+		result = append(result, value)
+	}
+
+	sort.Slice(result, func(i, j int) bool {
+		iDate := lenientAtoi(result[i].Name)
+		jDate := lenientAtoi(result[j].Name)
+		return jDate < iDate
+	})
+
 	return result
+}
+
+// parses a ZSH date item in the format: ": 1642437214:0"
+func (z ZSHHistoryIngester) parseZSHDateItem(rawDate string) string {
+	date := strings.TrimPrefix(strings.TrimSuffix(rawDate, ":0"), ": ")
+	return date
 }

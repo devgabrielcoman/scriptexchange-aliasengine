@@ -118,7 +118,13 @@ func NewExportSearchResult(item IndexItem) SearchResult {
 }
 
 func NewHistorySearchResult(item IndexItem) SearchResult {
-	var mainText = "   " + style.Color(item.Name, style.AliasNameColor) + " " + style.Color(item.Content, style.ScriptNameColor)
+	var date = lenientAtoi(item.Name)
+	var mainText string
+	if date == 0 {
+		mainText = "   " + style.Color(item.Content, style.ScriptNameColor)
+	} else {
+		mainText = "   " + style.Color(dateFormat(lenientAtoi(item.Name)), style.AliasNameColor) + " " + style.Color(item.Content, style.ScriptNameColor)
+	}
 	return SearchResult{
 		mainText:       mainText,
 		secondaryText:  "",
@@ -212,6 +218,7 @@ func (k SearchKey) formSearchQueries() []string {
 	case ScriptType(History):
 		return []string{
 			item.Name,
+			item.Content,
 		}
 	default:
 		return []string{}

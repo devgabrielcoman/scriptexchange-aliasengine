@@ -28,7 +28,6 @@ func (c *SearchController) search(term string) {
 		var key = SearchKey{item: item}
 		return key.Contains(term)
 	})
-	filtered = uniqueItems(filtered)
 	c.results = c.formResults(filtered)
 	c.resetCurrentIndex()
 }
