@@ -105,7 +105,7 @@ hello() {
 
 ## History
 
-You can see your `bash history`, stored in your `~/.bash_history` file, by typing
+You can see and search the command history stored in `~/.bash_history` or `~/.zsh_history` by typing
 
 ```
 bee -h
@@ -114,8 +114,6 @@ bee -h
 You should then see something like this
 
 ![Alias Bee History](/res/history.png?raw=true "Alias Bee History")
-
-History for `zsh` will follow shortly.
 
 
 ## Available platforms 
