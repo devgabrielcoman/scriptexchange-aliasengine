@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 )
@@ -30,9 +31,15 @@ func getLastCommandUrl() string {
 	return fmt.Sprintf("%s/%s", home, path)
 }
 
-func getHistoryUrl() string {
+func getBashHistoryUrl() string {
 	var home = getHomeUrl()
 	var path = ".bash_history"
+	return fmt.Sprintf("%s/%s", home, path)
+}
+
+func getZshHistoryUrl() string {
+	var home = getHomeUrl()
+	var path = ".zsh_history"
 	return fmt.Sprintf("%s/%s", home, path)
 }
 
@@ -72,7 +79,7 @@ func ReadFile(path string) (string, error) {
 }
 
 func ReadHistory() (string, error) {
-	var path = getHistoryUrl()
+	var path = getBashHistoryUrl()
 	return ReadFile(path)
 }
 
@@ -97,4 +104,14 @@ func WriteSources(sources []SourceFile) {
 	check(err)
 	ferr := os.WriteFile(path, json, 0644)
 	check(ferr)
+}
+
+func FileExists(path string) bool {
+	if _, err := os.Stat(path); err == nil {
+		return true
+	} else if errors.Is(err, os.ErrNotExist) {
+		return false
+	} else {
+		return false
+	}
 }

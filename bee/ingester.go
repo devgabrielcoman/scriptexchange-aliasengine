@@ -25,6 +25,8 @@ const (
 	SEPARATOR            string = ""
 	NEWLINE              string = "\n"
 	TAB                  string = "\t"
+	ZSH_HISTORY_SEP      string = ";"
+	ZSH_HISTORY_SUFFIX   string = "\\"
 )
 
 // The ConfigIngester contains methods to ingest
@@ -389,12 +391,12 @@ func (s ScriptIngester) process(content string) []IndexItem {
 	}
 }
 
-// The HistoryIngester ingests a .bash_history type file
-type HistoryIngester struct {
+// The BashHistoryIngester ingests a .bash_history type file
+type BashHistoryIngester struct {
 	path string
 }
 
-func (h HistoryIngester) process(content string) []IndexItem {
+func (h BashHistoryIngester) process(content string) []IndexItem {
 	// separate the contents by line
 	var lines []string = strings.Split(content, NEWLINE)
 
@@ -415,6 +417,48 @@ func (h HistoryIngester) process(content string) []IndexItem {
 			Path:       h.path,
 			Comments:   []string{},
 			PathOnDisk: h.path,
+			Type:       ScriptType(History),
+		}
+		result = append(result, item)
+	}
+
+	return result
+}
+
+// The ZSHHistoryIngester ingests a .zsh_history type file
+type ZSHHistoryIngester struct {
+	path string
+}
+
+func (z ZSHHistoryIngester) process(content string) []IndexItem {
+	// separate the contents by line
+	lines := strings.Split(content, NEWLINE)
+	var result = []IndexItem{}
+
+	for _, line := range lines {
+		splitCommand := strings.Split(line, ZSH_HISTORY_SEP)
+		if len(splitCommand) < 2 {
+			continue
+		}
+
+		zshCommand := strings.Join(splitCommand[1:], SEPARATOR)
+
+		// this is a multiline command, will deal with it later
+		if strings.HasSuffix(zshCommand, ZSH_HISTORY_SUFFIX) {
+			continue
+		}
+
+		zshArray := strings.Split(zshCommand, WHITESPACE)
+
+		name := zshArray[0]
+		content := strings.Join(zshArray[1:], SEPARATOR)
+
+		var item = IndexItem{
+			Name:       name,
+			Content:    content,
+			Path:       z.path,
+			Comments:   []string{},
+			PathOnDisk: z.path,
 			Type:       ScriptType(History),
 		}
 		result = append(result, item)
