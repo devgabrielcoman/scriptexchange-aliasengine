@@ -57,15 +57,15 @@ func ReadItems() []models.IndexItem {
 	return items
 }
 
-func ReadSources() []SourceFile {
+func ReadSources() []models.SourceFile {
 	path := getSourcesUrl()
 	dat, err := os.ReadFile(path)
 
 	if err != nil {
-		return []SourceFile{}
+		return []models.SourceFile{}
 	}
 
-	var sources []SourceFile
+	var sources []models.SourceFile
 	json.Unmarshal([]byte(dat), &sources)
 	return sources
 }
@@ -99,7 +99,7 @@ func WriteItems(items []models.IndexItem) {
 	check(ferr)
 }
 
-func WriteSources(sources []SourceFile) {
+func WriteSources(sources []models.SourceFile) {
 	path := getSourcesUrl()
 	json, err := json.Marshal(sources)
 	check(err)

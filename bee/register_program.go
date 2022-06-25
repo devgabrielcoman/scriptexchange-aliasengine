@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/models"
 	"bufio"
 	"fmt"
 	"os"
@@ -22,8 +23,8 @@ func (r RegisterFileProgram) run() {
 
 func (r RegisterFileProgram) registerConfigFile() {
 	// update sources
-	var sources []SourceFile = ReadSources()
-	var source = SourceFile{Path: r.path, Name: fileName(r.path), Type: SourceType(Command)}
+	var sources []models.SourceFile = ReadSources()
+	var source = models.SourceFile{Path: r.path, Name: fileName(r.path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
 	sources = uniqueSources(sources)
 
@@ -70,8 +71,8 @@ func (r RegisterFileProgram) registerScript() {
 	}
 
 	// update sources
-	var sources []SourceFile = ReadSources()
-	var source = SourceFile{Path: r.path, Name: fileName, Type: SourceType(File)}
+	var sources []models.SourceFile = ReadSources()
+	var source = models.SourceFile{Path: r.path, Name: fileName, Type: models.SourceType(models.File)}
 	sources = append(sources, source)
 	sources = uniqueSources(sources)
 

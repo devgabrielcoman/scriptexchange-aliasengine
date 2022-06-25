@@ -1,16 +1,14 @@
 package main
 
-import "bee/bbee/models"
-
 type ProfileProgram struct{}
 
 func (p ProfileProgram) run() {
 	// get saved items
-	var data []models.IndexItem = ReadItems()
+	data := ReadItems()
 	controller := NewSearchController(data)
 
 	// get saved source + form cache
-	var sources []SourceFile = ReadSources()
+	sources := ReadSources()
 	cache := NewSearchCache(sources)
 
 	// run the search program

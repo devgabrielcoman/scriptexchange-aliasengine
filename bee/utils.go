@@ -70,9 +70,9 @@ func uniqueItemsByDate(slice []models.IndexItem) []models.IndexItem {
 	return list
 }
 
-func uniqueSources(slice []SourceFile) []SourceFile {
+func uniqueSources(slice []models.SourceFile) []models.SourceFile {
 	keys := make(map[string]bool)
-	list := []SourceFile{}
+	list := []models.SourceFile{}
 	for _, entry := range slice {
 		if _, value := keys[entry.Name]; !value {
 			keys[entry.Name] = true

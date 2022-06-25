@@ -14,7 +14,7 @@ func (h HistoryProgram) run() {
 	controller := NewSearchController(data)
 
 	// create an empty search cache
-	sources := []SourceFile{}
+	sources := []models.SourceFile{}
 	cache := NewSearchCache(sources)
 
 	// run search program

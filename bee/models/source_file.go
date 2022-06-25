@@ -1,4 +1,4 @@
-package main
+package models
 
 // Define source file type & available enum options
 type SourceType int16

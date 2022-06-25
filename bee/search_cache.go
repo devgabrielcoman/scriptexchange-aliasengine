@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/models"
 	"strings"
 )
 
@@ -9,7 +10,7 @@ type SearchCache struct {
 	cache map[string]string
 }
 
-func NewSearchCache(sources []SourceFile) *SearchCache {
+func NewSearchCache(sources []models.SourceFile) *SearchCache {
 	cache := new(SearchCache)
 	cache.cache = fillCache(sources)
 	return cache
@@ -26,7 +27,7 @@ func (c SearchCache) getPreviewForSearchResult(result SearchResult) string {
 	}
 }
 
-func fillCache(sources []SourceFile) map[string]string {
+func fillCache(sources []models.SourceFile) map[string]string {
 	cache := make(map[string]string)
 	for _, source := range sources {
 		var path = source.Path

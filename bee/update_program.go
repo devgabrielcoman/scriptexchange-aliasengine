@@ -14,10 +14,10 @@ func (u UpdateProgram) run() {
 
 	for _, source := range sources {
 		switch source.Type {
-		case SourceType(Command):
+		case models.SourceType(models.Command):
 			items := u.updateConfigFiles(source)
 			result = append(result, items...)
-		case SourceType(File):
+		case models.SourceType(models.File):
 			items := u.updateScriptFiles(source)
 			result = append(result, items...)
 		}
@@ -29,7 +29,7 @@ func (u UpdateProgram) run() {
 	fmt.Printf("Updated %d elements\n", len(result))
 }
 
-func (u UpdateProgram) updateConfigFiles(source SourceFile) []models.IndexItem {
+func (u UpdateProgram) updateConfigFiles(source models.SourceFile) []models.IndexItem {
 	// open file
 	contents, err := ReadFile(source.Path)
 
@@ -44,7 +44,7 @@ func (u UpdateProgram) updateConfigFiles(source SourceFile) []models.IndexItem {
 	return ingester.process(contents)
 }
 
-func (u UpdateProgram) updateScriptFiles(source SourceFile) []models.IndexItem {
+func (u UpdateProgram) updateScriptFiles(source models.SourceFile) []models.IndexItem {
 	// open file
 	contents, err := ReadFile(source.Path)
 
