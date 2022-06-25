@@ -38,11 +38,11 @@ func (c *SearchController) search(term string) {
 func (c *SearchController) formResults(items []models.IndexItem) []SearchResult {
 	var result = []SearchResult{}
 
-	var paths = uniquePaths(items)
+	var paths = models.UniquePaths(items)
 
 	for _, path := range paths {
-		result = append(result, NewSearchCategory(path.a, path.b))
-		var filtered = filterByPath(items, path.a)
+		result = append(result, NewSearchCategory(path.A, path.B))
+		var filtered = models.FilterByPath(items, path.A)
 		for _, item := range filtered {
 			result = append(result, NewSearchResult(item))
 		}

@@ -424,7 +424,7 @@ func (h BashHistoryIngester) process(content string) []models.IndexItem {
 		result = append(result, item)
 	}
 
-	return uniqueItems(result)
+	return models.UniqueItems(result)
 }
 
 // The ZSHHistoryIngester ingests a .zsh_history type file
@@ -459,7 +459,7 @@ func (z ZSHHistoryIngester) process(content string) []models.IndexItem {
 		result = append(result, item)
 	}
 
-	result = uniqueItemsByDate(result)
+	result = models.UniqueItemsByDate(result)
 
 	sort.Slice(result, func(i, j int) bool {
 		return result[j].Date < result[i].Date

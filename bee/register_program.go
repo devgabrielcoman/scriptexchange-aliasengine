@@ -28,7 +28,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 	var sources []models.SourceFile = data.ReadSources()
 	var source = models.SourceFile{Path: r.path, Name: utils.FileName(r.path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
-	sources = uniqueSources(sources)
+	sources = models.UniqueSources(sources)
 
 	// read config files liek .bashrc, .profile, etc
 	var existingItems = data.ReadItems()
@@ -47,7 +47,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 	ingester := ConfigIngester{filePath: r.path, currentTime: time}
 	var newItems = ingester.process(contents)
 	var items = append(existingItems, newItems...)
-	items = uniqueItemsByDate(items)
+	items = models.UniqueItemsByDate(items)
 
 	// write data
 	data.WriteSources(sources)
@@ -76,7 +76,7 @@ func (r RegisterFileProgram) registerScript() {
 	var sources []models.SourceFile = data.ReadSources()
 	var source = models.SourceFile{Path: r.path, Name: fileName, Type: models.SourceType(models.File)}
 	sources = append(sources, source)
-	sources = uniqueSources(sources)
+	sources = models.UniqueSources(sources)
 
 	// read script
 	var existingItems = data.ReadItems()
@@ -94,7 +94,7 @@ func (r RegisterFileProgram) registerScript() {
 	ingester := ScriptIngester{alias: alias, path: r.path, currentTime: time}
 	var newItems = ingester.process(contents)
 	var items = append(existingItems, newItems...)
-	items = uniqueItemsByDate(items)
+	items = models.UniqueItemsByDate(items)
 
 	// write data
 	data.WriteSources(sources)

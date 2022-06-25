@@ -1,17 +1,13 @@
-package main
-
-import (
-	"bee/bbee/models"
-)
+package models
 
 // String Pair
 type Pair struct {
-	a, b string
+	A, B string
 }
 
-func uniqueItems(slice []models.IndexItem) []models.IndexItem {
+func UniqueItems(slice []IndexItem) []IndexItem {
 	keys := make(map[string]bool)
-	list := []models.IndexItem{}
+	list := []IndexItem{}
 	for _, entry := range slice {
 		if _, value := keys[entry.Name]; !value {
 			keys[entry.Name] = true
@@ -22,9 +18,9 @@ func uniqueItems(slice []models.IndexItem) []models.IndexItem {
 	return list
 }
 
-func uniqueItemsByDate(slice []models.IndexItem) []models.IndexItem {
-	keys := make(map[string]models.IndexItem)
-	list := []models.IndexItem{}
+func UniqueItemsByDate(slice []IndexItem) []IndexItem {
+	keys := make(map[string]IndexItem)
+	list := []IndexItem{}
 
 	for _, item := range slice {
 		value, ok := keys[item.Name]
@@ -44,9 +40,9 @@ func uniqueItemsByDate(slice []models.IndexItem) []models.IndexItem {
 	return list
 }
 
-func uniqueSources(slice []models.SourceFile) []models.SourceFile {
+func UniqueSources(slice []SourceFile) []SourceFile {
 	keys := make(map[string]bool)
-	list := []models.SourceFile{}
+	list := []SourceFile{}
 	for _, entry := range slice {
 		if _, value := keys[entry.Name]; !value {
 			keys[entry.Name] = true
@@ -56,7 +52,7 @@ func uniqueSources(slice []models.SourceFile) []models.SourceFile {
 	return list
 }
 
-func uniquePaths(data []models.IndexItem) []Pair {
+func UniquePaths(data []IndexItem) []Pair {
 	keys := make(map[string]bool)
 	list := []Pair{}
 
@@ -70,8 +66,8 @@ func uniquePaths(data []models.IndexItem) []Pair {
 	return list
 }
 
-func filterByPath(data []models.IndexItem, path string) []models.IndexItem {
-	var result = []models.IndexItem{}
+func FilterByPath(data []IndexItem, path string) []IndexItem {
+	var result = []IndexItem{}
 
 	for _, item := range data {
 		if item.Path == path {

@@ -25,7 +25,7 @@ func (u UpdateProgram) run() {
 		}
 	}
 
-	result = uniqueItemsByDate(result)
+	result = models.UniqueItemsByDate(result)
 	data.WriteItems(result)
 
 	fmt.Printf("Updated %d elements\n", len(result))
