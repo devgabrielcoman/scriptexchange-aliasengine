@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/data"
 	"bee/bbee/models"
 	"fmt"
 )
@@ -10,7 +11,7 @@ type UpdateProgram struct {
 
 func (u UpdateProgram) run() {
 	var result = []models.IndexItem{}
-	var sources = ReadSources()
+	var sources = data.ReadSources()
 
 	for _, source := range sources {
 		switch source.Type {
@@ -24,14 +25,14 @@ func (u UpdateProgram) run() {
 	}
 
 	result = uniqueItemsByDate(result)
-	WriteItems(result)
+	data.WriteItems(result)
 
 	fmt.Printf("Updated %d elements\n", len(result))
 }
 
 func (u UpdateProgram) updateConfigFiles(source models.SourceFile) []models.IndexItem {
 	// open file
-	contents, err := ReadFile(source.Path)
+	contents, err := data.ReadFile(source.Path)
 
 	// gently handle error
 	if err != nil {
@@ -46,7 +47,7 @@ func (u UpdateProgram) updateConfigFiles(source models.SourceFile) []models.Inde
 
 func (u UpdateProgram) updateScriptFiles(source models.SourceFile) []models.IndexItem {
 	// open file
-	contents, err := ReadFile(source.Path)
+	contents, err := data.ReadFile(source.Path)
 
 	// gently handle error
 	if err != nil {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/data"
 	"bee/bbee/models"
 	"strings"
 )
@@ -31,7 +32,7 @@ func fillCache(sources []models.SourceFile) map[string]string {
 	cache := make(map[string]string)
 	for _, source := range sources {
 		var path = source.Path
-		var content, err = ReadFile(path)
+		var content, err = data.ReadFile(path)
 		if err != nil {
 			continue
 		}

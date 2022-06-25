@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/data"
 	"fmt"
 
 	"code.rocketnine.space/tslocum/cview"
@@ -125,5 +126,5 @@ func (p SearchProgram) redrawListTitle(list *cview.List) {
 }
 
 func (p SearchProgram) stop() {
-	WriteLastCommand(p.controller.getCurrentItem().command)
+	data.WriteLastCommand(p.controller.getCurrentItem().command)
 }

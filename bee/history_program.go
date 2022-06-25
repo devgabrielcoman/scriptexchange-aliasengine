@@ -1,6 +1,9 @@
 package main
 
-import "bee/bbee/models"
+import (
+	"bee/bbee/data"
+	"bee/bbee/models"
+)
 
 type HistoryProgram struct{}
 
@@ -24,8 +27,7 @@ func (h HistoryProgram) run() {
 
 func (h HistoryProgram) getBashHistoryData() []models.IndexItem {
 	// read history from Bash
-	path := getBashHistoryUrl()
-	rawHistory, err := ReadFile(path)
+	rawHistory, path, err := data.ReadBashHistory()
 	if err != nil {
 		return []models.IndexItem{}
 	}
@@ -37,8 +39,7 @@ func (h HistoryProgram) getBashHistoryData() []models.IndexItem {
 
 func (h HistoryProgram) getZSHHistoryData() []models.IndexItem {
 	// read history from ZSH
-	path := getZshHistoryUrl()
-	rawHistory, err := ReadFile(path)
+	rawHistory, path, err := data.ReadZSHHistory()
 	if err != nil {
 		return []models.IndexItem{}
 	}

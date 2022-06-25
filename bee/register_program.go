@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/data"
 	"bee/bbee/models"
 	"bufio"
 	"fmt"
@@ -23,16 +24,16 @@ func (r RegisterFileProgram) run() {
 
 func (r RegisterFileProgram) registerConfigFile() {
 	// update sources
-	var sources []models.SourceFile = ReadSources()
+	var sources []models.SourceFile = data.ReadSources()
 	var source = models.SourceFile{Path: r.path, Name: fileName(r.path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
 	sources = uniqueSources(sources)
 
 	// read config files liek .bashrc, .profile, etc
-	var existingItems = ReadItems()
+	var existingItems = data.ReadItems()
 
 	// open file
-	contents, err := ReadFile(r.path)
+	contents, err := data.ReadFile(r.path)
 
 	// gently handle error
 	if err != nil {
@@ -48,8 +49,8 @@ func (r RegisterFileProgram) registerConfigFile() {
 	items = uniqueItemsByDate(items)
 
 	// write data
-	WriteSources(sources)
-	WriteItems(items)
+	data.WriteSources(sources)
+	data.WriteItems(items)
 
 	fmt.Printf("Added %d new elements\n", len(newItems))
 }
@@ -71,16 +72,16 @@ func (r RegisterFileProgram) registerScript() {
 	}
 
 	// update sources
-	var sources []models.SourceFile = ReadSources()
+	var sources []models.SourceFile = data.ReadSources()
 	var source = models.SourceFile{Path: r.path, Name: fileName, Type: models.SourceType(models.File)}
 	sources = append(sources, source)
 	sources = uniqueSources(sources)
 
 	// read script
-	var existingItems = ReadItems()
+	var existingItems = data.ReadItems()
 
 	// open file
-	contents, err := ReadFile(r.path)
+	contents, err := data.ReadFile(r.path)
 
 	// gently handle error
 	if err != nil {
@@ -95,8 +96,8 @@ func (r RegisterFileProgram) registerScript() {
 	items = uniqueItemsByDate(items)
 
 	// write data
-	WriteSources(sources)
-	WriteItems(items)
+	data.WriteSources(sources)
+	data.WriteItems(items)
 
 	fmt.Printf("Added %d new elements\n", len(newItems))
 }

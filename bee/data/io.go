@@ -1,4 +1,4 @@
-package main
+package data
 
 import (
 	"bee/bbee/models"
@@ -79,9 +79,22 @@ func ReadFile(path string) (string, error) {
 	return string(dat), nil
 }
 
-func ReadHistory() (string, error) {
+func ReadBashHistory() (string, string, error) {
 	var path = getBashHistoryUrl()
-	return ReadFile(path)
+	data, err := ReadFile(path)
+	if err != nil {
+		return "", path, err
+	}
+	return data, path, err
+}
+
+func ReadZSHHistory() (string, string, error) {
+	var path = getZshHistoryUrl()
+	data, err := ReadFile(path)
+	if err != nil {
+		return "", path, err
+	}
+	return data, path, err
 }
 
 func WriteLastCommand(command string) {
@@ -114,5 +127,11 @@ func FileExists(path string) bool {
 		return false
 	} else {
 		return false
+	}
+}
+
+func check(e error) {
+	if e != nil {
+		panic(e)
 	}
 }
