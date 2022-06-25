@@ -1,5 +1,7 @@
 package models
 
+import "sort"
+
 // String Pair
 type Pair struct {
 	A, B string
@@ -50,6 +52,13 @@ func UniqueSources(slice []SourceFile) []SourceFile {
 		}
 	}
 	return list
+}
+
+func SortedSources(slice []SourceFile) []SourceFile {
+	sort.Slice(slice, func(i, j int) bool {
+		return slice[i].Name < slice[j].Name
+	})
+	return slice
 }
 
 func UniquePaths(data []IndexItem) []Pair {

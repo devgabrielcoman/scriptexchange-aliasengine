@@ -14,6 +14,8 @@ type UpdateProgram struct {
 func (u UpdateProgram) Run() {
 	var result = []models.IndexItem{}
 	var sources = data.ReadSources()
+	sources = models.UniqueSources(sources)
+	sources = models.SortedSources(sources)
 
 	for _, source := range sources {
 		switch source.Type {

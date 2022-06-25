@@ -30,6 +30,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 	var source = models.SourceFile{Path: r.Path, Name: utils.FileName(r.Path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
 	sources = models.UniqueSources(sources)
+	sources = models.SortedSources(sources)
 
 	// read config files liek .bashrc, .profile, etc
 	var existingItems = data.ReadItems()
@@ -78,6 +79,7 @@ func (r RegisterFileProgram) registerScript() {
 	var source = models.SourceFile{Path: r.Path, Name: fileName, Type: models.SourceType(models.File)}
 	sources = append(sources, source)
 	sources = models.UniqueSources(sources)
+	sources = models.SortedSources(sources)
 
 	// read script
 	var existingItems = data.ReadItems()
