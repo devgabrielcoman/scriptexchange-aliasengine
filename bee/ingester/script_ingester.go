@@ -1,6 +1,9 @@
 package ingester
 
-import "bee/bbee/models"
+import (
+	"bee/bbee/models"
+	"strings"
+)
 
 // The ScriptIngester just ingests a new full script
 type ScriptIngester struct {
@@ -10,6 +13,7 @@ type ScriptIngester struct {
 }
 
 func (s ScriptIngester) Process(content string) []models.IndexItem {
+	lines := strings.Split(content, NEWLINE)
 	return []models.IndexItem{
 		{
 			Name:       s.Alias,
@@ -19,6 +23,8 @@ func (s ScriptIngester) Process(content string) []models.IndexItem {
 			PathOnDisk: s.Path,
 			Type:       models.ScriptType(models.Script),
 			Date:       s.CurrentTime,
+			StartLine:  0,
+			EndLine:    len(lines),
 		},
 	}
 }

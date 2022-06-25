@@ -22,15 +22,6 @@ func TestBashHistoryIngester_Process(t *testing.T) {
 		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
-				Name:       "ls -all",
-				Content:    "ls -all",
-				Path:       "/path/to/.bash_history",
-				PathOnDisk: "/path/to/.bash_history",
-				Comments:   []string{},
-				Type:       models.ScriptType(models.History),
-				Date:       0,
-			},
-			{
 				Name:       "echo \"Hello World\"",
 				Content:    "echo \"Hello World\"",
 				Path:       "/path/to/.bash_history",
@@ -38,6 +29,19 @@ func TestBashHistoryIngester_Process(t *testing.T) {
 				Comments:   []string{},
 				Type:       models.ScriptType(models.History),
 				Date:       0,
+				StartLine:  0,
+				EndLine:    0,
+			},
+			{
+				Name:       "ls -all",
+				Content:    "ls -all",
+				Path:       "/path/to/.bash_history",
+				PathOnDisk: "/path/to/.bash_history",
+				Comments:   []string{},
+				Type:       models.ScriptType(models.History),
+				Date:       0,
+				StartLine:  1,
+				EndLine:    1,
 			},
 		}
 		assert.Equal(t, expected, result)

@@ -2,6 +2,7 @@ package ingester
 
 import (
 	"bee/bbee/models"
+	"bee/bbee/utils"
 	"strings"
 )
 
@@ -13,9 +14,10 @@ type BashHistoryIngester struct {
 func (h BashHistoryIngester) Process(content string) []models.IndexItem {
 	// separate the contents by line
 	var lines []string = strings.Split(content, NEWLINE)
+	utils.Reverse(lines)
 	var result = []models.IndexItem{}
 
-	for _, line := range lines {
+	for i, line := range lines {
 		if line == WHITESPACE || line == SEPARATOR {
 			continue
 		}
@@ -28,6 +30,8 @@ func (h BashHistoryIngester) Process(content string) []models.IndexItem {
 			PathOnDisk: h.Path,
 			Type:       models.ScriptType(models.History),
 			Date:       0, // special case here, for bash we don't really have date info
+			StartLine:  i,
+			EndLine:    i,
 		}
 		result = append(result, item)
 	}

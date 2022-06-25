@@ -36,6 +36,8 @@ func TestZSHHistoryIngester_Process(t *testing.T) {
 				Comments:   []string{},
 				Type:       models.ScriptType(models.History),
 				Date:       1656053625,
+				StartLine:  0,
+				EndLine:    0,
 			},
 			{
 				Name:       "vi .zsh_history",
@@ -45,6 +47,8 @@ func TestZSHHistoryIngester_Process(t *testing.T) {
 				Comments:   []string{},
 				Type:       models.ScriptType(models.History),
 				Date:       1656006110,
+				StartLine:  1,
+				EndLine:    1,
 			},
 			{
 				Name:       "cd",
@@ -54,6 +58,8 @@ func TestZSHHistoryIngester_Process(t *testing.T) {
 				Comments:   []string{},
 				Type:       models.ScriptType(models.History),
 				Date:       1656006100,
+				StartLine:  2,
+				EndLine:    2,
 			},
 		}
 		assert.Equal(t, expected, result)

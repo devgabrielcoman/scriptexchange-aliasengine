@@ -3,6 +3,7 @@ package program
 import (
 	"bee/bbee/models"
 	"bee/bbee/utils"
+	"sort"
 
 	"github.com/samber/lo"
 )
@@ -27,10 +28,12 @@ func NewSearchController(elems []models.IndexItem) *SearchController {
 }
 
 func (c *SearchController) search(term string) {
+	// filter
 	var filtered = lo.Filter(c.elems, func(item models.IndexItem, i int) bool {
 		var key = SearchKey{item: item}
 		return key.Contains(term)
 	})
+
 	c.results = c.formResults(filtered)
 	c.resetCurrentIndex()
 }
@@ -43,6 +46,12 @@ func (c *SearchController) formResults(items []models.IndexItem) []SearchResult 
 	for _, path := range paths {
 		result = append(result, NewSearchCategory(path.A, path.B))
 		var filtered = models.FilterByPath(items, path.A)
+
+		// always sort according to start line
+		sort.Slice(filtered, func(i, j int) bool {
+			return filtered[i].StartLine < filtered[j].StartLine
+		})
+
 		for _, item := range filtered {
 			result = append(result, NewSearchResult(item))
 		}

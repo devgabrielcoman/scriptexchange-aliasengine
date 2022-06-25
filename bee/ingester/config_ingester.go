@@ -120,6 +120,8 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 		PathOnDisk: c.FilePath,
 		Type:       models.ScriptType(models.Alias),
 		Date:       c.CurrentTime,
+		StartLine:  startIndex,
+		EndLine:    startIndex,
 	}
 
 	return &indexItem, 0
@@ -161,6 +163,8 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 		PathOnDisk: c.FilePath,
 		Type:       models.ScriptType(models.Export),
 		Date:       c.CurrentTime,
+		StartLine:  startIndex,
+		EndLine:    startIndex,
 	}
 
 	return &indexItem, 0
@@ -241,6 +245,8 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
 		Date:       c.CurrentTime,
+		StartLine:  startIndex,
+		EndLine:    nextIndex,
 	}
 
 	return &indexItem, progress
@@ -325,6 +331,8 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
 		Date:       c.CurrentTime,
+		StartLine:  startIndex,
+		EndLine:    nextIndex,
 	}
 
 	return &indexItem, progress

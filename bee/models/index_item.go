@@ -21,4 +21,6 @@ type IndexItem struct {
 	PathOnDisk string
 	Type       ScriptType
 	Date       int64
+	StartLine  int
+	EndLine    int
 }

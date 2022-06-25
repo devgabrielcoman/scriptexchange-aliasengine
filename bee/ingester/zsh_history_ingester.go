@@ -3,7 +3,6 @@ package ingester
 import (
 	"bee/bbee/models"
 	"bee/bbee/utils"
-	"sort"
 	"strings"
 )
 
@@ -15,9 +14,11 @@ type ZSHHistoryIngester struct {
 func (z ZSHHistoryIngester) Process(content string) []models.IndexItem {
 	// separate the contents by line
 	lines := strings.Split(content, NEWLINE)
+	// ZSH history is appended to, so we need to reverse that order
+	utils.Reverse(lines)
 	var result = []models.IndexItem{}
 
-	for _, line := range lines {
+	for i, line := range lines {
 		lineItems := strings.Split(line, ZSH_HISTORY_SEP)
 
 		// not a valid line in the format date;command
@@ -35,15 +36,13 @@ func (z ZSHHistoryIngester) Process(content string) []models.IndexItem {
 			PathOnDisk: z.Path,
 			Type:       models.ScriptType(models.History),
 			Date:       date,
+			StartLine:  i,
+			EndLine:    i,
 		}
 		result = append(result, item)
 	}
 
 	result = models.UniqueItemsByDate(result)
-
-	sort.Slice(result, func(i, j int) bool {
-		return result[j].Date < result[i].Date
-	})
 
 	return result
 }

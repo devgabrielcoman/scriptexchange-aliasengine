@@ -21,6 +21,8 @@ func TestScriptIngester_Process(t *testing.T) {
 				PathOnDisk: "/path/to/my-script.sh",
 				Type:       models.ScriptType(models.Script),
 				Date:       123,
+				StartLine:  0,
+				EndLine:    1,
 			},
 		}
 		assert.Equal(t, expected, result)
