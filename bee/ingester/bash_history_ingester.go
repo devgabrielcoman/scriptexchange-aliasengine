@@ -16,6 +16,10 @@ func (h BashHistoryIngester) Process(content string) []models.IndexItem {
 	var result = []models.IndexItem{}
 
 	for _, line := range lines {
+		if line == WHITESPACE || line == SEPARATOR {
+			continue
+		}
+
 		item := models.IndexItem{
 			Name:       line,
 			Content:    line,

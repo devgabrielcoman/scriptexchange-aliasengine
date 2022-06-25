@@ -7,9 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
-
 func TestConfigIngester_Process(t *testing.T) {
+	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 	t.Run("it should return an empty slice given an empty input", func(t *testing.T) {
 		var content = ""
 		var result = ingester.Process(content)
@@ -588,6 +587,7 @@ func TestConfigIngester_Process(t *testing.T) {
 }
 
 func TestConfigIngester_isPotentialAlias(t *testing.T) {
+	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 	t.Run("it should return false if alias keyword is not present", func(t *testing.T) {
 		var content = ""
 		var result = ingester.isPotentialAlias(content)
@@ -620,6 +620,7 @@ func TestConfigIngester_isPotentialAlias(t *testing.T) {
 }
 
 func TestConfigIngester_isPotentialExport(t *testing.T) {
+	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 	t.Run("it should return false if export keyword is not present", func(t *testing.T) {
 		var content = ""
 		var result = ingester.isPotentialExport(content)
@@ -652,6 +653,7 @@ func TestConfigIngester_isPotentialExport(t *testing.T) {
 }
 
 func TestConfigIngester_isPotentialFunctionStyleOne(t *testing.T) {
+	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 	t.Run("it should return false if function keyword is not present", func(t *testing.T) {
 		var content = ""
 		var result = ingester.isPotentialFunctionStyleOne(content)
@@ -684,6 +686,7 @@ func TestConfigIngester_isPotentialFunctionStyleOne(t *testing.T) {
 }
 
 func TestConfigIngester_isPotentialFunctionStyleTwo(t *testing.T) {
+	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 	t.Run("it should return false if function keyword is not present", func(t *testing.T) {
 		var content = ""
 		var result = ingester.isPotentialFunctionStyleTwo(content)
