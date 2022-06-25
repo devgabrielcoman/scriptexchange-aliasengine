@@ -130,7 +130,7 @@ func NewHistorySearchResult(item IndexItem) SearchResult {
 		secondaryText:  "",
 		previewTitle:   item.Path,
 		previewContent: "",
-		command:        item.Name,
+		command:        item.Content,
 		pathOnDisk:     item.Path,
 		resultType:     SearchResultType(Item),
 	}
