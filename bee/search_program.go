@@ -2,6 +2,7 @@ package main
 
 import (
 	"bee/bbee/data"
+	"bee/bbee/utils"
 	"fmt"
 
 	"code.rocketnine.space/tslocum/cview"
@@ -91,7 +92,7 @@ func (p SearchProgram) redrawDetails(textView *cview.TextView) {
 
 	// command to display with the "bat" utility, if present on the system
 	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=numbers --line-range=:500 --paging=never --theme=1337"
-	out, _, err := Shellout(command)
+	out, _, err := utils.Shellout(command)
 
 	// if error, revert to setting the text
 	if err != nil {
