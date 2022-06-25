@@ -2,9 +2,7 @@ package main
 
 import (
 	"bee/bbee/models"
-	"path/filepath"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -84,14 +82,6 @@ func filterByPath(data []models.IndexItem, path string) []models.IndexItem {
 	}
 
 	return result
-}
-
-func fileName(path string) string {
-	return filepath.Base(path)
-}
-
-func fileNameWithoutExtTrimSuffix(fileName string) string {
-	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
 func dateFormat(d int64) string {

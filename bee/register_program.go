@@ -3,6 +3,7 @@ package main
 import (
 	"bee/bbee/data"
 	"bee/bbee/models"
+	"bee/bbee/utils"
 	"bufio"
 	"fmt"
 	"os"
@@ -25,7 +26,7 @@ func (r RegisterFileProgram) run() {
 func (r RegisterFileProgram) registerConfigFile() {
 	// update sources
 	var sources []models.SourceFile = data.ReadSources()
-	var source = models.SourceFile{Path: r.path, Name: fileName(r.path), Type: models.SourceType(models.Command)}
+	var source = models.SourceFile{Path: r.path, Name: utils.FileName(r.path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
 	sources = uniqueSources(sources)
 
@@ -57,8 +58,8 @@ func (r RegisterFileProgram) registerConfigFile() {
 
 func (r RegisterFileProgram) registerScript() {
 	// get the user to input the alias
-	var fileName = fileName(r.path)
-	var initialAlias = fileNameWithoutExtTrimSuffix(fileName)
+	var fileName = utils.FileName(r.path)
+	var initialAlias = utils.FileNameWithoutExtTrimSuffix(fileName)
 	fmt.Printf("This script will be registered with alias %s\nPress ENTER to accept or type a new Alias to override it\n", initialAlias)
 
 	buffer := bufio.NewReader(os.Stdin)

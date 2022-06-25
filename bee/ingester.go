@@ -377,7 +377,7 @@ func (c ConfigIngester) trimLine(line string) string {
 }
 
 func (c ConfigIngester) getFileName() string {
-	return fileName(c.filePath)
+	return utils.FileName(c.filePath)
 }
 
 // The ScriptIngester just ingests a new full script
