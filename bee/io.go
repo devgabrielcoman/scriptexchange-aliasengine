@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/models"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -43,15 +44,15 @@ func getZshHistoryUrl() string {
 	return fmt.Sprintf("%s/%s", home, path)
 }
 
-func ReadItems() []IndexItem {
+func ReadItems() []models.IndexItem {
 	path := getDataUrl()
 	dat, err := os.ReadFile(path)
 
 	if err != nil {
-		return []IndexItem{}
+		return []models.IndexItem{}
 	}
 
-	var items []IndexItem
+	var items []models.IndexItem
 	json.Unmarshal([]byte(dat), &items)
 	return items
 }
@@ -90,7 +91,7 @@ func WriteLastCommand(command string) {
 	check(err)
 }
 
-func WriteItems(items []IndexItem) {
+func WriteItems(items []models.IndexItem) {
 	path := getDataUrl()
 	json, err := json.Marshal(items)
 	check(err)

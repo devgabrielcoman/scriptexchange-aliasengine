@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/models"
 	"sort"
 	"strings"
 
@@ -38,8 +39,8 @@ type ConfigIngester struct {
 	currentTime int64
 }
 
-func (c ConfigIngester) process(content string) []IndexItem {
-	var result = []IndexItem{}
+func (c ConfigIngester) process(content string) []models.IndexItem {
+	var result = []models.IndexItem{}
 
 	// separate the contents by line
 	var lines []string = strings.Split(content, NEWLINE)
@@ -106,7 +107,7 @@ func (c ConfigIngester) isPotentialFunctionStyleTwo(line string) bool {
 	return strings.Contains(line, FUNCTION_KEYWORD_TWO) && !strings.Contains(line, COMMENT_PREFIX)
 }
 
-func (c ConfigIngester) processAlias(line string, startIndex int, allLines []string) (*IndexItem, int) {
+func (c ConfigIngester) processAlias(line string, startIndex int, allLines []string) (*models.IndexItem, int) {
 	var trimmedLine = c.trimLine(line)
 	var aliasWithoutPrefix = strings.TrimPrefix(trimmedLine, ALIAS_PREFIX)
 	var aliasComponents = strings.Split(aliasWithoutPrefix, ALIAS_SEPARATOR)
@@ -134,20 +135,20 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 	var comments = c.getComments(startIndex, allLines)
 
 	// create item
-	var indexItem = IndexItem{
+	var indexItem = models.IndexItem{
 		Name:       aliasName,
 		Content:    aliasCommand,
 		Path:       c.getFileName(),
 		Comments:   comments,
 		PathOnDisk: c.filePath,
-		Type:       ScriptType(Alias),
+		Type:       models.ScriptType(models.Alias),
 		Date:       c.currentTime,
 	}
 
 	return &indexItem, 0
 }
 
-func (c ConfigIngester) processExport(line string, startIndex int, allLines []string) (*IndexItem, int) {
+func (c ConfigIngester) processExport(line string, startIndex int, allLines []string) (*models.IndexItem, int) {
 	var trimmedLine = c.trimLine(line)
 	var exportWithoutPrefix = strings.TrimPrefix(trimmedLine, EXPORT_PREFIX)
 	var exportComponents = strings.Split(exportWithoutPrefix, EXPORT_SEPARATOR)
@@ -175,20 +176,20 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 	var comments = c.getComments(startIndex, allLines)
 
 	// create item
-	var indexItem = IndexItem{
+	var indexItem = models.IndexItem{
 		Name:       exportName,
 		Content:    exportCommand,
 		Path:       c.getFileName(),
 		Comments:   comments,
 		PathOnDisk: c.filePath,
-		Type:       ScriptType(Export),
+		Type:       models.ScriptType(models.Export),
 		Date:       c.currentTime,
 	}
 
 	return &indexItem, 0
 }
 
-func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, allLines []string) (*IndexItem, int) {
+func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, allLines []string) (*models.IndexItem, int) {
 	// prepare the line by replacing the keyboard and any start and end whitespaces
 	var trimmedLine = c.trimLine(line)
 	var preparedLine = strings.Trim(strings.ReplaceAll(trimmedLine, FUNCTION_KEYWORD_ONE, SEPARATOR), WHITESPACE)
@@ -249,13 +250,13 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 	}
 
 	var progress = nextIndex - startIndex
-	var scriptType ScriptType = ScriptType(Function)
+	var scriptType models.ScriptType = models.ScriptType(models.Function)
 	var name = functionName
 	var content = FUNCTION_KEYWORD_ONE + " " + allContent
 	var path = c.getFileName()
 	var comments = c.getComments(startIndex, allLines)
 	var pathOnDisk = c.filePath
-	var indexItem = IndexItem{
+	var indexItem = models.IndexItem{
 		Name:       name,
 		Content:    content,
 		Path:       path,
@@ -268,7 +269,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 	return &indexItem, progress
 }
 
-func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, allLines []string) (*IndexItem, int) {
+func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, allLines []string) (*models.IndexItem, int) {
 	// prepare the line
 	var trimmedLine = c.trimLine(line)
 	var preparedLine = strings.Trim(trimmedLine, WHITESPACE)
@@ -334,12 +335,12 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 	}
 
 	var progress = nextIndex - startIndex
-	var scriptType ScriptType = ScriptType(Function)
+	var scriptType models.ScriptType = models.ScriptType(models.Function)
 	var content = allContent
 	var path = c.getFileName()
 	var comments = c.getComments(startIndex, allLines)
 	var pathOnDisk = c.filePath
-	var indexItem = IndexItem{
+	var indexItem = models.IndexItem{
 		Name:       name,
 		Content:    content,
 		Path:       path,
@@ -385,15 +386,15 @@ type ScriptIngester struct {
 	currentTime int64
 }
 
-func (s ScriptIngester) process(content string) []IndexItem {
-	return []IndexItem{
+func (s ScriptIngester) process(content string) []models.IndexItem {
+	return []models.IndexItem{
 		{
 			Name:       s.alias,
 			Content:    content,
 			Path:       ".scripts",
 			Comments:   []string{},
 			PathOnDisk: s.path,
-			Type:       ScriptType(Script),
+			Type:       models.ScriptType(models.Script),
 			Date:       s.currentTime,
 		},
 	}
@@ -404,19 +405,19 @@ type BashHistoryIngester struct {
 	path string
 }
 
-func (h BashHistoryIngester) process(content string) []IndexItem {
+func (h BashHistoryIngester) process(content string) []models.IndexItem {
 	// separate the contents by line
 	var lines []string = strings.Split(content, NEWLINE)
-	var result = []IndexItem{}
+	var result = []models.IndexItem{}
 
 	for _, line := range lines {
-		item := IndexItem{
+		item := models.IndexItem{
 			Name:       line,
 			Content:    line,
 			Comments:   []string{},
 			Path:       h.path,
 			PathOnDisk: h.path,
-			Type:       ScriptType(History),
+			Type:       models.ScriptType(models.History),
 			Date:       0, // special case here, for bash we don't really have date info
 		}
 		result = append(result, item)
@@ -430,10 +431,10 @@ type ZSHHistoryIngester struct {
 	path string
 }
 
-func (z ZSHHistoryIngester) process(content string) []IndexItem {
+func (z ZSHHistoryIngester) process(content string) []models.IndexItem {
 	// separate the contents by line
 	lines := strings.Split(content, NEWLINE)
-	var result = []IndexItem{}
+	var result = []models.IndexItem{}
 
 	for _, line := range lines {
 		lineItems := strings.Split(line, ZSH_HISTORY_SEP)
@@ -445,13 +446,13 @@ func (z ZSHHistoryIngester) process(content string) []IndexItem {
 
 		date := lenientAtoi64(z.parseZSHDateItem(lineItems[0]))
 		command := strings.Join(lineItems[1:], SEPARATOR)
-		item := IndexItem{
+		item := models.IndexItem{
 			Name:       command,
 			Content:    command,
 			Comments:   []string{},
 			Path:       z.path,
 			PathOnDisk: z.path,
-			Type:       ScriptType(History),
+			Type:       models.ScriptType(models.History),
 			Date:       date,
 		}
 		result = append(result, item)

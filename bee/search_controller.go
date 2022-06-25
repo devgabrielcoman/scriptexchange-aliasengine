@@ -1,6 +1,8 @@
 package main
 
 import (
+	"bee/bbee/models"
+
 	"github.com/samber/lo"
 )
 
@@ -8,13 +10,13 @@ import (
 // to the search through all of the aliases, functions and scripts
 // a user has saved
 type SearchController struct {
-	elems        []IndexItem
+	elems        []models.IndexItem
 	results      []SearchResult
 	currentIndex int
 	totalLen     int
 }
 
-func NewSearchController(elems []IndexItem) *SearchController {
+func NewSearchController(elems []models.IndexItem) *SearchController {
 	controller := new(SearchController)
 	controller.elems = elems
 	controller.results = controller.formResults(elems)
@@ -24,7 +26,7 @@ func NewSearchController(elems []IndexItem) *SearchController {
 }
 
 func (c *SearchController) search(term string) {
-	var filtered = lo.Filter(c.elems, func(item IndexItem, i int) bool {
+	var filtered = lo.Filter(c.elems, func(item models.IndexItem, i int) bool {
 		var key = SearchKey{item: item}
 		return key.Contains(term)
 	})
@@ -32,7 +34,7 @@ func (c *SearchController) search(term string) {
 	c.resetCurrentIndex()
 }
 
-func (c *SearchController) formResults(items []IndexItem) []SearchResult {
+func (c *SearchController) formResults(items []models.IndexItem) []SearchResult {
 	var result = []SearchResult{}
 
 	var paths = uniquePaths(items)

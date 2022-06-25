@@ -1,12 +1,15 @@
 package main
 
-import "fmt"
+import (
+	"bee/bbee/models"
+	"fmt"
+)
 
 type UpdateProgram struct {
 }
 
 func (u UpdateProgram) run() {
-	var result = []IndexItem{}
+	var result = []models.IndexItem{}
 	var sources = ReadSources()
 
 	for _, source := range sources {
@@ -26,14 +29,14 @@ func (u UpdateProgram) run() {
 	fmt.Printf("Updated %d elements\n", len(result))
 }
 
-func (u UpdateProgram) updateConfigFiles(source SourceFile) []IndexItem {
+func (u UpdateProgram) updateConfigFiles(source SourceFile) []models.IndexItem {
 	// open file
 	contents, err := ReadFile(source.Path)
 
 	// gently handle error
 	if err != nil {
 		fmt.Println(err)
-		return []IndexItem{}
+		return []models.IndexItem{}
 	}
 
 	time := CurrentTime()
@@ -41,14 +44,14 @@ func (u UpdateProgram) updateConfigFiles(source SourceFile) []IndexItem {
 	return ingester.process(contents)
 }
 
-func (u UpdateProgram) updateScriptFiles(source SourceFile) []IndexItem {
+func (u UpdateProgram) updateScriptFiles(source SourceFile) []models.IndexItem {
 	// open file
 	contents, err := ReadFile(source.Path)
 
 	// gently handle error
 	if err != nil {
 		fmt.Println(err)
-		return []IndexItem{}
+		return []models.IndexItem{}
 	}
 
 	time := CurrentTime()

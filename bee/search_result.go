@@ -1,7 +1,8 @@
 package main
 
 import (
-	"example/bbee/style"
+	"bee/bbee/models"
+	"bee/bbee/style"
 	"strings"
 )
 
@@ -24,24 +25,24 @@ type SearchResult struct {
 	resultType     SearchResultType
 }
 
-func NewSearchResult(item IndexItem) SearchResult {
+func NewSearchResult(item models.IndexItem) SearchResult {
 	switch item.Type {
-	case ScriptType(Alias):
+	case models.ScriptType(models.Alias):
 		return NewAliasSearchResult(item)
-	case ScriptType(Function):
+	case models.ScriptType(models.Function):
 		return NewFunctionSearchResult(item)
-	case ScriptType(Script):
+	case models.ScriptType(models.Script):
 		return NewScriptSearchResult(item)
-	case ScriptType(Export):
+	case models.ScriptType(models.Export):
 		return NewExportSearchResult(item)
-	case ScriptType(History):
+	case models.ScriptType(models.History):
 		return NewHistorySearchResult(item)
 	default:
 		return NewEmptySearchResult()
 	}
 }
 
-func NewAliasSearchResult(item IndexItem) SearchResult {
+func NewAliasSearchResult(item models.IndexItem) SearchResult {
 	var mainText = "   " + style.Color("alias", style.AliasKeywordColor) + " " + style.Color(item.Name, style.AliasNameColor)
 	var secondaryText = ""
 	var previewTitle = item.Path + "/" + item.Name
@@ -60,7 +61,7 @@ func NewAliasSearchResult(item IndexItem) SearchResult {
 	}
 }
 
-func NewFunctionSearchResult(item IndexItem) SearchResult {
+func NewFunctionSearchResult(item models.IndexItem) SearchResult {
 	var mainText = "   " + style.Color("function", style.FunctionKeywordColor) + " " + style.Color(item.Name, style.FunctionNameColor)
 	var secondaryText = ""
 	var previewTitle = item.Path + "/" + item.Name
@@ -79,7 +80,7 @@ func NewFunctionSearchResult(item IndexItem) SearchResult {
 	}
 }
 
-func NewScriptSearchResult(item IndexItem) SearchResult {
+func NewScriptSearchResult(item models.IndexItem) SearchResult {
 	var mainText = "   " + style.Color("./"+item.Name, style.ScriptNameColor)
 	var secondaryText = ""
 	var previewTitle = item.Path + "/" + item.Name
@@ -98,7 +99,7 @@ func NewScriptSearchResult(item IndexItem) SearchResult {
 	}
 }
 
-func NewExportSearchResult(item IndexItem) SearchResult {
+func NewExportSearchResult(item models.IndexItem) SearchResult {
 	var mainText = "   " + style.Color("export", style.ExportKeywordColor) + " " + style.Color(item.Name, style.ExportNameColor)
 	var secondaryText = ""
 	var previewTitle = item.Path + "/" + item.Name
@@ -117,7 +118,7 @@ func NewExportSearchResult(item IndexItem) SearchResult {
 	}
 }
 
-func NewHistorySearchResult(item IndexItem) SearchResult {
+func NewHistorySearchResult(item models.IndexItem) SearchResult {
 	var mainText string
 	if item.Date == 0 {
 		mainText = "   " + style.Color(item.Content, style.ScriptNameColor)
@@ -160,7 +161,7 @@ func NewSearchCategory(name string, pathOnDisk string) SearchResult {
 	}
 }
 
-func createPreviewContent(item IndexItem) string {
+func createPreviewContent(item models.IndexItem) string {
 	var comment = strings.Join(item.Comments[:], "\n")
 	var full []string
 	if len(item.Comments) > 0 {
@@ -178,7 +179,7 @@ func createPreviewContent(item IndexItem) string {
 
 // Represents a Search Key formed from an Index Item
 type SearchKey struct {
-	item IndexItem
+	item models.IndexItem
 }
 
 func (k SearchKey) Contains(term string) bool {
@@ -194,27 +195,27 @@ func (k SearchKey) Contains(term string) bool {
 func (k SearchKey) formSearchQueries() []string {
 	item := k.item
 	switch item.Type {
-	case ScriptType(Alias):
+	case models.ScriptType(models.Alias):
 		return []string{
 			item.Path + "/alias " + item.Name,
 			item.Path + "/" + item.Name,
 		}
-	case ScriptType(Function):
+	case models.ScriptType(models.Function):
 		return []string{
 			item.Path + "/function " + item.Name,
 			item.Path + "/" + item.Name,
 		}
-	case ScriptType(Export):
+	case models.ScriptType(models.Export):
 		return []string{
 			item.Path + "/export " + item.Name,
 			item.Path + "/" + item.Name,
 		}
-	case ScriptType(Script):
+	case models.ScriptType(models.Script):
 		return []string{
 			item.Path + "/./" + item.Name,
 			item.Path + "/" + item.Name,
 		}
-	case ScriptType(History):
+	case models.ScriptType(models.History):
 		return []string{
 			item.Name,
 			item.Content,

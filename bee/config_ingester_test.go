@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/models"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,42 +13,42 @@ func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return an empty slice given an empty input", func(t *testing.T) {
 		var content = ""
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given garbage input", func(t *testing.T) {
 		var content = "\\\asa/////"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given incorrectly formatted alias", func(t *testing.T) {
 		var content = "alias test'ls -all'"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given incorrectly formatted alias", func(t *testing.T) {
 		var content = "alias test 'ls -all'"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should a slice with one alias even if format is slighlty incorrect", func(t *testing.T) {
 		var content = "alias test = 'ls -all'"
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "ls -all",
 				Path:       "test.sh",
 				Comments:   []string{},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -56,14 +57,14 @@ func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return a slice with one alias in one line content", func(t *testing.T) {
 		var content = "alias test='ls -all'"
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "ls -all",
 				Path:       "test.sh",
 				Comments:   []string{},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -74,7 +75,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# write down like: alias test='ls -all'
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
@@ -84,14 +85,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		alias test='ls -all'
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "ls -all",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my", "# comment"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -107,14 +108,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		alias test2='run this'
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "ls -all",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 			{
 				Name:       "test2",
@@ -122,7 +123,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -138,14 +139,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		alias test2 = run this
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "ls -all",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 			{
 				Name:       "test2",
@@ -153,7 +154,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -162,35 +163,35 @@ func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return an empty slice given function without keywords", func(t *testing.T) {
 		var content = "{ echo \"abc\"; }"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given function without body of type one", func(t *testing.T) {
 		var content = "function abc"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given function without name of type one", func(t *testing.T) {
 		var content = "function { echo \"abc\" }"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return a slice with one function given one liner with correct function of type one", func(t *testing.T) {
 		var content = "function test { echo \"hello world\"; }"
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "function test { echo \"hello world\"; }",
 				Path:       "test.sh",
 				Comments:   []string{},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -202,14 +203,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		function test { echo "hello world"; }
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "function test { echo \"hello world\"; }",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -224,14 +225,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		function test2 { echo "world"; }
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "function test1 { echo \"hello\"; }",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 			{
 				Name:       "test2",
@@ -239,7 +240,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -253,14 +254,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "function test {\n\t\t\techo \"hello world\"; \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -276,14 +277,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "function test {\n\t\t\tfunction world { echo \"world\"'; }\n\t\t\techo \"hello\";\n\t\t\tworld \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -297,14 +298,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "function test {\n\t\t\teval \"${command}\"\n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -326,14 +327,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "function test1 {\n\t\t\tfunction world { echo \"world\"'; }\n\t\t\techo \"hello\";\n\t\t\tworld \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 			{
 				Name:       "test2",
@@ -341,7 +342,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -350,28 +351,28 @@ func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return an empty slice given function without body of type two", func(t *testing.T) {
 		var content = "abc()"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given function without name of type two", func(t *testing.T) {
 		var content = "() { echo \"abc\" }"
 		var result = ingester.process(content)
-		var expected = []IndexItem{}
+		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return a slice with one function given one liner with correct function definition of type two", func(t *testing.T) {
 		var content = "test() { echo \"hello world\"; }"
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "test() { echo \"hello world\"; }",
 				Path:       "test.sh",
 				Comments:   []string{},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -383,14 +384,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		test() { echo "hello world"; }
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "test() { echo \"hello world\"; }",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -405,14 +406,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		test2() { echo "world"; }
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "test1() { echo \"hello\"; }",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 			{
 				Name:       "test2",
@@ -420,7 +421,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -434,14 +435,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "test() {\n\t\t\techo \"hello world\"; \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -457,14 +458,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "test() {\n\t\t\tworld() { echo \"world\"'; }\n\t\t\techo \"hello\";\n\t\t\tworld \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -478,14 +479,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test",
 				Content:    "test() {\n\t\t\teval \"${command}\"\n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -507,14 +508,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "test1() {\n\t\t\tworld() { echo \"world\"'; }\n\t\t\techo \"hello\";\n\t\t\tworld \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 			{
 				Name:       "test2",
@@ -522,7 +523,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)
@@ -548,14 +549,14 @@ func TestConfigIngester_Process(t *testing.T) {
 		}
 		`
 		var result = ingester.process(content)
-		var expected = []IndexItem{
+		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
 				Content:    "test1() {\n\t\t\tfunction world() { echo \"world\"'; }\n\t\t\techo \"hello\";\n\t\t\tworld \n\t\t}",
 				Path:       "test.sh",
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 			{
 				Name:       "test",
@@ -563,7 +564,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is my first alias"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 			{
 				Name:       "second",
@@ -571,7 +572,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{"# this is my second alias"},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Alias),
+				Type:       models.ScriptType(models.Alias),
 			},
 			{
 				Name:       "test2",
@@ -579,7 +580,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Path:       "test.sh",
 				Comments:   []string{},
 				PathOnDisk: "test.sh",
-				Type:       ScriptType(Function),
+				Type:       models.ScriptType(models.Function),
 			},
 		}
 		assert.Equal(t, expected, result)

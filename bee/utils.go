@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bee/bbee/models"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -34,9 +35,9 @@ func check(e error) {
 	}
 }
 
-func uniqueItems(slice []IndexItem) []IndexItem {
+func uniqueItems(slice []models.IndexItem) []models.IndexItem {
 	keys := make(map[string]bool)
-	list := []IndexItem{}
+	list := []models.IndexItem{}
 	for _, entry := range slice {
 		if _, value := keys[entry.Name]; !value {
 			keys[entry.Name] = true
@@ -47,9 +48,9 @@ func uniqueItems(slice []IndexItem) []IndexItem {
 	return list
 }
 
-func uniqueItemsByDate(slice []IndexItem) []IndexItem {
-	keys := make(map[string]IndexItem)
-	list := []IndexItem{}
+func uniqueItemsByDate(slice []models.IndexItem) []models.IndexItem {
+	keys := make(map[string]models.IndexItem)
+	list := []models.IndexItem{}
 
 	for _, item := range slice {
 		value, ok := keys[item.Name]
@@ -81,7 +82,7 @@ func uniqueSources(slice []SourceFile) []SourceFile {
 	return list
 }
 
-func uniquePaths(data []IndexItem) []Pair {
+func uniquePaths(data []models.IndexItem) []Pair {
 	keys := make(map[string]bool)
 	list := []Pair{}
 
@@ -95,8 +96,8 @@ func uniquePaths(data []IndexItem) []Pair {
 	return list
 }
 
-func filterByPath(data []IndexItem, path string) []IndexItem {
-	var result = []IndexItem{}
+func filterByPath(data []models.IndexItem, path string) []models.IndexItem {
+	var result = []models.IndexItem{}
 
 	for _, item := range data {
 		if item.Path == path {
