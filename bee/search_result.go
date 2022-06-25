@@ -3,6 +3,7 @@ package main
 import (
 	"bee/bbee/models"
 	"bee/bbee/style"
+	"bee/bbee/utils"
 	"strings"
 )
 
@@ -123,7 +124,7 @@ func NewHistorySearchResult(item models.IndexItem) SearchResult {
 	if item.Date == 0 {
 		mainText = "   " + style.Color(item.Content, style.ScriptNameColor)
 	} else {
-		mainText = "   " + style.Color(dateFormat(item.Date), style.AliasNameColor) + " " + style.Color(item.Content, style.ScriptNameColor)
+		mainText = "   " + style.Color(utils.DateFormat(item.Date), style.AliasNameColor) + " " + style.Color(item.Content, style.ScriptNameColor)
 	}
 	return SearchResult{
 		mainText:       mainText,

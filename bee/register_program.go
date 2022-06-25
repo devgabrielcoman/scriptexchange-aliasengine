@@ -43,7 +43,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 	}
 
 	// process new elements
-	time := CurrentTime()
+	time := utils.CurrentTime()
 	ingester := ConfigIngester{filePath: r.path, currentTime: time}
 	var newItems = ingester.process(contents)
 	var items = append(existingItems, newItems...)
@@ -90,7 +90,7 @@ func (r RegisterFileProgram) registerScript() {
 		return
 	}
 
-	time := CurrentTime()
+	time := utils.CurrentTime()
 	ingester := ScriptIngester{alias: alias, path: r.path, currentTime: time}
 	var newItems = ingester.process(contents)
 	var items = append(existingItems, newItems...)
