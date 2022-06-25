@@ -1,4 +1,4 @@
-package main
+package ingester
 
 import (
 	"bee/bbee/models"
@@ -7,40 +7,40 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ingester = ConfigIngester{filePath: "test.sh", currentTime: 0}
+var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 
 func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return an empty slice given an empty input", func(t *testing.T) {
 		var content = ""
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given garbage input", func(t *testing.T) {
 		var content = "\\\asa/////"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given incorrectly formatted alias", func(t *testing.T) {
 		var content = "alias test'ls -all'"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given incorrectly formatted alias", func(t *testing.T) {
 		var content = "alias test 'ls -all'"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should a slice with one alias even if format is slighlty incorrect", func(t *testing.T) {
 		var content = "alias test = 'ls -all'"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -56,7 +56,7 @@ func TestConfigIngester_Process(t *testing.T) {
 
 	t.Run("it should return a slice with one alias in one line content", func(t *testing.T) {
 		var content = "alias test='ls -all'"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -74,7 +74,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		var content = `# this is my
 		# write down like: alias test='ls -all'
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
@@ -84,7 +84,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# comment
 		alias test='ls -all'
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -107,7 +107,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# second comment
 		alias test2='run this'
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
@@ -138,7 +138,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# second comment
 		alias test2 = run this
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
@@ -162,28 +162,28 @@ func TestConfigIngester_Process(t *testing.T) {
 
 	t.Run("it should return an empty slice given function without keywords", func(t *testing.T) {
 		var content = "{ echo \"abc\"; }"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given function without body of type one", func(t *testing.T) {
 		var content = "function abc"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given function without name of type one", func(t *testing.T) {
 		var content = "function { echo \"abc\" }"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return a slice with one function given one liner with correct function of type one", func(t *testing.T) {
 		var content = "function test { echo \"hello world\"; }"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -202,7 +202,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# this is my function
 		function test { echo "hello world"; }
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -224,7 +224,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# this is my second function
 		function test2 { echo "world"; }
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
@@ -253,7 +253,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			echo "hello world"; 
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -276,7 +276,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			world 
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -297,7 +297,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			eval "${command}"
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -326,7 +326,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			world 
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
@@ -350,21 +350,21 @@ func TestConfigIngester_Process(t *testing.T) {
 
 	t.Run("it should return an empty slice given function without body of type two", func(t *testing.T) {
 		var content = "abc()"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return an empty slice given function without name of type two", func(t *testing.T) {
 		var content = "() { echo \"abc\" }"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{}
 		assert.Equal(t, expected, result)
 	})
 
 	t.Run("it should return a slice with one function given one liner with correct function definition of type two", func(t *testing.T) {
 		var content = "test() { echo \"hello world\"; }"
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -383,7 +383,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# this is my function
 		test() { echo "hello world"; }
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -405,7 +405,7 @@ func TestConfigIngester_Process(t *testing.T) {
 		# this is my second function
 		test2() { echo "world"; }
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
@@ -434,7 +434,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			echo "hello world"; 
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -457,7 +457,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			world 
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -478,7 +478,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			eval "${command}"
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test",
@@ -507,7 +507,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			world 
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",
@@ -548,7 +548,7 @@ func TestConfigIngester_Process(t *testing.T) {
 			echo "${command}"
 		}
 		`
-		var result = ingester.process(content)
+		var result = ingester.Process(content)
 		var expected = []models.IndexItem{
 			{
 				Name:       "test1",

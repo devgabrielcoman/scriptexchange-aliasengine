@@ -2,6 +2,7 @@ package main
 
 import (
 	"bee/bbee/data"
+	"bee/bbee/ingester"
 	"bee/bbee/models"
 	"bee/bbee/utils"
 	"fmt"
@@ -42,8 +43,8 @@ func (u UpdateProgram) updateConfigFiles(source models.SourceFile) []models.Inde
 	}
 
 	time := utils.CurrentTime()
-	ingester := ConfigIngester{filePath: source.Path, currentTime: time}
-	return ingester.process(contents)
+	ingester := ingester.ConfigIngester{FilePath: source.Path, CurrentTime: time}
+	return ingester.Process(contents)
 }
 
 func (u UpdateProgram) updateScriptFiles(source models.SourceFile) []models.IndexItem {
@@ -57,6 +58,6 @@ func (u UpdateProgram) updateScriptFiles(source models.SourceFile) []models.Inde
 	}
 
 	time := utils.CurrentTime()
-	ingester := ScriptIngester{alias: source.Name, path: source.Path, currentTime: time}
-	return ingester.process(contents)
+	ingester := ingester.ScriptIngester{Alias: source.Name, Path: source.Path, CurrentTime: time}
+	return ingester.Process(contents)
 }

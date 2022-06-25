@@ -2,6 +2,7 @@ package main
 
 import (
 	"bee/bbee/data"
+	"bee/bbee/ingester"
 	"bee/bbee/models"
 	"bee/bbee/utils"
 	"bufio"
@@ -44,8 +45,8 @@ func (r RegisterFileProgram) registerConfigFile() {
 
 	// process new elements
 	time := utils.CurrentTime()
-	ingester := ConfigIngester{filePath: r.path, currentTime: time}
-	var newItems = ingester.process(contents)
+	ingester := ingester.ConfigIngester{FilePath: r.path, CurrentTime: time}
+	var newItems = ingester.Process(contents)
 	var items = append(existingItems, newItems...)
 	items = models.UniqueItemsByDate(items)
 
@@ -91,8 +92,8 @@ func (r RegisterFileProgram) registerScript() {
 	}
 
 	time := utils.CurrentTime()
-	ingester := ScriptIngester{alias: alias, path: r.path, currentTime: time}
-	var newItems = ingester.process(contents)
+	ingester := ingester.ScriptIngester{Alias: alias, Path: r.path, CurrentTime: time}
+	var newItems = ingester.Process(contents)
 	var items = append(existingItems, newItems...)
 	items = models.UniqueItemsByDate(items)
 

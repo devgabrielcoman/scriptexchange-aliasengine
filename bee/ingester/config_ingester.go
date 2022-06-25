@@ -1,46 +1,22 @@
-package main
+package ingester
 
 import (
 	"bee/bbee/models"
 	"bee/bbee/utils"
-	"sort"
 	"strings"
 
 	"github.com/samber/lo"
-)
-
-// main constants for the file ingeter
-const (
-	ALIAS_PREFIX         string = "alias "
-	ALIAS_SEPARATOR      string = "="
-	EXPORT_PREFIX        string = "export "
-	EXPORT_SEPARATOR     string = "="
-	START_CHAR_QUOTE     string = "'"
-	START_CHAR_DBL_QUOTE string = "\""
-	COMMENT_PREFIX       string = "#"
-	WHITESPACE           string = " "
-	FUNCTION_KEYWORD_ONE string = "function"
-	FUNCTION_KEYWORD_TWO string = "()"
-	OPEN_BRACKET         string = "{"
-	CLOSE_BRACKET        string = "}"
-	OPEN_PARA            string = "("
-	CLOSE_PARA           string = ")"
-	SEPARATOR            string = ""
-	NEWLINE              string = "\n"
-	TAB                  string = "\t"
-	ZSH_HISTORY_SEP      string = ";"
-	ZSH_HISTORY_SUFFIX   string = "\\"
 )
 
 // The ConfigIngester contains methods to ingest
 // aliases, functions, etc
 // contained in files such as .bashrc, .profile, .zshrc, etc
 type ConfigIngester struct {
-	filePath    string
-	currentTime int64
+	FilePath    string
+	CurrentTime int64
 }
 
-func (c ConfigIngester) process(content string) []models.IndexItem {
+func (c ConfigIngester) Process(content string) []models.IndexItem {
 	var result = []models.IndexItem{}
 
 	// separate the contents by line
@@ -141,9 +117,9 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 		Content:    aliasCommand,
 		Path:       c.getFileName(),
 		Comments:   comments,
-		PathOnDisk: c.filePath,
+		PathOnDisk: c.FilePath,
 		Type:       models.ScriptType(models.Alias),
-		Date:       c.currentTime,
+		Date:       c.CurrentTime,
 	}
 
 	return &indexItem, 0
@@ -182,9 +158,9 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 		Content:    exportCommand,
 		Path:       c.getFileName(),
 		Comments:   comments,
-		PathOnDisk: c.filePath,
+		PathOnDisk: c.FilePath,
 		Type:       models.ScriptType(models.Export),
-		Date:       c.currentTime,
+		Date:       c.CurrentTime,
 	}
 
 	return &indexItem, 0
@@ -256,7 +232,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 	var content = FUNCTION_KEYWORD_ONE + " " + allContent
 	var path = c.getFileName()
 	var comments = c.getComments(startIndex, allLines)
-	var pathOnDisk = c.filePath
+	var pathOnDisk = c.FilePath
 	var indexItem = models.IndexItem{
 		Name:       name,
 		Content:    content,
@@ -264,7 +240,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 		Comments:   comments,
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
-		Date:       c.currentTime,
+		Date:       c.CurrentTime,
 	}
 
 	return &indexItem, progress
@@ -340,7 +316,7 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 	var content = allContent
 	var path = c.getFileName()
 	var comments = c.getComments(startIndex, allLines)
-	var pathOnDisk = c.filePath
+	var pathOnDisk = c.FilePath
 	var indexItem = models.IndexItem{
 		Name:       name,
 		Content:    content,
@@ -348,7 +324,7 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 		Comments:   comments,
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
-		Date:       c.currentTime,
+		Date:       c.CurrentTime,
 	}
 
 	return &indexItem, progress
@@ -377,99 +353,5 @@ func (c ConfigIngester) trimLine(line string) string {
 }
 
 func (c ConfigIngester) getFileName() string {
-	return utils.FileName(c.filePath)
-}
-
-// The ScriptIngester just ingests a new full script
-type ScriptIngester struct {
-	alias       string
-	path        string
-	currentTime int64
-}
-
-func (s ScriptIngester) process(content string) []models.IndexItem {
-	return []models.IndexItem{
-		{
-			Name:       s.alias,
-			Content:    content,
-			Path:       ".scripts",
-			Comments:   []string{},
-			PathOnDisk: s.path,
-			Type:       models.ScriptType(models.Script),
-			Date:       s.currentTime,
-		},
-	}
-}
-
-// The BashHistoryIngester ingests a .bash_history type file
-type BashHistoryIngester struct {
-	path string
-}
-
-func (h BashHistoryIngester) process(content string) []models.IndexItem {
-	// separate the contents by line
-	var lines []string = strings.Split(content, NEWLINE)
-	var result = []models.IndexItem{}
-
-	for _, line := range lines {
-		item := models.IndexItem{
-			Name:       line,
-			Content:    line,
-			Comments:   []string{},
-			Path:       h.path,
-			PathOnDisk: h.path,
-			Type:       models.ScriptType(models.History),
-			Date:       0, // special case here, for bash we don't really have date info
-		}
-		result = append(result, item)
-	}
-
-	return models.UniqueItems(result)
-}
-
-// The ZSHHistoryIngester ingests a .zsh_history type file
-type ZSHHistoryIngester struct {
-	path string
-}
-
-func (z ZSHHistoryIngester) process(content string) []models.IndexItem {
-	// separate the contents by line
-	lines := strings.Split(content, NEWLINE)
-	var result = []models.IndexItem{}
-
-	for _, line := range lines {
-		lineItems := strings.Split(line, ZSH_HISTORY_SEP)
-
-		// not a valid line in the format date;command
-		if len(lineItems) < 2 {
-			continue
-		}
-
-		date := utils.LenientAtoi64(z.parseZSHDateItem(lineItems[0]))
-		command := strings.Join(lineItems[1:], SEPARATOR)
-		item := models.IndexItem{
-			Name:       command,
-			Content:    command,
-			Comments:   []string{},
-			Path:       z.path,
-			PathOnDisk: z.path,
-			Type:       models.ScriptType(models.History),
-			Date:       date,
-		}
-		result = append(result, item)
-	}
-
-	result = models.UniqueItemsByDate(result)
-
-	sort.Slice(result, func(i, j int) bool {
-		return result[j].Date < result[i].Date
-	})
-
-	return result
-}
-
-// parses a ZSH date item in the format: ": 1642437214:0"
-func (z ZSHHistoryIngester) parseZSHDateItem(rawDate string) string {
-	date := strings.TrimPrefix(strings.TrimSuffix(rawDate, ":0"), ": ")
-	return date
+	return utils.FileName(c.FilePath)
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bee/bbee/data"
+	"bee/bbee/ingester"
 	"bee/bbee/models"
 )
 
@@ -33,8 +34,8 @@ func (h HistoryProgram) getBashHistoryData() []models.IndexItem {
 	}
 
 	// ingest & process data from history
-	ingester := BashHistoryIngester{path: path}
-	return ingester.process(rawHistory)
+	ingester := ingester.BashHistoryIngester{Path: path}
+	return ingester.Process(rawHistory)
 }
 
 func (h HistoryProgram) getZSHHistoryData() []models.IndexItem {
@@ -45,6 +46,6 @@ func (h HistoryProgram) getZSHHistoryData() []models.IndexItem {
 	}
 
 	// ingest & process data from history
-	ingester := ZSHHistoryIngester{path: path}
-	return ingester.process(rawHistory)
+	ingester := ingester.ZSHHistoryIngester{Path: path}
+	return ingester.Process(rawHistory)
 }
