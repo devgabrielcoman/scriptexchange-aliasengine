@@ -40,10 +40,11 @@ func (r RegisterFileProgram) registerConfigFile() {
 	}
 
 	// process new elements
-	ingester := ConfigIngester{filePath: r.path}
+	time := CurrentTime()
+	ingester := ConfigIngester{filePath: r.path, currentTime: time}
 	var newItems = ingester.process(contents)
 	var items = append(existingItems, newItems...)
-	items = uniqueItems(items)
+	items = uniqueItemsByDate(items)
 
 	// write data
 	WriteSources(sources)
@@ -86,10 +87,11 @@ func (r RegisterFileProgram) registerScript() {
 		return
 	}
 
-	ingester := ScriptIngester{alias: alias, path: r.path}
+	time := CurrentTime()
+	ingester := ScriptIngester{alias: alias, path: r.path, currentTime: time}
 	var newItems = ingester.process(contents)
 	var items = append(existingItems, newItems...)
-	items = uniqueItems(items)
+	items = uniqueItemsByDate(items)
 
 	// write data
 	WriteSources(sources)

@@ -34,7 +34,8 @@ const (
 // aliases, functions, etc
 // contained in files such as .bashrc, .profile, .zshrc, etc
 type ConfigIngester struct {
-	filePath string
+	filePath    string
+	currentTime int64
 }
 
 func (c ConfigIngester) process(content string) []IndexItem {
@@ -140,6 +141,7 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 		Comments:   comments,
 		PathOnDisk: c.filePath,
 		Type:       ScriptType(Alias),
+		Date:       c.currentTime,
 	}
 
 	return &indexItem, 0
@@ -180,6 +182,7 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 		Comments:   comments,
 		PathOnDisk: c.filePath,
 		Type:       ScriptType(Export),
+		Date:       c.currentTime,
 	}
 
 	return &indexItem, 0
@@ -259,6 +262,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 		Comments:   comments,
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
+		Date:       c.currentTime,
 	}
 
 	return &indexItem, progress
@@ -342,6 +346,7 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 		Comments:   comments,
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
+		Date:       c.currentTime,
 	}
 
 	return &indexItem, progress
@@ -375,8 +380,9 @@ func (c ConfigIngester) getFileName() string {
 
 // The ScriptIngester just ingests a new full script
 type ScriptIngester struct {
-	alias string
-	path  string
+	alias       string
+	path        string
+	currentTime int64
 }
 
 func (s ScriptIngester) process(content string) []IndexItem {
@@ -388,6 +394,7 @@ func (s ScriptIngester) process(content string) []IndexItem {
 			Comments:   []string{},
 			PathOnDisk: s.path,
 			Type:       ScriptType(Script),
+			Date:       s.currentTime,
 		},
 	}
 }
@@ -400,30 +407,22 @@ type BashHistoryIngester struct {
 func (h BashHistoryIngester) process(content string) []IndexItem {
 	// separate the contents by line
 	var lines []string = strings.Split(content, NEWLINE)
-	keys := make(map[string]IndexItem)
-
-	for _, line := range lines {
-		command := line
-		_, ok := keys[command]
-		if !ok {
-			keys[command] = IndexItem{
-				Name:       command,
-				Content:    command,
-				Comments:   []string{},
-				Path:       h.path,
-				PathOnDisk: h.path,
-				Type:       ScriptType(History),
-			}
-		}
-	}
-
 	var result = []IndexItem{}
 
-	for _, value := range keys {
-		result = append(result, value)
+	for _, line := range lines {
+		item := IndexItem{
+			Name:       line,
+			Content:    line,
+			Comments:   []string{},
+			Path:       h.path,
+			PathOnDisk: h.path,
+			Type:       ScriptType(History),
+			Date:       0, // special case here, for bash we don't really have date info
+		}
+		result = append(result, item)
 	}
 
-	return result
+	return uniqueItems(result)
 }
 
 // The ZSHHistoryIngester ingests a .zsh_history type file
@@ -434,7 +433,7 @@ type ZSHHistoryIngester struct {
 func (z ZSHHistoryIngester) process(content string) []IndexItem {
 	// separate the contents by line
 	lines := strings.Split(content, NEWLINE)
-	keys := make(map[string]IndexItem)
+	var result = []IndexItem{}
 
 	for _, line := range lines {
 		lineItems := strings.Split(line, ZSH_HISTORY_SEP)
@@ -444,45 +443,24 @@ func (z ZSHHistoryIngester) process(content string) []IndexItem {
 			continue
 		}
 
-		date := z.parseZSHDateItem(lineItems[0])
+		date := lenientAtoi64(z.parseZSHDateItem(lineItems[0]))
 		command := strings.Join(lineItems[1:], SEPARATOR)
-
-		current, ok := keys[command]
-		if !ok {
-			keys[command] = IndexItem{
-				Name:       date,
-				Content:    command,
-				Comments:   []string{},
-				Path:       z.path,
-				PathOnDisk: z.path,
-				Type:       ScriptType(History),
-			}
-		} else {
-			existingDateVal := lenientAtoi(current.Name)
-			newDateVal := lenientAtoi(date)
-			if newDateVal > existingDateVal {
-				keys[command] = IndexItem{
-					Name:       date,
-					Content:    command,
-					Comments:   []string{},
-					Path:       z.path,
-					PathOnDisk: z.path,
-					Type:       ScriptType(History),
-				}
-			}
+		item := IndexItem{
+			Name:       command,
+			Content:    command,
+			Comments:   []string{},
+			Path:       z.path,
+			PathOnDisk: z.path,
+			Type:       ScriptType(History),
+			Date:       date,
 		}
+		result = append(result, item)
 	}
 
-	var result = []IndexItem{}
-
-	for _, value := range keys {
-		result = append(result, value)
-	}
+	result = uniqueItemsByDate(result)
 
 	sort.Slice(result, func(i, j int) bool {
-		iDate := lenientAtoi(result[i].Name)
-		jDate := lenientAtoi(result[j].Name)
-		return jDate < iDate
+		return result[j].Date < result[i].Date
 	})
 
 	return result

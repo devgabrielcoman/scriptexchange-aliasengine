@@ -20,7 +20,7 @@ func (u UpdateProgram) run() {
 		}
 	}
 
-	result = uniqueItems(result)
+	result = uniqueItemsByDate(result)
 	WriteItems(result)
 
 	fmt.Printf("Updated %d elements\n", len(result))
@@ -36,7 +36,8 @@ func (u UpdateProgram) updateConfigFiles(source SourceFile) []IndexItem {
 		return []IndexItem{}
 	}
 
-	ingester := ConfigIngester{source.Path}
+	time := CurrentTime()
+	ingester := ConfigIngester{filePath: source.Path, currentTime: time}
 	return ingester.process(contents)
 }
 
@@ -50,6 +51,7 @@ func (u UpdateProgram) updateScriptFiles(source SourceFile) []IndexItem {
 		return []IndexItem{}
 	}
 
-	ingester := ScriptIngester{alias: source.Name, path: source.Path}
+	time := CurrentTime()
+	ingester := ScriptIngester{alias: source.Name, path: source.Path, currentTime: time}
 	return ingester.process(contents)
 }

@@ -43,6 +43,29 @@ func uniqueItems(slice []IndexItem) []IndexItem {
 			list = append(list, entry)
 		}
 	}
+
+	return list
+}
+
+func uniqueItemsByDate(slice []IndexItem) []IndexItem {
+	keys := make(map[string]IndexItem)
+	list := []IndexItem{}
+
+	for _, item := range slice {
+		value, ok := keys[item.Name]
+		if ok {
+			if item.Date > value.Date {
+				keys[item.Name] = item
+			}
+		} else {
+			keys[item.Name] = item
+		}
+	}
+
+	for _, value := range keys {
+		list = append(list, value)
+	}
+
 	return list
 }
 
@@ -92,9 +115,8 @@ func fileNameWithoutExtTrimSuffix(fileName string) string {
 	return strings.TrimSuffix(fileName, filepath.Ext(fileName))
 }
 
-func dateFormat(d int) string {
-	intTime := int64(d)
-	t := time.Unix(intTime, 0)
+func dateFormat(d int64) string {
+	t := time.Unix(d, 0)
 	layout := "2006-01-02 15:04:05"
 	return t.Format(layout)
 }
@@ -106,4 +128,12 @@ func lenientAtoi(stringDate string) int {
 	} else {
 		return 0
 	}
+}
+
+func lenientAtoi64(date string) int64 {
+	return int64(lenientAtoi(date))
+}
+
+func CurrentTime() int64 {
+	return time.Now().Unix()
 }

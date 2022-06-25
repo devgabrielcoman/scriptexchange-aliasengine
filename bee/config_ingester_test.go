@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var ingester = ConfigIngester{filePath: "test.sh"}
+var ingester = ConfigIngester{filePath: "test.sh", currentTime: 0}
 
 func TestConfigIngester_Process(t *testing.T) {
 	t.Run("it should return an empty slice given an empty input", func(t *testing.T) {

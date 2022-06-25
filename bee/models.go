@@ -20,9 +20,10 @@ type IndexItem struct {
 	Comments   []string
 	PathOnDisk string
 	Type       ScriptType
+	Date       int64
 }
 
-// Define source type & available enum options
+// Define source file type & available enum options
 type SourceType int16
 
 const (
@@ -30,7 +31,7 @@ const (
 	File    SourceType = 1
 )
 
-// SourceFiels represent references to commands of files that a user has registered
+// SourceFiles represent references to commands of files that a user has registered
 type SourceFile struct {
 	Path string
 	Name string
