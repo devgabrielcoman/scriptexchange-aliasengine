@@ -2,7 +2,6 @@ package main
 
 import (
 	"bee/bbee/models"
-	"strconv"
 	"time"
 )
 
@@ -88,19 +87,6 @@ func dateFormat(d int64) string {
 	t := time.Unix(d, 0)
 	layout := "2006-01-02 15:04:05"
 	return t.Format(layout)
-}
-
-func lenientAtoi(stringDate string) int {
-	num, err := strconv.Atoi(stringDate)
-	if err == nil {
-		return num
-	} else {
-		return 0
-	}
-}
-
-func lenientAtoi64(date string) int64 {
-	return int64(lenientAtoi(date))
 }
 
 func CurrentTime() int64 {

@@ -445,7 +445,7 @@ func (z ZSHHistoryIngester) process(content string) []models.IndexItem {
 			continue
 		}
 
-		date := lenientAtoi64(z.parseZSHDateItem(lineItems[0]))
+		date := utils.LenientAtoi64(z.parseZSHDateItem(lineItems[0]))
 		command := strings.Join(lineItems[1:], SEPARATOR)
 		item := models.IndexItem{
 			Name:       command,
