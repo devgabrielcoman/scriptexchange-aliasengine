@@ -1,5 +1,5 @@
-package main
+package program
 
 type Program interface {
-	run()
+	Run()
 }

@@ -1,10 +1,10 @@
-package main
+package program
 
 import "bee/bbee/data"
 
 type ProfileProgram struct{}
 
-func (p ProfileProgram) run() {
+func (p ProfileProgram) Run() {
 	// get saved items
 	items := data.ReadItems()
 	controller := NewSearchController(items)
@@ -15,5 +15,5 @@ func (p ProfileProgram) run() {
 
 	// run the search program
 	program := SearchProgram{controller: *controller, cache: *cache, showPreview: true}
-	program.run()
+	program.Run()
 }

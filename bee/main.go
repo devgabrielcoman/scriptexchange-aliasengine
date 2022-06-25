@@ -1,6 +1,9 @@
 package main
 
-import "flag"
+import (
+	"bee/bbee/program"
+	"flag"
+)
 
 func main() {
 	var register string
@@ -16,20 +19,20 @@ func main() {
 
 	if register != "" {
 		if script {
-			program := RegisterFileProgram{path: register, isScript: true}
-			program.run()
+			program := program.RegisterFileProgram{Path: register, IsScript: true}
+			program.Run()
 		} else {
-			program := RegisterFileProgram{path: register, isScript: false}
-			program.run()
+			program := program.RegisterFileProgram{Path: register, IsScript: false}
+			program.Run()
 		}
 	} else if update {
-		program := UpdateProgram{}
-		program.run()
+		program := program.UpdateProgram{}
+		program.Run()
 	} else if history {
-		program := HistoryProgram{}
-		program.run()
+		program := program.HistoryProgram{}
+		program.Run()
 	} else {
-		program := ProfileProgram{}
-		program.run()
+		program := program.ProfileProgram{}
+		program.Run()
 	}
 }

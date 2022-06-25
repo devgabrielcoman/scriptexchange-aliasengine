@@ -1,4 +1,4 @@
-package main
+package program
 
 import (
 	"bee/bbee/data"
@@ -11,7 +11,7 @@ import (
 type UpdateProgram struct {
 }
 
-func (u UpdateProgram) run() {
+func (u UpdateProgram) Run() {
 	var result = []models.IndexItem{}
 	var sources = data.ReadSources()
 

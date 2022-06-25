@@ -1,4 +1,4 @@
-package main
+package program
 
 import (
 	"bee/bbee/data"
@@ -15,7 +15,7 @@ type SearchProgram struct {
 	showPreview bool
 }
 
-func (p SearchProgram) run() {
+func (p SearchProgram) Run() {
 	// setup the main app and run it
 	app := cview.NewApplication()
 

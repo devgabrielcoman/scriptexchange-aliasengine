@@ -1,4 +1,4 @@
-package main
+package program
 
 import (
 	"bee/bbee/data"
@@ -12,12 +12,12 @@ import (
 )
 
 type RegisterFileProgram struct {
-	path     string
-	isScript bool
+	Path     string
+	IsScript bool
 }
 
-func (r RegisterFileProgram) run() {
-	if r.isScript {
+func (r RegisterFileProgram) Run() {
+	if r.IsScript {
 		r.registerScript()
 	} else {
 		r.registerConfigFile()
@@ -27,7 +27,7 @@ func (r RegisterFileProgram) run() {
 func (r RegisterFileProgram) registerConfigFile() {
 	// update sources
 	var sources []models.SourceFile = data.ReadSources()
-	var source = models.SourceFile{Path: r.path, Name: utils.FileName(r.path), Type: models.SourceType(models.Command)}
+	var source = models.SourceFile{Path: r.Path, Name: utils.FileName(r.Path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
 	sources = models.UniqueSources(sources)
 
@@ -35,7 +35,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 	var existingItems = data.ReadItems()
 
 	// open file
-	contents, err := data.ReadFile(r.path)
+	contents, err := data.ReadFile(r.Path)
 
 	// gently handle error
 	if err != nil {
@@ -45,7 +45,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 
 	// process new elements
 	time := utils.CurrentTime()
-	ingester := ingester.ConfigIngester{FilePath: r.path, CurrentTime: time}
+	ingester := ingester.ConfigIngester{FilePath: r.Path, CurrentTime: time}
 	var newItems = ingester.Process(contents)
 	var items = append(existingItems, newItems...)
 	items = models.UniqueItemsByDate(items)
@@ -59,7 +59,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 
 func (r RegisterFileProgram) registerScript() {
 	// get the user to input the alias
-	var fileName = utils.FileName(r.path)
+	var fileName = utils.FileName(r.Path)
 	var initialAlias = utils.FileNameWithoutExtTrimSuffix(fileName)
 	fmt.Printf("This script will be registered with alias %s\nPress ENTER to accept or type a new Alias to override it\n", initialAlias)
 
@@ -75,7 +75,7 @@ func (r RegisterFileProgram) registerScript() {
 
 	// update sources
 	var sources []models.SourceFile = data.ReadSources()
-	var source = models.SourceFile{Path: r.path, Name: fileName, Type: models.SourceType(models.File)}
+	var source = models.SourceFile{Path: r.Path, Name: fileName, Type: models.SourceType(models.File)}
 	sources = append(sources, source)
 	sources = models.UniqueSources(sources)
 
@@ -83,7 +83,7 @@ func (r RegisterFileProgram) registerScript() {
 	var existingItems = data.ReadItems()
 
 	// open file
-	contents, err := data.ReadFile(r.path)
+	contents, err := data.ReadFile(r.Path)
 
 	// gently handle error
 	if err != nil {
@@ -92,7 +92,7 @@ func (r RegisterFileProgram) registerScript() {
 	}
 
 	time := utils.CurrentTime()
-	ingester := ingester.ScriptIngester{Alias: alias, Path: r.path, CurrentTime: time}
+	ingester := ingester.ScriptIngester{Alias: alias, Path: r.Path, CurrentTime: time}
 	var newItems = ingester.Process(contents)
 	var items = append(existingItems, newItems...)
 	items = models.UniqueItemsByDate(items)

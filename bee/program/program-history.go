@@ -1,4 +1,4 @@
-package main
+package program
 
 import (
 	"bee/bbee/data"
@@ -8,7 +8,7 @@ import (
 
 type HistoryProgram struct{}
 
-func (h HistoryProgram) run() {
+func (h HistoryProgram) Run() {
 	// read history data
 	bash_data := h.getBashHistoryData()
 	zsh_data := h.getZSHHistoryData()
@@ -23,7 +23,7 @@ func (h HistoryProgram) run() {
 
 	// run search program
 	program := SearchProgram{controller: *controller, cache: *cache, showPreview: false}
-	program.run()
+	program.Run()
 }
 
 func (h HistoryProgram) getBashHistoryData() []models.IndexItem {
