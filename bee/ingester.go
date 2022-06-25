@@ -2,6 +2,7 @@ package main
 
 import (
 	"bee/bbee/models"
+	"bee/bbee/utils"
 	"sort"
 	"strings"
 
@@ -212,7 +213,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 		if nextChar == OPEN_BRACKET {
 			// get the function name correctly
 			if !hasSeenFirstBracket {
-				var prevLimit = max(i-1, 0)
+				var prevLimit = utils.Max(i-1, 0)
 				var contentSoFar = strings.Join(characterArray[0:prevLimit], SEPARATOR)
 				var potentialFunctionName = strings.Split(contentSoFar, WHITESPACE)
 				if len(potentialFunctionName) == 1 {

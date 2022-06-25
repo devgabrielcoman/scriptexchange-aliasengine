@@ -2,6 +2,7 @@ package main
 
 import (
 	"bee/bbee/models"
+	"bee/bbee/utils"
 
 	"github.com/samber/lo"
 )
@@ -51,11 +52,11 @@ func (c *SearchController) formResults(items []models.IndexItem) []SearchResult 
 }
 
 func (c *SearchController) moveDown() {
-	c.currentIndex = min(c.currentIndex+1, len(c.results)-1)
+	c.currentIndex = utils.Min(c.currentIndex+1, len(c.results)-1)
 }
 
 func (c *SearchController) moveUp() {
-	c.currentIndex = max(c.currentIndex-1, 0)
+	c.currentIndex = utils.Max(c.currentIndex-1, 0)
 }
 
 func (c *SearchController) resetCurrentIndex() {

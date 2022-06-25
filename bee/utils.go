@@ -13,28 +13,6 @@ type Pair struct {
 	a, b string
 }
 
-// Max returns the larger of x or y.
-func max(x, y int) int {
-	if x < y {
-		return y
-	}
-	return x
-}
-
-// Min returns the smaller of x or y.
-func min(x, y int) int {
-	if x > y {
-		return y
-	}
-	return x
-}
-
-func check(e error) {
-	if e != nil {
-		panic(e)
-	}
-}
-
 func uniqueItems(slice []models.IndexItem) []models.IndexItem {
 	keys := make(map[string]bool)
 	list := []models.IndexItem{}
