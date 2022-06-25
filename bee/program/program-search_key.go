@@ -47,6 +47,7 @@ func (k SearchKey) formSearchQueries() []string {
 		return []string{
 			item.Name,
 			item.Content,
+			item.Path + "/" + item.Name,
 		}
 	default:
 		return []string{}
