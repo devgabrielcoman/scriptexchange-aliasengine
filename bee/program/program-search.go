@@ -4,6 +4,7 @@ import (
 	"bee/bbee/data"
 	"bee/bbee/utils"
 	"fmt"
+	"strings"
 
 	"code.rocketnine.space/tslocum/cview"
 	"github.com/gdamore/tcell/v2"
@@ -87,12 +88,27 @@ func (p SearchProgram) Run() {
 
 func (p SearchProgram) redrawDetails(textView *cview.TextView) {
 	// get the content
-	var item = p.controller.getCurrentItem()
+	var item = p.controller.results[0] // p.controller.getCurrentItem()
 	var content = p.cache.getPreviewForSearchResult(item)
 
+	// // White Background
+	// BG := "\033[47m"
+	// // Black Foreground
+	// FG := "\033[0;30m"
+	// // Reset
+	// reset := "\033[0m"
+	i := p.controller.elems[p.controller.currentIndex].StartLine + 1
+	// linii := strings.Split(content, "\n")
+	// linii[i] = "► \033[1m" + linii[i] + "\033[1m" // + " ◄" // + "\n[white:bold]--------------------------------"
+	// content = strings.Join(linii, "\n")
+
 	// command to display with the "bat" utility, if present on the system
-	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=numbers --line-range=:500 --paging=never --theme=1337"
-	out, _, err := utils.Shellout(command)
+	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=header --line-range=:500 --paging=never --theme=1337"
+	allText, _, err := utils.Shellout(command)
+
+	var linii = strings.Split(allText, "\n")
+	linii[i] = "---------------\n" + linii[i] + "\n---------------"
+	allText = strings.Join(linii, "\n")
 
 	// if error, revert to setting the text
 	if err != nil {
@@ -100,7 +116,7 @@ func (p SearchProgram) redrawDetails(textView *cview.TextView) {
 	} else {
 		textView.Clear()
 		w := cview.ANSIWriter(textView)
-		fmt.Fprintln(w, out)
+		fmt.Fprintln(w, allText)
 	}
 	textView.SetTitle(item.previewTitle)
 }
