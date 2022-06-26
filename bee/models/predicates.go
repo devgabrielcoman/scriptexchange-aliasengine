@@ -42,6 +42,13 @@ func UniqueItemsByDate(slice []IndexItem) []IndexItem {
 	return list
 }
 
+func SortedItemsByPath(slice []IndexItem) []IndexItem {
+	sort.Slice(slice, func(i, j int) bool {
+		return slice[i].Path < slice[j].Path
+	})
+	return slice
+}
+
 func UniqueSources(slice []SourceFile) []SourceFile {
 	keys := make(map[string]bool)
 	list := []SourceFile{}
@@ -52,13 +59,6 @@ func UniqueSources(slice []SourceFile) []SourceFile {
 		}
 	}
 	return list
-}
-
-func SortedSources(slice []SourceFile) []SourceFile {
-	sort.Slice(slice, func(i, j int) bool {
-		return slice[i].Name < slice[j].Name
-	})
-	return slice
 }
 
 func UniquePaths(data []IndexItem) []Pair {

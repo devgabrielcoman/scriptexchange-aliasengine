@@ -15,7 +15,6 @@ func (u UpdateProgram) Run() {
 	var result = []models.IndexItem{}
 	var sources = data.ReadSources()
 	sources = models.UniqueSources(sources)
-	sources = models.SortedSources(sources)
 
 	for _, source := range sources {
 		switch source.Type {
@@ -29,6 +28,7 @@ func (u UpdateProgram) Run() {
 	}
 
 	result = models.UniqueItemsByDate(result)
+	result = models.SortedItemsByPath(result)
 	data.WriteItems(result)
 
 	fmt.Printf("Updated %d elements\n", len(result))
