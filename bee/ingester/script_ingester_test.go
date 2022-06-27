@@ -22,7 +22,7 @@ func TestScriptIngester_Process(t *testing.T) {
 				Type:       models.ScriptType(models.Script),
 				Date:       123,
 				StartLine:  0,
-				EndLine:    1,
+				EndLine:    0,
 			},
 		}
 		assert.Equal(t, expected, result)

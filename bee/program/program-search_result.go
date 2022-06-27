@@ -23,6 +23,9 @@ type SearchResult struct {
 	previewContent string
 	command        string
 	pathOnDisk     string
+	startLine      int
+	endLine        int
+	noHighlight    bool
 	resultType     SearchResultType
 }
 
@@ -59,6 +62,9 @@ func NewAliasSearchResult(item models.IndexItem) SearchResult {
 		command:        command,
 		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
+		startLine:      item.StartLine,
+		endLine:        item.EndLine,
+		noHighlight:    false,
 	}
 }
 
@@ -78,6 +84,9 @@ func NewFunctionSearchResult(item models.IndexItem) SearchResult {
 		command:        command,
 		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
+		startLine:      item.StartLine,
+		endLine:        item.EndLine,
+		noHighlight:    false,
 	}
 }
 
@@ -97,6 +106,9 @@ func NewScriptSearchResult(item models.IndexItem) SearchResult {
 		command:        command,
 		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
+		startLine:      item.StartLine,
+		endLine:        item.EndLine,
+		noHighlight:    true,
 	}
 }
 
@@ -116,6 +128,9 @@ func NewExportSearchResult(item models.IndexItem) SearchResult {
 		command:        command,
 		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
+		startLine:      item.StartLine,
+		endLine:        item.EndLine,
+		noHighlight:    false,
 	}
 }
 
@@ -134,6 +149,9 @@ func NewHistorySearchResult(item models.IndexItem) SearchResult {
 		command:        item.Content,
 		pathOnDisk:     item.Path,
 		resultType:     SearchResultType(Item),
+		startLine:      item.StartLine,
+		endLine:        item.EndLine,
+		noHighlight:    false,
 	}
 }
 
@@ -146,6 +164,9 @@ func NewEmptySearchResult() SearchResult {
 		command:        "",
 		pathOnDisk:     "",
 		resultType:     Empty,
+		startLine:      0,
+		endLine:        0,
+		noHighlight:    false,
 	}
 }
 
@@ -159,6 +180,9 @@ func NewSearchCategory(name string, pathOnDisk string) SearchResult {
 		command:        "",
 		pathOnDisk:     pathOnDisk,
 		resultType:     Category,
+		startLine:      0,
+		endLine:        0,
+		noHighlight:    true,
 	}
 }
 

@@ -87,37 +87,54 @@ func (p SearchProgram) Run() {
 }
 
 func (p SearchProgram) redrawDetails(textView *cview.TextView) {
-	// get the content
-	var item = p.controller.results[0] // p.controller.getCurrentItem()
-	var content = p.cache.getPreviewForSearchResult(item)
-
-	// // White Background
-	// BG := "\033[47m"
-	// // Black Foreground
-	// FG := "\033[0;30m"
-	// // Reset
-	// reset := "\033[0m"
-	i := p.controller.elems[p.controller.currentIndex].StartLine + 1
-	// linii := strings.Split(content, "\n")
-	// linii[i] = "► \033[1m" + linii[i] + "\033[1m" // + " ◄" // + "\n[white:bold]--------------------------------"
-	// content = strings.Join(linii, "\n")
-
-	// command to display with the "bat" utility, if present on the system
-	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=header --line-range=:500 --paging=never --theme=1337"
-	allText, _, err := utils.Shellout(command)
-
-	var linii = strings.Split(allText, "\n")
-	linii[i] = "---------------\n" + linii[i] + "\n---------------"
-	allText = strings.Join(linii, "\n")
-
-	// if error, revert to setting the text
-	if err != nil {
-		textView.SetText(content)
-	} else {
-		textView.Clear()
-		w := cview.ANSIWriter(textView)
-		fmt.Fprintln(w, allText)
+	if !p.showPreview {
+		return
 	}
+
+	item := p.controller.getCurrentItem()
+	category := p.controller.getNearestCategoryResult()
+	var content string
+	if item.noHighlight {
+		content = p.cache.getPreviewForSearchResult(item)
+	} else {
+		content = p.cache.getPreviewForSearchResult(category)
+	}
+
+	var allText string
+	if item.noHighlight {
+		allText = p.colorize(content)
+	} else {
+		lines := strings.Split(content, "\n")
+		firstLines := lines[:item.startLine]
+		selectedLines := lines[item.startLine : item.endLine+1]
+		endLines := lines[item.endLine+1:]
+
+		firstContent := p.dehighlight(strings.Join(firstLines, "\n"))
+		selectedContent := p.highlight(strings.Join(selectedLines, "\n"))
+		endContent := p.dehighlight(strings.Join(endLines, "\n"))
+
+		if len(firstLines) == 0 {
+			allText = selectedContent + endContent
+		} else {
+			allText = firstContent + selectedContent + endContent
+		}
+	}
+
+	var _, _, _, height = textView.GetRect()
+
+	textView.Clear()
+	// smooth scrolling
+	if item.startLine > height/2 {
+		textView.ScrollTo(item.startLine-height/2, 0)
+	} else {
+		textView.ScrollToBeginning()
+	}
+
+	// actually write things
+	w := cview.ANSIWriter(textView)
+	fmt.Fprintln(w, allText)
+
+	// set the title
 	textView.SetTitle(item.previewTitle)
 }
 
@@ -144,4 +161,33 @@ func (p SearchProgram) redrawListTitle(list *cview.List) {
 
 func (p SearchProgram) stop() {
 	data.WriteLastCommand(p.controller.getCurrentItem().command)
+}
+
+func (p SearchProgram) highlight(content string) string {
+	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=plain --line-range=:500 --paging=never --theme=1337"
+	result, _, err := utils.Shellout(command)
+	if err != nil {
+		return ""
+	}
+	result = strings.ReplaceAll("\033[48;2;35;35;45m"+result, "\033[0m", "\033[48;2;35;35;45m")
+	return result + "\033[0m"
+}
+
+func (p SearchProgram) colorize(content string) string {
+	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=plain --line-range=:500 --paging=never --theme=1337"
+	result, _, err := utils.Shellout(command)
+	if err != nil {
+		return ""
+	}
+	return result
+}
+
+func (p SearchProgram) dehighlight(content string) string {
+	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=plain --line-range=:500 --paging=never --theme=1337"
+	result, _, err := utils.Shellout(command)
+	if err != nil {
+		return ""
+	}
+	result = strings.ReplaceAll("\033[2m"+result, "\033[0m", "\033[2m")
+	return result + "\033[0m"
 }

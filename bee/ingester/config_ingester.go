@@ -110,6 +110,7 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 
 	// get comments
 	var comments = c.getComments(startIndex, allLines)
+	var startLine = utils.Max(0, startIndex-len(comments))
 
 	// create item
 	var indexItem = models.IndexItem{
@@ -120,7 +121,7 @@ func (c ConfigIngester) processAlias(line string, startIndex int, allLines []str
 		PathOnDisk: c.FilePath,
 		Type:       models.ScriptType(models.Alias),
 		Date:       c.CurrentTime,
-		StartLine:  startIndex,
+		StartLine:  startLine,
 		EndLine:    startIndex,
 	}
 
@@ -153,6 +154,7 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 
 	// get comments
 	var comments = c.getComments(startIndex, allLines)
+	var startLine = utils.Max(0, startIndex-len(comments))
 
 	// create item
 	var indexItem = models.IndexItem{
@@ -163,7 +165,7 @@ func (c ConfigIngester) processExport(line string, startIndex int, allLines []st
 		PathOnDisk: c.FilePath,
 		Type:       models.ScriptType(models.Export),
 		Date:       c.CurrentTime,
-		StartLine:  startIndex,
+		StartLine:  startLine,
 		EndLine:    startIndex,
 	}
 
@@ -236,6 +238,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 	var content = FUNCTION_KEYWORD_ONE + " " + allContent
 	var path = c.getFileName()
 	var comments = c.getComments(startIndex, allLines)
+	var startLine = utils.Max(0, startIndex-len(comments))
 	var pathOnDisk = c.FilePath
 	var indexItem = models.IndexItem{
 		Name:       name,
@@ -245,7 +248,7 @@ func (c ConfigIngester) processFunctionInStyleOne(line string, startIndex int, a
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
 		Date:       c.CurrentTime,
-		StartLine:  startIndex,
+		StartLine:  startLine,
 		EndLine:    nextIndex,
 	}
 
@@ -322,6 +325,7 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 	var content = allContent
 	var path = c.getFileName()
 	var comments = c.getComments(startIndex, allLines)
+	var startLine = utils.Max(0, startIndex-len(comments))
 	var pathOnDisk = c.FilePath
 	var indexItem = models.IndexItem{
 		Name:       name,
@@ -331,7 +335,7 @@ func (c ConfigIngester) processFunctionInStyleTwo(line string, startIndex int, a
 		PathOnDisk: pathOnDisk,
 		Type:       scriptType,
 		Date:       c.CurrentTime,
-		StartLine:  startIndex,
+		StartLine:  startLine,
 		EndLine:    nextIndex,
 	}
 

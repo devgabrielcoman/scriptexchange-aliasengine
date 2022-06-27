@@ -96,7 +96,7 @@ func TestConfigIngester_Process_Alias(t *testing.T) {
 				Comments:   []string{"# this is my", "# comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  2,
+				StartLine:  0,
 				EndLine:    2,
 			},
 		}
@@ -121,7 +121,7 @@ func TestConfigIngester_Process_Alias(t *testing.T) {
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -131,7 +131,7 @@ func TestConfigIngester_Process_Alias(t *testing.T) {
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  6,
+				StartLine:  4,
 				EndLine:    6,
 			},
 		}
@@ -156,7 +156,7 @@ func TestConfigIngester_Process_Alias(t *testing.T) {
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -166,7 +166,7 @@ func TestConfigIngester_Process_Alias(t *testing.T) {
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  6,
+				StartLine:  4,
 				EndLine:    6,
 			},
 		}
@@ -250,7 +250,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is my", "# comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  2,
+				StartLine:  0,
 				EndLine:    2,
 			},
 		}
@@ -275,7 +275,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -285,7 +285,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  6,
+				StartLine:  4,
 				EndLine:    6,
 			},
 		}
@@ -310,7 +310,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -320,7 +320,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  6,
+				StartLine:  4,
 				EndLine:    6,
 			},
 		}
@@ -345,7 +345,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is my comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -355,7 +355,7 @@ func TestConfigIngester_Process_Export(t *testing.T) {
 				Comments:   []string{"# this is the", "# second comment"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  6,
+				StartLine:  4,
 				EndLine:    6,
 			},
 		}
@@ -419,7 +419,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 		}
@@ -443,7 +443,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -453,7 +453,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  5,
+				StartLine:  4,
 				EndLine:    5,
 			},
 		}
@@ -476,7 +476,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    4,
 			},
 		}
@@ -501,7 +501,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    6,
 			},
 		}
@@ -524,7 +524,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    4,
 			},
 		}
@@ -555,7 +555,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    6,
 			},
 			{
@@ -565,7 +565,7 @@ func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  9,
+				StartLine:  8,
 				EndLine:    12,
 			},
 		}
@@ -622,7 +622,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 		}
@@ -646,7 +646,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    2,
 			},
 			{
@@ -656,7 +656,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  5,
+				StartLine:  4,
 				EndLine:    5,
 			},
 		}
@@ -679,7 +679,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    4,
 			},
 		}
@@ -704,7 +704,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    6,
 			},
 		}
@@ -727,7 +727,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    4,
 			},
 		}
@@ -758,7 +758,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    6,
 			},
 			{
@@ -768,7 +768,7 @@ func TestConfigIngester_Process_FunctionStyleTwo(t *testing.T) {
 				Comments:   []string{"# this is my second function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  9,
+				StartLine:  8,
 				EndLine:    12,
 			},
 		}
@@ -810,7 +810,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Comments:   []string{"# this is my function"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Function),
-				StartLine:  2,
+				StartLine:  1,
 				EndLine:    6,
 			},
 			{
@@ -820,7 +820,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Comments:   []string{"# this is my first alias"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  9,
+				StartLine:  8,
 				EndLine:    9,
 			},
 			{
@@ -830,7 +830,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Comments:   []string{"# this is my second alias"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Alias),
-				StartLine:  12,
+				StartLine:  11,
 				EndLine:    12,
 			},
 			{
@@ -850,7 +850,7 @@ func TestConfigIngester_Process(t *testing.T) {
 				Comments:   []string{"# this is an export"},
 				PathOnDisk: "test.sh",
 				Type:       models.ScriptType(models.Export),
-				StartLine:  19,
+				StartLine:  18,
 				EndLine:    19,
 			},
 		}

@@ -80,6 +80,21 @@ func (c SearchController) getCurrentItem() SearchResult {
 	}
 }
 
+func (c SearchController) getNearestCategoryResult() SearchResult {
+	if c.currentIndex >= 0 && c.currentIndex < len(c.results) {
+		var i = c.currentIndex
+		for i >= 0 {
+			currentResult := c.results[i]
+			if currentResult.resultType == SearchResultType(Category) {
+				return currentResult
+			}
+			i -= 1
+		}
+
+	}
+	return NewEmptySearchResult()
+}
+
 func (c SearchController) getNumberOfSearchResults() int {
 	filtered := lo.Filter(c.results, func(result SearchResult, i int) bool {
 		return result.resultType == SearchResultType(Item)
