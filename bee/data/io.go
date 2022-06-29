@@ -106,7 +106,7 @@ func WriteLastCommand(command string) {
 
 func WriteItems(items []models.IndexItem) {
 	path := getDataUrl()
-	json, err := json.Marshal(items)
+	json, err := json.MarshalIndent(items, "", "  ")
 	check(err)
 	ferr := os.WriteFile(path, json, 0644)
 	check(ferr)
@@ -114,7 +114,7 @@ func WriteItems(items []models.IndexItem) {
 
 func WriteSources(sources []models.SourceFile) {
 	path := getSourcesUrl()
-	json, err := json.Marshal(sources)
+	json, err := json.MarshalIndent(sources, "", "  ")
 	check(err)
 	ferr := os.WriteFile(path, json, 0644)
 	check(ferr)
