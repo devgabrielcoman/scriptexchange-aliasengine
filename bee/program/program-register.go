@@ -35,7 +35,7 @@ func (r RegisterFileProgram) registerConfigFile() {
 	var existingItems = data.ReadItems()
 
 	// open file
-	contents, err := data.ReadFile(r.Path)
+	contents, err := data.ReadResource(r.Path)
 
 	// gently handle error
 	if err != nil {
@@ -84,7 +84,7 @@ func (r RegisterFileProgram) registerScript() {
 	var existingItems = data.ReadItems()
 
 	// open file
-	contents, err := data.ReadFile(r.Path)
+	contents, err := data.ReadResource(r.Path)
 
 	// gently handle error
 	if err != nil {

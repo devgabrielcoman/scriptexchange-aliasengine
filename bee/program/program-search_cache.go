@@ -32,7 +32,7 @@ func fillCache(sources []models.SourceFile) map[string]string {
 	cache := make(map[string]string)
 	for _, source := range sources {
 		var path = source.Path
-		var content, err = data.ReadFile(path)
+		var content, err = data.ReadResource(path)
 		if err != nil {
 			continue
 		}

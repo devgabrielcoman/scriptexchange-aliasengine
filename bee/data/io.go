@@ -2,9 +2,12 @@ package data
 
 import (
 	"bee/bbee/models"
+	"bee/bbee/utils"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 )
 
@@ -70,7 +73,31 @@ func ReadSources() []models.SourceFile {
 	return sources
 }
 
-func ReadFile(path string) (string, error) {
+func ReadResource(path string) (string, error) {
+	if utils.IsHttpUrl(path) {
+		return readUrl(path)
+	} else {
+		return readFile(path)
+	}
+}
+
+// Reads data from a remote URL that is accessible somehow
+func readUrl(url string) (string, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	//We Read the response body on the line below.
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+	//Convert the body to type string
+	return string(body), nil
+}
+
+// Reads data from a local file
+func readFile(path string) (string, error) {
 	dat, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -81,7 +108,7 @@ func ReadFile(path string) (string, error) {
 
 func ReadBashHistory() (string, string, error) {
 	var path = getBashHistoryUrl()
-	data, err := ReadFile(path)
+	data, err := ReadResource(path)
 	if err != nil {
 		return "", path, err
 	}
@@ -90,7 +117,7 @@ func ReadBashHistory() (string, string, error) {
 
 func ReadZSHHistory() (string, string, error) {
 	var path = getZshHistoryUrl()
-	data, err := ReadFile(path)
+	data, err := ReadResource(path)
 	if err != nil {
 		return "", path, err
 	}
