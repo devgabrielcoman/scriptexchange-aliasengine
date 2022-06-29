@@ -25,13 +25,14 @@ func UniqueItemsByDate(slice []IndexItem) []IndexItem {
 	list := []IndexItem{}
 
 	for _, item := range slice {
-		value, ok := keys[item.Name]
+		key := item.Name + " " + item.Content
+		value, ok := keys[key]
 		if ok {
 			if item.Date > value.Date {
-				keys[item.Name] = item
+				keys[key] = item
 			}
 		} else {
-			keys[item.Name] = item
+			keys[key] = item
 		}
 	}
 

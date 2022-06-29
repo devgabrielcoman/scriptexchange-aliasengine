@@ -125,7 +125,7 @@ func (p SearchProgram) redrawDetails(textView *cview.TextView) {
 	textView.Clear()
 	// smooth scrolling
 	if item.startLine > height/2 {
-		textView.ScrollTo(item.startLine-height/2, 0)
+		textView.ScrollTo(item.startLine, 0)
 	} else {
 		textView.ScrollToBeginning()
 	}
