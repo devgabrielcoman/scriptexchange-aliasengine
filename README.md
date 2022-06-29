@@ -61,6 +61,17 @@ If you want to register a whole script, it's similar, you just need to add the *
 bee --register /absolute/path/to/script.sh -s
 ```
 
+Likewise, you can register files stored remotly, like on GitHub:
+
+```
+bee --register https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/examples/examples.sh
+```
+
+**Notes**: 
+- You need to register files through the "raw" GitHub api
+- You can register files in public repos or gists
+- You can also register files in private repos, as long as you provide a [GitHub token](https://github.com/settings/tokens)
+
 ## Usage
 
 Once you've registered everything, it's a simple as typing `bee`. 
