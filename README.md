@@ -6,6 +6,7 @@
   - [Syntax highlighting](#syntax-highlighting)
   - [Comments](#comments)
   - [History](#history)
+  - [Remove a file](#remove-a-file)
   - [Available platforms](#available-platforms)
   - [Caveats](#caveats)
   - [Build from source](#build-from-source)
@@ -126,6 +127,20 @@ You should then see something like this
 
 ![Alias Bee History](/res/history.png?raw=true "Alias Bee History")
 
+
+## Remove a file
+
+If you want to remove a script file or a file of aliases and functions, you can use the `remove` command with either the name or the path to the file. 
+
+```
+bee --remove .bash_history
+```
+
+or 
+
+```
+bee --remove https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/examples/examples.sh
+```
 
 ## Available platforms 
 
