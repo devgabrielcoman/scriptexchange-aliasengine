@@ -73,6 +73,18 @@ func ReadSources() []models.SourceFile {
 	return sources
 }
 
+// Reads the user's local Sources file and returns the contents
+func ReadSourcesRaw() string {
+	path := getSourcesUrl()
+	dat, err := os.ReadFile(path)
+
+	if err != nil {
+		return ""
+	}
+
+	return string(dat)
+}
+
 func ReadResource(path string) (string, error) {
 	if utils.IsHttpUrl(path) {
 		return readUrl(path)

@@ -7,6 +7,7 @@
   - [Comments](#comments)
   - [History](#history)
   - [Remove a file](#remove-a-file)
+  - [List source file](#list-source-file)
   - [Available platforms](#available-platforms)
   - [Caveats](#caveats)
   - [Build from source](#build-from-source)
@@ -140,6 +141,20 @@ or
 
 ```
 bee --remove https://raw.githubusercontent.com/devgabrielcoman/scriptexchange-aliasengine/main/examples/examples.sh
+```
+
+## List source file
+
+If you want to list out all of the source files you've registered, you can run
+
+```
+bee -ls
+```
+
+or 
+
+```
+bee -ls > /path/to/file/to/share/sources.json
 ```
 
 ## Available platforms 

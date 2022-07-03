@@ -6,6 +6,9 @@ import (
 	"fmt"
 )
 
+// This Program will remove a source from the user's source list, given
+// either the Name or the full Path.
+// If no such source is found, nothing will be removed.
 type RemoveProgram struct {
 	Name string
 }
