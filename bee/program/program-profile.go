@@ -10,7 +10,7 @@ func (p ProfileProgram) Run() {
 	controller := NewSearchController(items)
 
 	// get saved source + form cache
-	sources := data.ReadSources()
+	sources := data.ReadUserSources()
 	cache := NewSearchCache(sources)
 
 	// run the search program

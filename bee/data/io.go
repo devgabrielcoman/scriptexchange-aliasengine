@@ -49,7 +49,7 @@ func getZshHistoryUrl() string {
 
 func ReadItems() []models.IndexItem {
 	path := getDataUrl()
-	dat, err := os.ReadFile(path)
+	dat, err := ReadResource(path)
 
 	if err != nil {
 		return []models.IndexItem{}
@@ -60,9 +60,10 @@ func ReadItems() []models.IndexItem {
 	return items
 }
 
-func ReadSources() []models.SourceFile {
-	path := getSourcesUrl()
-	dat, err := os.ReadFile(path)
+// Function to read a local or remote source File
+// and returns a list of typed models.SourceFile
+func ReadSourceFile(path string) []models.SourceFile {
+	dat, err := ReadResource(path)
 
 	if err != nil {
 		return []models.SourceFile{}
@@ -73,10 +74,17 @@ func ReadSources() []models.SourceFile {
 	return sources
 }
 
+// Function that reads the user's default source File
+// and returns a list of typed models.SourceFile
+func ReadUserSources() []models.SourceFile {
+	path := getSourcesUrl()
+	return ReadSourceFile(path)
+}
+
 // Reads the user's local Sources file and returns the contents
 func ReadSourcesRaw() string {
 	path := getSourcesUrl()
-	dat, err := os.ReadFile(path)
+	dat, err := readFile(path)
 
 	if err != nil {
 		return ""
@@ -85,6 +93,8 @@ func ReadSourcesRaw() string {
 	return string(dat)
 }
 
+// Function that takes either a valid local file path or  a valid remote URL
+// and returns either an error or the contents of the resource, as a string
 func ReadResource(path string) (string, error) {
 	if utils.IsHttpUrl(path) {
 		return readUrl(path)
@@ -108,7 +118,7 @@ func readUrl(url string) (string, error) {
 	return string(body), nil
 }
 
-// Reads data from a local file
+// Reads data from a local file, given a path
 func readFile(path string) (string, error) {
 	dat, err := os.ReadFile(path)
 	if err != nil {

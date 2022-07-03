@@ -13,7 +13,7 @@ type UpdateProgram struct {
 
 func (u UpdateProgram) Run() {
 	var result = []models.IndexItem{}
-	var sources = data.ReadSources()
+	var sources = data.ReadUserSources()
 	sources = models.UniqueSources(sources)
 
 	for _, source := range sources {

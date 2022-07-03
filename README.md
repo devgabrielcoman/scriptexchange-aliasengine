@@ -8,6 +8,7 @@
   - [History](#history)
   - [Remove a file](#remove-a-file)
   - [List source file](#list-source-file)
+  - [Add a new source](#add-a-new-source)
   - [Available platforms](#available-platforms)
   - [Caveats](#caveats)
   - [Build from source](#build-from-source)
@@ -156,6 +157,16 @@ or
 ```
 bee -ls > /path/to/file/to/share/sources.json
 ```
+
+## Add a new source
+
+If a coworker or friend has shared their **sources.json** file with you, it's easy to ingest it:
+
+```
+bee -source /path/to/local/or/remote/sources.json
+```
+
+This will concatenate your source with their sources, eliminating any duplicates.
 
 ## Available platforms 
 

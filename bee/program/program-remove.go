@@ -16,7 +16,7 @@ type RemoveProgram struct {
 func (r RemoveProgram) Run() {
 	fmt.Printf("Removing %s\n", r.Name)
 
-	sources := data.ReadSources()
+	sources := data.ReadUserSources()
 	var result = r.removeSource(sources)
 
 	if len(result) == len(sources) {

@@ -26,7 +26,7 @@ func (r RegisterFileProgram) Run() {
 
 func (r RegisterFileProgram) registerConfigFile() {
 	// update sources
-	var sources []models.SourceFile = data.ReadSources()
+	var sources []models.SourceFile = data.ReadUserSources()
 	var source = models.SourceFile{Path: r.Path, Name: utils.FileName(r.Path), Type: models.SourceType(models.Command)}
 	sources = append(sources, source)
 	sources = models.UniqueSources(sources)
@@ -75,7 +75,7 @@ func (r RegisterFileProgram) registerScript() {
 	}
 
 	// update sources
-	var sources []models.SourceFile = data.ReadSources()
+	var sources []models.SourceFile = data.ReadUserSources()
 	var source = models.SourceFile{Path: r.Path, Name: fileName, Type: models.SourceType(models.File)}
 	sources = append(sources, source)
 	sources = models.UniqueSources(sources)

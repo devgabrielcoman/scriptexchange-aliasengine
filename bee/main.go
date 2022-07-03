@@ -8,6 +8,7 @@ import (
 func main() {
 	var register string
 	var remove string
+	var source string
 	var script bool
 	var update bool
 	var history bool
@@ -15,6 +16,7 @@ func main() {
 
 	flag.StringVar(&register, "register", "", "Register a file of aliases or functions or a script")
 	flag.StringVar(&remove, "remove", "", "Remove a file of aliases/functions or a full script")
+	flag.StringVar(&source, "source", "", "Add the items in a source file to your existing one")
 	flag.BoolVar(&script, "s", false, "Register file as script")
 	flag.BoolVar(&update, "u", false, "Update all data")
 	flag.BoolVar(&history, "h", false, "Search through bash history")
@@ -31,6 +33,9 @@ func main() {
 		}
 	} else if remove != "" {
 		program := program.RemoveProgram{Name: remove}
+		program.Run()
+	} else if source != "" {
+		program := program.SourceProgram{Path: source}
 		program.Run()
 	} else if update {
 		program := program.UpdateProgram{}
