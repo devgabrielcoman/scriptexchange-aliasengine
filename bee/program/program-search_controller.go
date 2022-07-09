@@ -18,6 +18,11 @@ type SearchController struct {
 	totalLen     int
 }
 
+func NewEmptySearchController() *SearchController {
+	items := []models.IndexItem{}
+	return NewSearchController(items)
+}
+
 func NewSearchController(elems []models.IndexItem) *SearchController {
 	controller := new(SearchController)
 	controller.elems = elems
