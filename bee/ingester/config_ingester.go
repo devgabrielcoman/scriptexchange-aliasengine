@@ -37,14 +37,14 @@ func (c ConfigIngester) Process(content string) []models.IndexItem {
 			}
 		}
 
-		// found a potential export
-		if c.isPotentialExport(trimmedLine) {
-			var item, process = c.processExport(line, i, lines)
-			if item != nil {
-				result = append(result, *item)
-				i += process
-			}
-		}
+		// // found a potential export
+		// if c.isPotentialExport(trimmedLine) {
+		// 	var item, process = c.processExport(line, i, lines)
+		// 	if item != nil {
+		// 		result = append(result, *item)
+		// 		i += process
+		// 	}
+		// }
 
 		// found potential function in first style
 		if c.isPotentialFunctionStyleOne(trimmedLine) {
