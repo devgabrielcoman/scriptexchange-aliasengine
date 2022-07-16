@@ -35,18 +35,6 @@ func getLastCommandUrl() string {
 	return fmt.Sprintf("%s/%s", home, path)
 }
 
-func getBashHistoryUrl() string {
-	var home = getHomeUrl()
-	var path = ".bash_history"
-	return fmt.Sprintf("%s/%s", home, path)
-}
-
-func getZshHistoryUrl() string {
-	var home = getHomeUrl()
-	var path = ".zsh_history"
-	return fmt.Sprintf("%s/%s", home, path)
-}
-
 func ReadItems() []models.IndexItem {
 	path := getDataUrl()
 	dat, err := ReadResource(path)
@@ -126,24 +114,6 @@ func readFile(path string) (string, error) {
 	}
 
 	return string(dat), nil
-}
-
-func ReadBashHistory() (string, string, error) {
-	var path = getBashHistoryUrl()
-	data, err := ReadResource(path)
-	if err != nil {
-		return "", path, err
-	}
-	return data, path, err
-}
-
-func ReadZSHHistory() (string, string, error) {
-	var path = getZshHistoryUrl()
-	data, err := ReadResource(path)
-	if err != nil {
-		return "", path, err
-	}
-	return data, path, err
 }
 
 func WriteLastCommand(command string) {

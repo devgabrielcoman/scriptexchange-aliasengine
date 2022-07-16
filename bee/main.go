@@ -11,7 +11,6 @@ func main() {
 	var source string
 	var script bool
 	var update bool
-	var history bool
 	var listSource bool
 
 	flag.StringVar(&register, "register", "", "Register a file of aliases or functions or a script")
@@ -19,7 +18,6 @@ func main() {
 	flag.StringVar(&source, "source", "", "Add the items in a source file to your existing one")
 	flag.BoolVar(&script, "s", false, "Register file as script")
 	flag.BoolVar(&update, "u", false, "Update all data")
-	flag.BoolVar(&history, "h", false, "Search through bash history")
 	flag.BoolVar(&listSource, "ls", false, "List the contents of the source file")
 	flag.Parse()
 
@@ -39,9 +37,6 @@ func main() {
 		program.Run()
 	} else if update {
 		program := program.UpdateProgram{}
-		program.Run()
-	} else if history {
-		program := program.HistoryProgram{}
 		program.Run()
 	} else if listSource {
 		program := program.ListSourceProgram{}

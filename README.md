@@ -5,7 +5,6 @@
   - [Keep up to date](#keep-up-to-date)
   - [Syntax highlighting](#syntax-highlighting)
   - [Comments](#comments)
-  - [History](#history)
   - [Remove a file](#remove-a-file)
   - [List source file](#list-source-file)
   - [Add a new source](#add-a-new-source)
@@ -117,25 +116,12 @@ hello() {
 }
 ```
 
-## History
-
-You can see and search the command history stored in `~/.bash_history` or `~/.zsh_history` by typing
-
-```
-bee -h
-```
-
-You should then see something like this
-
-![Alias Bee History](/res/history.png?raw=true "Alias Bee History")
-
-
 ## Remove a file
 
 If you want to remove a script file or a file of aliases and functions, you can use the `remove` command with either the name or the path to the file. 
 
 ```
-bee --remove .bash_history
+bee --remove .bash_aliases
 ```
 
 or 

@@ -3,7 +3,6 @@ package program
 import (
 	"bee/bbee/models"
 	"bee/bbee/style"
-	"bee/bbee/utils"
 	"strings"
 )
 
@@ -39,8 +38,6 @@ func NewSearchResult(item models.IndexItem) SearchResult {
 		return NewScriptSearchResult(item)
 	case models.ScriptType(models.Export):
 		return NewExportSearchResult(item)
-	case models.ScriptType(models.History):
-		return NewHistorySearchResult(item)
 	default:
 		return NewEmptySearchResult()
 	}
@@ -128,27 +125,6 @@ func NewExportSearchResult(item models.IndexItem) SearchResult {
 		command:        command,
 		pathOnDisk:     pathOnDisk,
 		resultType:     resultType,
-		startLine:      item.StartLine,
-		endLine:        item.EndLine,
-		noHighlight:    false,
-	}
-}
-
-func NewHistorySearchResult(item models.IndexItem) SearchResult {
-	var mainText string
-	if item.Date == 0 {
-		mainText = "   " + style.Color(item.Content, style.ScriptNameColor)
-	} else {
-		mainText = "   " + style.Color(utils.DateFormat(item.Date), style.AliasNameColor) + " " + style.Color(item.Content, style.ScriptNameColor)
-	}
-	return SearchResult{
-		mainText:       mainText,
-		secondaryText:  "",
-		previewTitle:   item.Path,
-		previewContent: "",
-		command:        item.Content,
-		pathOnDisk:     item.Path,
-		resultType:     SearchResultType(Item),
 		startLine:      item.StartLine,
 		endLine:        item.EndLine,
 		noHighlight:    false,

@@ -43,12 +43,6 @@ func (k SearchKey) formSearchQueries() []string {
 			item.Path + "/./" + item.Name,
 			item.Path + "/" + item.Name,
 		}
-	case models.ScriptType(models.History):
-		return []string{
-			item.Name,
-			item.Content,
-			item.Path + "/" + item.Name,
-		}
 	default:
 		return []string{}
 	}

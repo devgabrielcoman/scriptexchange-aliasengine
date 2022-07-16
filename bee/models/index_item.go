@@ -8,7 +8,6 @@ const (
 	Function ScriptType = 1
 	Script   ScriptType = 2
 	Export   ScriptType = 3
-	History  ScriptType = 4
 )
 
 // IndexItems represent references to aliases, functions, scripts

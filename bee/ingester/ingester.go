@@ -19,8 +19,6 @@ const (
 	SEPARATOR            string = ""
 	NEWLINE              string = "\n"
 	TAB                  string = "\t"
-	ZSH_HISTORY_SEP      string = ";"
-	ZSH_HISTORY_SUFFIX   string = "\\"
 )
 
 type Ingester struct{}
