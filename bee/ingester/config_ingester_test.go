@@ -174,194 +174,194 @@ func TestConfigIngester_Process_Alias(t *testing.T) {
 	})
 }
 
-func TestConfigIngester_Process_Export(t *testing.T) {
-	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
+// func TestConfigIngester_Process_Export(t *testing.T) {
+// 	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
 
-	t.Run("it should return an empty slice given incorrectly formatted export", func(t *testing.T) {
-		var content = "export abc"
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{}
-		assert.Equal(t, expected, result)
-	})
+// 	t.Run("it should return an empty slice given incorrectly formatted export", func(t *testing.T) {
+// 		var content = "export abc"
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should return an empty slice given incorrectly formatted export", func(t *testing.T) {
-		var content = "export $PATH 'ls -all'"
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{}
-		assert.Equal(t, expected, result)
-	})
+// 	t.Run("it should return an empty slice given incorrectly formatted export", func(t *testing.T) {
+// 		var content = "export $PATH 'ls -all'"
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should a slice with one export even if format is slighlty incorrect", func(t *testing.T) {
-		var content = "export $PATH = 'my-path'"
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{
-			{
-				Name:       "$PATH",
-				Content:    "my-path",
-				Path:       "test.sh",
-				Comments:   []string{},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  0,
-				EndLine:    0,
-			},
-		}
-		assert.Equal(t, expected, result)
-	})
+// 	t.Run("it should a slice with one export even if format is slighlty incorrect", func(t *testing.T) {
+// 		var content = "export $PATH = 'my-path'"
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{
+// 			{
+// 				Name:       "$PATH",
+// 				Content:    "my-path",
+// 				Path:       "test.sh",
+// 				Comments:   []string{},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  0,
+// 				EndLine:    0,
+// 			},
+// 		}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should return a slice with one export in one line content", func(t *testing.T) {
-		var content = "export $PATH='my-path'"
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{
-			{
-				Name:       "$PATH",
-				Content:    "my-path",
-				Path:       "test.sh",
-				Comments:   []string{},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  0,
-				EndLine:    0,
-			},
-		}
-		assert.Equal(t, expected, result)
-	})
+// 	t.Run("it should return a slice with one export in one line content", func(t *testing.T) {
+// 		var content = "export $PATH='my-path'"
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{
+// 			{
+// 				Name:       "$PATH",
+// 				Content:    "my-path",
+// 				Path:       "test.sh",
+// 				Comments:   []string{},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  0,
+// 				EndLine:    0,
+// 			},
+// 		}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should not return a slice with export if it actually starts with a comment", func(t *testing.T) {
-		var content = `# this is my
-		# write down like: export $PATH='my-path'
-		`
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{}
-		assert.Equal(t, expected, result)
-	})
+// 	t.Run("it should not return a slice with export if it actually starts with a comment", func(t *testing.T) {
+// 		var content = `# this is my
+// 		# write down like: export $PATH='my-path'
+// 		`
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should return a slice with one export and comments in multi line content", func(t *testing.T) {
-		var content = `# this is my
-		# comment
-		export $PATH='my-path'
-		`
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{
-			{
-				Name:       "$PATH",
-				Content:    "my-path",
-				Path:       "test.sh",
-				Comments:   []string{"# this is my", "# comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  0,
-				EndLine:    2,
-			},
-		}
-		assert.Equal(t, expected, result)
-	})
+// 	t.Run("it should return a slice with one export and comments in multi line content", func(t *testing.T) {
+// 		var content = `# this is my
+// 		# comment
+// 		export $PATH='my-path'
+// 		`
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{
+// 			{
+// 				Name:       "$PATH",
+// 				Content:    "my-path",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is my", "# comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  0,
+// 				EndLine:    2,
+// 			},
+// 		}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should return a slice with two exports in multi line content", func(t *testing.T) {
-		var content = `
-		# this is my comment
-		export $PATH1='my-path-1'
+// 	t.Run("it should return a slice with two exports in multi line content", func(t *testing.T) {
+// 		var content = `
+// 		# this is my comment
+// 		export $PATH1='my-path-1'
 
-		# this is the
-		# second comment
-		export $PATH2='my-path-2'
-		`
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{
-			{
-				Name:       "$PATH1",
-				Content:    "my-path-1",
-				Path:       "test.sh",
-				Comments:   []string{"# this is my comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  1,
-				EndLine:    2,
-			},
-			{
-				Name:       "$PATH2",
-				Content:    "my-path-2",
-				Path:       "test.sh",
-				Comments:   []string{"# this is the", "# second comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  4,
-				EndLine:    6,
-			},
-		}
-		assert.Equal(t, expected, result)
-	})
+// 		# this is the
+// 		# second comment
+// 		export $PATH2='my-path-2'
+// 		`
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{
+// 			{
+// 				Name:       "$PATH1",
+// 				Content:    "my-path-1",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is my comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  1,
+// 				EndLine:    2,
+// 			},
+// 			{
+// 				Name:       "$PATH2",
+// 				Content:    "my-path-2",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is the", "# second comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  4,
+// 				EndLine:    6,
+// 			},
+// 		}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should return a slice with two exports even if identical names", func(t *testing.T) {
-		var content = `
-		# this is my comment
-		export $PATH='my-path-1'
+// 	t.Run("it should return a slice with two exports even if identical names", func(t *testing.T) {
+// 		var content = `
+// 		# this is my comment
+// 		export $PATH='my-path-1'
 
-		# this is the
-		# second comment
-		export $PATH='my-path-2'
-		`
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{
-			{
-				Name:       "$PATH",
-				Content:    "my-path-1",
-				Path:       "test.sh",
-				Comments:   []string{"# this is my comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  1,
-				EndLine:    2,
-			},
-			{
-				Name:       "$PATH",
-				Content:    "my-path-2",
-				Path:       "test.sh",
-				Comments:   []string{"# this is the", "# second comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  4,
-				EndLine:    6,
-			},
-		}
-		assert.Equal(t, expected, result)
-	})
+// 		# this is the
+// 		# second comment
+// 		export $PATH='my-path-2'
+// 		`
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{
+// 			{
+// 				Name:       "$PATH",
+// 				Content:    "my-path-1",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is my comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  1,
+// 				EndLine:    2,
+// 			},
+// 			{
+// 				Name:       "$PATH",
+// 				Content:    "my-path-2",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is the", "# second comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  4,
+// 				EndLine:    6,
+// 			},
+// 		}
+// 		assert.Equal(t, expected, result)
+// 	})
 
-	t.Run("it should return a slice with two exports even if the format is slightly incorrect", func(t *testing.T) {
-		var content = `
-		# this is my comment
-		export $PATH1 = 'my-path-1'
+// 	t.Run("it should return a slice with two exports even if the format is slightly incorrect", func(t *testing.T) {
+// 		var content = `
+// 		# this is my comment
+// 		export $PATH1 = 'my-path-1'
 
-		# this is the
-		# second comment
-		export $PATH2 = my-path-2
-		`
-		var result = ingester.Process(content)
-		var expected = []models.IndexItem{
-			{
-				Name:       "$PATH1",
-				Content:    "my-path-1",
-				Path:       "test.sh",
-				Comments:   []string{"# this is my comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  1,
-				EndLine:    2,
-			},
-			{
-				Name:       "$PATH2",
-				Content:    "my-path-2",
-				Path:       "test.sh",
-				Comments:   []string{"# this is the", "# second comment"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  4,
-				EndLine:    6,
-			},
-		}
-		assert.Equal(t, expected, result)
-	})
-}
+// 		# this is the
+// 		# second comment
+// 		export $PATH2 = my-path-2
+// 		`
+// 		var result = ingester.Process(content)
+// 		var expected = []models.IndexItem{
+// 			{
+// 				Name:       "$PATH1",
+// 				Content:    "my-path-1",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is my comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  1,
+// 				EndLine:    2,
+// 			},
+// 			{
+// 				Name:       "$PATH2",
+// 				Content:    "my-path-2",
+// 				Path:       "test.sh",
+// 				Comments:   []string{"# this is the", "# second comment"},
+// 				PathOnDisk: "test.sh",
+// 				Type:       models.ScriptType(models.Export),
+// 				StartLine:  4,
+// 				EndLine:    6,
+// 			},
+// 		}
+// 		assert.Equal(t, expected, result)
+// 	})
+// }
 
 func TestConfigIngester_Process_FunctionStyleOne(t *testing.T) {
 	var ingester = ConfigIngester{FilePath: "test.sh", CurrentTime: 0}
@@ -843,16 +843,16 @@ func TestConfigIngester_Process(t *testing.T) {
 				StartLine:  14,
 				EndLine:    16,
 			},
-			{
-				Name:       "$PATH",
-				Content:    "my-new-path",
-				Path:       "test.sh",
-				Comments:   []string{"# this is an export"},
-				PathOnDisk: "test.sh",
-				Type:       models.ScriptType(models.Export),
-				StartLine:  18,
-				EndLine:    19,
-			},
+			// {
+			// 	Name:       "$PATH",
+			// 	Content:    "my-new-path",
+			// 	Path:       "test.sh",
+			// 	Comments:   []string{"# this is an export"},
+			// 	PathOnDisk: "test.sh",
+			// 	Type:       models.ScriptType(models.Export),
+			// 	StartLine:  18,
+			// 	EndLine:    19,
+			// },
 		}
 		assert.Equal(t, expected, result)
 	})
