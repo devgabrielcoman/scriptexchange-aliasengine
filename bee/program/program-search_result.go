@@ -151,7 +151,7 @@ func NewSearchCategory(name string, pathOnDisk string) SearchResult {
 	return SearchResult{
 		mainText:       mainText,
 		secondaryText:  "",
-		previewTitle:   "",
+		previewTitle:   pathOnDisk,
 		previewContent: "",
 		command:        "",
 		pathOnDisk:     pathOnDisk,

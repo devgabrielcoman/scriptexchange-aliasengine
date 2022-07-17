@@ -27,7 +27,7 @@ func Test_NewSearchController(t *testing.T) {
 			{
 				mainText:       "[#696969]/my_path/",
 				secondaryText:  "",
-				previewTitle:   "",
+				previewTitle:   "/full/my_path",
 				previewContent: "",
 				command:        "",
 				pathOnDisk:     "/full/my_path",
@@ -51,7 +51,7 @@ func Test_NewSearchController(t *testing.T) {
 			{
 				mainText:       "[#696969]/my_other_path/",
 				secondaryText:  "",
-				previewTitle:   "",
+				previewTitle:   "/full/my_other_path",
 				previewContent: "",
 				command:        "",
 				pathOnDisk:     "/full/my_other_path",
@@ -97,7 +97,7 @@ func Test_search(t *testing.T) {
 			{
 				mainText:       "[#696969]/my_other_path/",
 				secondaryText:  "",
-				previewTitle:   "",
+				previewTitle:   "/full/my_other_path",
 				previewContent: "",
 				command:        "",
 				pathOnDisk:     "/full/my_other_path",
