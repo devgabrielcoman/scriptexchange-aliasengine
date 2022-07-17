@@ -18,7 +18,7 @@ func (s ScriptIngester) Process(content string) []models.IndexItem {
 			Content:    content,
 			Path:       ".scripts",
 			Comments:   []string{},
-			PathOnDisk: s.Path,
+			PathOnDisk: ".scripts", // s.Path,
 			Type:       models.ScriptType(models.Script),
 			Date:       s.CurrentTime,
 			StartLine:  0,

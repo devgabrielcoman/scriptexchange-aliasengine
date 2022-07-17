@@ -92,7 +92,9 @@ func NewScriptSearchResult(item models.IndexItem) SearchResult {
 	var secondaryText = ""
 	var previewTitle = item.Path + "/" + item.Name
 	var previewContent = createPreviewContent(item)
-	var command = item.PathOnDisk
+	// the script execution command is its content
+	// so we can execute both remore and local scripts
+	var command = item.Content
 	var pathOnDisk = item.PathOnDisk
 	var resultType = SearchResultType(Item)
 	return SearchResult{

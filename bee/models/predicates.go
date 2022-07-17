@@ -1,6 +1,8 @@
 package models
 
-import "sort"
+import (
+	"sort"
+)
 
 // String Pair
 type Pair struct {
@@ -25,7 +27,7 @@ func UniqueItemsByDate(slice []IndexItem) []IndexItem {
 	list := []IndexItem{}
 
 	for _, item := range slice {
-		key := item.Name + " " + item.Content
+		key := item.PathOnDisk + "/" + item.Name + ":" + item.Content
 		value, ok := keys[key]
 		if ok {
 			if item.Date > value.Date {
@@ -54,8 +56,9 @@ func UniqueSources(slice []SourceFile) []SourceFile {
 	keys := make(map[string]bool)
 	list := []SourceFile{}
 	for _, entry := range slice {
-		if _, value := keys[entry.Name]; !value {
-			keys[entry.Name] = true
+		key := entry.Path + "/" + entry.Name
+		if _, value := keys[key]; !value {
+			keys[key] = true
 			list = append(list, entry)
 		}
 	}
@@ -67,8 +70,8 @@ func UniquePaths(data []IndexItem) []Pair {
 	list := []Pair{}
 
 	for _, entry := range data {
-		if _, value := keys[entry.Path]; !value {
-			keys[entry.Path] = true
+		if _, value := keys[entry.PathOnDisk]; !value {
+			keys[entry.PathOnDisk] = true
 			list = append(list, Pair{entry.Path, entry.PathOnDisk})
 		}
 	}
@@ -80,7 +83,7 @@ func FilterByPath(data []IndexItem, path string) []IndexItem {
 	var result = []IndexItem{}
 
 	for _, item := range data {
-		if item.Path == path {
+		if item.PathOnDisk == path {
 			result = append(result, item)
 		}
 	}

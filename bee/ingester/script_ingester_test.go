@@ -18,7 +18,7 @@ func TestScriptIngester_Process(t *testing.T) {
 				Content:    "echo \"Good\"",
 				Path:       ".scripts",
 				Comments:   []string{},
-				PathOnDisk: "/path/to/my-script.sh",
+				PathOnDisk: ".scripts",
 				Type:       models.ScriptType(models.Script),
 				Date:       123,
 				StartLine:  0,

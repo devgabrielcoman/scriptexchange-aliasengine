@@ -50,7 +50,7 @@ func (c *SearchController) formResults(items []models.IndexItem) []SearchResult 
 
 	for _, path := range paths {
 		result = append(result, NewSearchCategory(path.A, path.B))
-		var filtered = models.FilterByPath(items, path.A)
+		var filtered = models.FilterByPath(items, path.B /* B = path on disk */)
 
 		// always sort according to start line
 		sort.Slice(filtered, func(i, j int) bool {
