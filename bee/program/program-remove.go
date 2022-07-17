@@ -22,8 +22,12 @@ func (r RemoveProgram) Run() {
 	if len(result) == len(sources) {
 		fmt.Printf("Could not find file %s to remove\n", r.Name)
 	} else {
+		// write the new sources, w/o the existing one
 		data.WriteSources(result)
 		fmt.Printf("Removed %s from sources\n", r.Name)
+		// and update all data
+		update_program := UpdateProgram{}
+		update_program.Run()
 	}
 }
 
