@@ -167,7 +167,7 @@ func (p SearchProgram) highlight(content string) string {
 	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=plain --line-range=:500 --paging=never --theme=1337"
 	result, _, err := utils.Shellout(command)
 	if err != nil {
-		return ""
+		return "[white]" + content + "[gray]\n"
 	}
 	result = strings.ReplaceAll("\033[48;2;35;35;45m"+result, "\033[0m", "\033[48;2;35;35;45m")
 	return result + "\033[0m"
@@ -177,7 +177,7 @@ func (p SearchProgram) colorize(content string) string {
 	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=plain --line-range=:500 --paging=never --theme=1337"
 	result, _, err := utils.Shellout(command)
 	if err != nil {
-		return ""
+		return content
 	}
 	return result
 }
@@ -186,7 +186,7 @@ func (p SearchProgram) dehighlight(content string) string {
 	command := "echo \"" + content + "\" | bat -l Bash --color=always --style=plain --line-range=:500 --paging=never --theme=1337"
 	result, _, err := utils.Shellout(command)
 	if err != nil {
-		return ""
+		return "[gray]" + content + "\n"
 	}
 	result = strings.ReplaceAll("\033[2m"+result, "\033[0m", "\033[2m")
 	return result + "\033[0m"
